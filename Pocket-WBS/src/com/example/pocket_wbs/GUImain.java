@@ -16,13 +16,23 @@ import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 public class GUImain extends ActionBarActivity {
+	private int MaxHorizontalElements = 10;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_guimain);
+		
+		populateTable(5,5, MaxHorizontalElements);
 	}
 
 	@Override
@@ -42,5 +52,90 @@ public class GUImain extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	/*
+	 * Method to populate the screen/tableLayout with WBS elements
+	 * @author Adrian
+	 */
+	
+	public void populateTable(int NUM_ROWS, int NUM_COLS, int MaxHE)
+	{
+		/*
+		 * Default table starts with 5 columns (All to be equal size)
+		 * Main(First) WBS Element should be in 3rd Column (Centered)
+		 * Algorithm for expansion of table columns according to highest no. of WBS Elements in a row yet to be decided
+		 */
+		
+		//If The Maximum number of WBS Elements that we have is more than 5
+		//Expand the NUM_COLS to 10 (twice the size for now)
+		if (MaxHE>5)
+			NUM_COLS=10;
+		
+		TableLayout table = (TableLayout)findViewById(R.id.tableForElements);
+		
+		for (int row=0; row<NUM_ROWS; row++)
+		{
+			TableRow tableRow = new TableRow(this);
+			TableRow.LayoutParams fieldparams = new TableRow.LayoutParams(400, 5, 0.2f);
+			
+			
+			table.addView(tableRow);
+			//tableRow.setLayoutParams(fieldparams);
+			
+			for (int col=0; col<NUM_COLS; col++)
+			{
+				Button button = new Button(this);
+				
+				//Sets fixed size for button
+				LayoutParams lp = new TableRow.LayoutParams(90,100,0.2f);
+				button.setLayoutParams(lp);
+				
+				//Set text size of button 
+				button.setTextSize(10.0f);
+				
+				//If space in the table shouldn't have an Element make button invisible
+				if(row!=0 || col!=2)
+					button.setVisibility(Button.INVISIBLE);
+				
+				//IF THIS IS A WBS ELEMENT THEN IMPLEMENT
+				else
+				{
+					button.setText("Pocket WBS");
+					
+					//Implement onClick function
+					button.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				}
+				
+				tableRow.addView(button);
+
+				
+			}
+		}
+	}
+	
+	/*
+	 * Decomposes an element automatically if it detected to have children
+	 * Requires number of children
+	 */
+	public void autoDecomposeElement()
+	{
+		//Test data : No. of Children (Odd or Even)
+		
+		int noChild = 2;
+		
+		//If even number
+		if (noChild%2==0)
+		{
+			
+		}
 	}
 }

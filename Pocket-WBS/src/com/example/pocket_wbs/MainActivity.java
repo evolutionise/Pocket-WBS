@@ -1,6 +1,9 @@
-package com.example.pocket_wbs.gui;
+package com.example.pocket_wbs;
 
 import com.example.pocket_wbs.R;
+import com.example.pocket_wbs.R.id;
+import com.example.pocket_wbs.R.layout;
+import com.example.pocket_wbs.R.menu;
 
 import android.support.v7.app.ActionBarActivity;
 import android.graphics.Canvas;

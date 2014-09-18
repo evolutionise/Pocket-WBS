@@ -1,0 +1,64 @@
+<LinearLayout 
+
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|top"
+        android:text="This Should Contain The Project Name" />
+   
+       <HorizontalScrollView
+           android:id="@+id/horizontal_scroll_view"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:scrollbars="horizontal">
+                                                                    
+           <ScrollView                                                                          
+               android:id="@+id/vertical_scroll_view"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:scrollbars="vertical">
+
+               <TableLayout
+                   android:layout_width="800dp"
+                   android:layout_height="800dp" >
+
+                   <TableRow
+                       android:id="@+id/tableRow1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content" >
+                       
+	                       <com.example.pocket_wbs.gui.MyCanvas
+	                       android:layout_width="600dp"
+	                       android:layout_height="800dp" />
+                   </TableRow>
+
+                   <TableRow
+                       android:id="@+id/tableRow2"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content" >
+                   </TableRow>
+
+                   <TableRow
+                       android:id="@+id/tableRow3"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content" >
+                   </TableRow>
+
+                   <TableRow
+                       android:id="@+id/tableRow4"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content" >
+                   </TableRow>
+               </TableLayout>
+              
+          </ScrollView>
+          
+      </HorizontalScrollView>
+  
+</LinearLayout>

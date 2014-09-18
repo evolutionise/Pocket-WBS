@@ -44,6 +44,13 @@ public class MyCanvas extends View {
 
     }
     
+    /*
+     * Most of these methods are still preliminary and are used for testing to decide
+     * the most suitable means of generating a WBS GUI
+     * 
+     * @Author - Adrian
+     */
+    
     protected void drawRectangle(Paint p, Canvas canvas)
     {
     	DisplayMetrics displayMetrics = getResources().getDisplayMetrics();

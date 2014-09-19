@@ -9,8 +9,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
@@ -31,8 +33,7 @@ public class GUImain extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_guimain);
-		
-		populateTable(5,5, MaxHorizontalElements);
+		//populateTable(5,5, MaxHorizontalElements);
 	}
 
 	@Override
@@ -58,7 +59,8 @@ public class GUImain extends ActionBarActivity {
 	/*
 	 * Method to populate the screen/tableLayout with WBS elements
 	 * @author Adrian
-	 */
+	 
+	
 	
 	public void populateTable(int NUM_ROWS, int NUM_COLS, int MaxHE)
 	{
@@ -66,7 +68,7 @@ public class GUImain extends ActionBarActivity {
 		 * Default table starts with 5 columns (All to be equal size)
 		 * Main(First) WBS Element should be in 3rd Column (Centered)
 		 * Algorithm for expansion of table columns according to highest no. of WBS Elements in a row yet to be decided
-		 */
+		 
 		
 		//If The Maximum number of WBS Elements that we have is more than 5
 		//Expand the NUM_COLS to 10 (twice the size for now)
@@ -78,7 +80,7 @@ public class GUImain extends ActionBarActivity {
 		for (int row=0; row<NUM_ROWS; row++)
 		{
 			TableRow tableRow = new TableRow(this);
-			TableRow.LayoutParams fieldparams = new TableRow.LayoutParams(400, 5, 0.2f);
+			//TableRow.LayoutParams fieldparams = new TableRow.LayoutParams(400, 5, 0.2f);
 			
 			
 			table.addView(tableRow);
@@ -121,7 +123,7 @@ public class GUImain extends ActionBarActivity {
 			}
 		}
 	}
-	
+	*/
 	/*
 	 * Decomposes an element automatically if it detected to have children
 	 * Requires number of children

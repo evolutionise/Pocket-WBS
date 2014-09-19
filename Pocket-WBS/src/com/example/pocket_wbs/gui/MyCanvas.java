@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Shader.TileMode;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
  
 public class MyCanvas extends View {
@@ -40,7 +42,7 @@ public class MyCanvas extends View {
         Paint p = new Paint();
         //drawBranch(canvas,p);
         drawRectangle(p, canvas);
-        
+        drawBranch(canvas,p);
 
     }
     
@@ -55,33 +57,48 @@ public class MyCanvas extends View {
     {
     	DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
     	
-    	float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+    	float dpHeight = displayMetrics.heightPixels;
+        float dpWidth = displayMetrics.widthPixels;
         
     	p.setColor(Color.LTGRAY); 
-    	RectF r = new RectF(dpWidth/2, 100, (dpWidth/2)+150, 200);
+    	//Set rectangle start position to be in the middle of the screen
+    	RectF r = new RectF((dpWidth/2)-70, 0, (dpWidth/2)+70, 100);
     	canvas.drawRoundRect(r, 30, 30, p);
     	//canvas.drawRect(new RectF(dpWidth/2, 100, (dpWidth/2)+150, 200), p); 
+    	
+    	//Width of box is currently 120px
+    	//Height of box is currently 100px
     }
     
     protected void drawBranch(Canvas canvas, Paint paint)
     {
     	DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        
-        
+    	
+    	float dpHeight = displayMetrics.heightPixels;
+        float dpWidth = displayMetrics.widthPixels;
+    	 
         paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(3);
+        paint.setStrokeWidth(1);
         int startx = (int) (dpWidth/2);
         int starty = 100;
         
         //Draw line downwards
-        int nexty = starty+50;
+        int nexty = starty+15;
         canvas.drawLine(startx, starty, startx, nexty, paint);
         //Draw line across
         canvas.drawLine(startx-100, nexty, startx+100, nexty, paint);
+        //Draw branch lines
+        canvas.drawLine(startx-100, nexty, startx-100, nexty+15, paint);
+        canvas.drawLine(startx+100, nexty, startx+100, nexty+15, paint);
+    }
+    
+    protected void drawDecomposedElements(RectF rect)
+    {
+    	int startx = (int) rect.centerX();
+    	int starty = (int) rect.centerY();
+    	starty = starty+100;
+    	
+    	RectF newRect1 = new RectF();
     }
     
     protected void getScreenMeasurements()
@@ -91,4 +108,5 @@ public class MyCanvas extends View {
         float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
     }
+    
 }

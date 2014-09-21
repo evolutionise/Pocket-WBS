@@ -4,6 +4,7 @@ import com.example.pocket_wbs.R;
 import com.example.pocket_wbs.R.id;
 import com.example.pocket_wbs.R.layout;
 import com.example.pocket_wbs.R.menu;
+import com.example.pocket_wbs.gui.MyCanvas;
 
 import android.support.v7.app.ActionBarActivity;
 import android.graphics.Canvas;
@@ -25,9 +26,11 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GUImain extends ActionBarActivity {
 	private int MaxHorizontalElements = 10;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -139,5 +142,29 @@ public class GUImain extends ActionBarActivity {
 		{
 			
 		}
+	}
+	
+	public void breakDownElement2(View view)
+	{
+		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
+		myCanvas.numChildren = 2;
+		myCanvas.invalidate();
+		
+	}
+	
+	public void breakDownElement3(View view)
+	{
+		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
+		myCanvas.numChildren = 3;
+		myCanvas.invalidate();
+		
+	}
+	
+	public void breakDownElement4(View view)
+	{
+		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
+		myCanvas.numChildren = 4;
+		myCanvas.invalidate();
+		
 	}
 }

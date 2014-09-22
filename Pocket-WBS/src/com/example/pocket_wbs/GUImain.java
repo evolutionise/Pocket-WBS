@@ -147,7 +147,7 @@ public class GUImain extends ActionBarActivity {
 	public void breakDownElement2(View view)
 	{
 		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		myCanvas.numChildren = 2;
+		myCanvas.numElementsLvlOne = 2;
 		myCanvas.invalidate();
 		
 	}
@@ -155,7 +155,7 @@ public class GUImain extends ActionBarActivity {
 	public void breakDownElement3(View view)
 	{
 		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		myCanvas.numChildren = 3;
+		myCanvas.numElementsLvlOne = 3;
 		myCanvas.invalidate();
 		
 	}
@@ -163,7 +163,29 @@ public class GUImain extends ActionBarActivity {
 	public void breakDownElement4(View view)
 	{
 		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		myCanvas.numChildren = 4;
+		myCanvas.numElementsLvlOne = 4;
+		myCanvas.invalidate();
+		
+	}
+	
+	public void breakDownElement5(View view)
+	{
+		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
+		int numElementsLvlTwo = myCanvas.getNumElementsLvlTwo();
+		
+		if(numElementsLvlTwo==0)
+		{
+			myCanvas.setNumElementsLvlTwo(2);
+		}
+
+		myCanvas.invalidate();
+		
+	}
+	
+	public void breakDownElement6(View view)
+	{
+		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
+		myCanvas.setNumElementsLvlTwo(0);
 		myCanvas.invalidate();
 		
 	}

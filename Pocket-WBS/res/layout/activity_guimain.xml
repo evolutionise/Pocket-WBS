@@ -58,9 +58,22 @@
                            android:layout_height="wrap_content"
                            android:onClick="breakDownElement4"
                            android:text="4 Children" />
+                       
+                        <Button
+                           android:id="@+id/btnChild5"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:onClick="breakDownElement5"
+                           android:text="Level 2 - 2 Children" />
+                        
+                        <Button
+                           android:id="@+id/btnChild6"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:onClick="breakDownElement6"
+                           android:text="Level 2 - Remove Children" />
 
                    </LinearLayout>
-                   
 
                    <com.example.pocket_wbs.gui.MyCanvas
                        android:id="@+id/myCanvas"

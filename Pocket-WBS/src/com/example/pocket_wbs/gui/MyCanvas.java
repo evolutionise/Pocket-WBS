@@ -3,16 +3,10 @@ package com.example.pocket_wbs.gui;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.Shader.TileMode;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
  
 public class MyCanvas extends View {
@@ -66,8 +60,14 @@ public class MyCanvas extends View {
         super(context, attrs);
         // TODO Auto-generated constructor stub
     }
- 
+    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View#onDraw(android.graphics.Canvas)
+     * Acts as a constructor as it is initialized in the XML: activity_guimain.xml
+     */
     protected void onDraw(Canvas canvas) {
+    	int width=this.getLayoutParams().width;
     	
     	DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
     	
@@ -77,9 +77,9 @@ public class MyCanvas extends View {
         this.dpHeight = dpHeight;
         this.dpWidth = dpWidth;
         this.canvas = canvas;
-        this.rootMidPoint = (int)dpWidth/2;
-        this.rootStartxPoint=rootMidPoint-(elementWidth/2);   
         
+        this.rootMidPoint = width/2;
+        this.rootStartxPoint=rootMidPoint-(elementWidth/2);   
         this.rootEndxPoint=rootStartxPoint + elementWidth;
         
         // TODO Auto-generated method stub
@@ -87,40 +87,27 @@ public class MyCanvas extends View {
         Paint p = new Paint();
 
         
-        
-        createLevelOneChildren(numElementsLvlOne);
-        createLevelOneBranches(numElementsLvlOne);
         createLevelTwoChildren(numElementsLvlTwo);
+        createLevelOneChildren(numElementsLvlOne);
         drawRootElement(p, canvas);
+        createLevelOneBranches(numElementsLvlOne);
         
     }
+
     
     /*
-     * Most of these methods are still preliminary and are used for testing to decide
-     * the most suitable means of generating a WBS GUI
-     * 
-     * @Author - Adrian
+     * This method draws the root element in the middle of a 800x800 canvas
+     * @param p - object type paint
+     * @param canvas - object type canvas
      */
-    
     protected void drawRootElement(Paint p, Canvas canvas)
     {
-    	if(numElementsLvlOne>2)
-    	{
-    		rootStartxPoint=startXLvlOne+elementWidth+hGapLvlOne;
-    		rootEndxPoint=rootStartxPoint+elementWidth;
-    	}
         p.setColor(Color.LTGRAY); 
-    	//Set rectangle start position to be in the middle of the screen
     	RectF r = new RectF(rootStartxPoint, 0, rootEndxPoint, elementHeight);
-
     	canvas.drawRoundRect(r, 30, 30, p);
-    	//canvas.drawRect(new RectF(dpWidth/2, 100, (dpWidth/2)+150, 200), p); 
-    	
-    	//Width of box is currently 120px
-    	//Height of box is currently 100px
     }
     
-
+    
     
     protected void drawDecomposedElements(RectF rect)
     {
@@ -131,84 +118,15 @@ public class MyCanvas extends View {
     	RectF newRect1 = new RectF();
     }
    
-    
-    //Creates branches for level one
-    public void createLevelOneBranches(int numChildren)
-    {
-    	int startXDown=rootMidPoint;
-    	int endXDown=startXDown;
-    	int startYDown=rootEndyPoint;
-    	int endYDown=rootEndyPoint+verticalGapHalf;
-    	
-    	if (numChildren==2)
-    	{
-    		//The line across starts in the middle of the first element
-    		int startXAcross=startXLvlOne+(elementWidth/2);
-    		int startYAcross=rootEndyPoint+verticalGapHalf;
-    		
-    		//Line across ends in the middle of the last element
-    		int endXAcross=startXAcross+((elementWidth+hGapLvlOne)*(numElementsLvlOne-1));
-    		//int endXAcross=rootStartxPoint+(elementWidth*5/4);
-    		int endYAcross=startYAcross;
-    		
-    		//draw line down
-    		drawBranch(startXDown, startXDown, startYDown, endYDown);
-    		//draw line across
-    		drawBranch(startXAcross, endXAcross, startYAcross,endYAcross);
-    		//draw line down from horizontal line
-    		endYAcross+=verticalGapHalf;
-    		drawBranch(startXAcross, startXAcross, startYAcross,endYAcross);
-    		drawBranch(endXAcross, endXAcross, startYAcross,endYAcross);
-    	}
-    	else if(numChildren>=3)
-    	{
-    		//The line across starts in the middle of the first element
-    		int startXAcross=startXLvlOne+(elementWidth/2);
-    		int startYAcross=rootEndyPoint+verticalGapHalf;
-    		//Line across ends in the middle of the last element
-    		int endXAcross=startXAcross+((elementWidth+hGapLvlOne)*(numElementsLvlOne-1));
-    		int endYAcross=startYAcross;
-    		
-    		startXDown=startXAcross+elementWidth+hGapLvlOne;
-    		
-    		//draw line down from Root Element
-    		drawBranch(startXDown, startXDown, startYDown, endYDown);
 
-    		//draw line down from horizontal line
-    		endYAcross+=verticalGapHalf;
-    		
-    		
-    		for (int count=0; count<numChildren; count++)
-    		{
-    			//draw line across from one element to the next
-    			if(count<numChildren)
-    			drawBranch(startXAcross, elementWidth+hGapLvlOne, startYAcross,startYAcross);
-    			
-    			//Draw line down from horizontal line to each element
-    			drawBranch(startXAcross, startXAcross, startYAcross,endYAcross);
-    			startXAcross+=(elementWidth+hGapLvlOne);
-    		}
-    	}
-    }
-    
-    //Draws lines
-    protected void drawBranch(int startx, int endx, int starty, int endy)
-    {
-    	Paint p = new Paint();
-        
-        //Draw line downwards
-        canvas.drawLine(startx, starty, endx, endy, p);
-    }
-    
     
     /*
      * Creates Elements for Level One
+     * @param numChildren - total number of children in this level
      * @author Adrian
      */
     public void createLevelOneChildren(int numChildren)
     {
-    	
-    	//Y-axis start position is 30px (standard vertical gap) after parent element
     	int starty=elementHeight+verticalGap;
     	int tempStartX=0;
     	
@@ -222,16 +140,13 @@ public class MyCanvas extends View {
 		//If number of elements is > 2 then their Starting position and gap should be the same
 		else
 		{
-			//Re-sizes the size of horizontal-gap in Lvl One elements to accomodate 
+			//Re-sizes the size of horizontal-gap (Bigger gap) in Lvl One elements to accommodate more elements
 			if(numElementsLvlTwo>0)
 				hGapLvlOne=elementWidth/2;
 			else
 				hGapLvlOne=elementWidth/4;
 			
 			startXLvlOne=rootStartxPoint-(hGapLvlOne+elementWidth);
-			
-			//Max start point for left most element is set here
-				//shifts the whole tree to the right, by moving the root node
 		}
 
 		tempStartX=startXLvlOne;
@@ -243,7 +158,14 @@ public class MyCanvas extends View {
 		}
     }
     
-    //General Element drawer
+    
+    
+    /*
+     * Method that draws the WBS elements onto the screen
+     * @param startx - starting x-axis position for the element
+     * @param starty - starting y-axis position for the element
+     * @author Adrian
+     */
     protected void drawElement(int startx, int starty)
     {
     	Paint p = new Paint();
@@ -255,6 +177,13 @@ public class MyCanvas extends View {
 
     }
     
+    
+    
+    /*
+     * Method that creates WBS elements for Level Two
+     * @param numChildren - total number of children in this level
+     * @author Adrian
+     */
     public void createLevelTwoChildren(int numChildren)
     {
     	//Y-axis start position is 30px (standard vertical gap) after parent element
@@ -266,8 +195,11 @@ public class MyCanvas extends View {
 			//Horizontal gap between children = width of an element
 			hGapLvlTwo=elementWidth/2;
 			//Start point for the first child element
-			//startXLvlTwo=startXLvlOne-(elementWidth+hGapLvlTwo);
-			startXLvlTwo=0;
+			tempStartX=startXLvlOne-(elementWidth+hGapLvlTwo);
+			
+			startXLvlTwo=tempStartX;
+				
+
 		}
 		//If number of elements is > 2 then their Starting position and gap should be the same
 		else
@@ -291,6 +223,64 @@ public class MyCanvas extends View {
 			tempStartX+=elementWidth+hGapLvlTwo;
 		}
     }
+    
+    
+    /*
+     * Method to create branches for Level One
+     * @param numChildren - total number of children for this level
+     */
+    public void createLevelOneBranches(int numChildren)
+    {
+    	int startXDown=rootMidPoint;
+    	int endXDown=startXDown;
+    	int startYDown=rootEndyPoint;
+    	int endYDown=rootEndyPoint+verticalGapHalf;
+    	
+    	if (numChildren>=2)
+    	{
+    		//The line across starts in the middle of the first element
+    		int startXAcross=startXLvlOne+(elementWidth/2);
+    		int startYAcross=rootEndyPoint+verticalGapHalf;
+    		int endYAcross=startYAcross;
+    		
+    		//draw line down from Root Element
+    		drawBranch(startXDown, endXDown, startYDown, endYDown);
+
+    		//Set horizontal line across to end according to the vertical gap value
+    		endYAcross+=verticalGapHalf;
+    		
+    		
+    		for (int count=0; count<numChildren; count++)
+    		{
+    			//draw line across from one element to the next
+    			if(count<numChildren-1)
+    			drawBranch(startXAcross, startXAcross+elementWidth+hGapLvlOne, startYAcross,startYAcross);
+    			
+    			//Draw line down from horizontal line to each element
+    			drawBranch(startXAcross, startXAcross, startYAcross,endYAcross);
+    			startXAcross+=(elementWidth+hGapLvlOne);
+    		}
+    	}
+    }
+    
+    
+    
+    /*
+     * Method that draws out the lines 
+     * @param startx - starting horizontal coordinates
+     * @param endx - ending horizontal coordinates
+     * @param starty - starting vertical coordinates
+     * @param endy - ending vertical coordinates
+     */
+    protected void drawBranch(int startx, int endx, int starty, int endy)
+    {
+    	Paint p = new Paint();
+        
+        //Draw line downwards
+        canvas.drawLine(startx, starty, endx, endy, p);
+    }
+    
+    
     /*
      * Method to return the number of elements in level two
      * @return number of elements
@@ -305,4 +295,13 @@ public class MyCanvas extends View {
     {
     	numElementsLvlTwo = numElements;
     }
+    
+    public void repositionTree(int moveDistance)
+
+    {
+    	startXLvlOne+=moveDistance;
+    }
+    
+
 }
+

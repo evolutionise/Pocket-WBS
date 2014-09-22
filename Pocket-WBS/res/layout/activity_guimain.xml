@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="top|center_horizontal"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:textAlignment="center" >
+    android:textAlignment="gravity" >
 
     <TextView
         android:id="@+id/textView1"
@@ -36,6 +36,7 @@
                    <LinearLayout
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
+                       android:gravity="center_horizontal"
                        android:orientation="horizontal" >
 
                        <Button
@@ -58,20 +59,26 @@
                            android:layout_height="wrap_content"
                            android:onClick="breakDownElement4"
                            android:text="4 Children" />
-                       
-                        <Button
-                           android:id="@+id/btnChild5"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:onClick="breakDownElement5"
-                           android:text="Level 2 - 2 Children" />
-                        
-                        <Button
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:gravity="center_horizontal" >
+
+                       <Button
                            android:id="@+id/btnChild6"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:onClick="breakDownElement6"
                            android:text="Level 2 - Remove Children" />
+
+                       <Button
+                           android:id="@+id/btnChild5"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:onClick="breakDownElement5"
+                           android:text="Level 2 - 2 Children" />
 
                    </LinearLayout>
 
@@ -79,7 +86,8 @@
                        android:id="@+id/myCanvas"
                        android:layout_width="800dp"
                        android:layout_height="800dp"
-                       android:background="#E0E6F8" />
+                       android:background="#E0E6F8" 
+                       />
                    
                </LinearLayout>
 

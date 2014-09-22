@@ -64,7 +64,7 @@ public class ProjectTree {
 	 * @param name - the name for the new sibling
 	 * @param sibling - the sibling element
 	 */
-	public WBSElement addNewFirstSibling(String name, WBSElement sibling){
+	public WBSElement addNewFirstSibling(WBSElement sibling, String name){
 		WBSElement child = sibling.getParent().addChildByIndex(name, 0);
 		return child;
 	}
@@ -74,7 +74,7 @@ public class ProjectTree {
 	 * @param name - the name for the new sibling
 	 * @param sibling - the sibling element
 	 */
-	public WBSElement addNewLastSibling(String name, WBSElement sibling){
+	public WBSElement addNewLastSibling(WBSElement sibling, String name){
 		WBSElement child = sibling.getParent().addChild(name);
 		return child;
 	}
@@ -84,7 +84,7 @@ public class ProjectTree {
 	 * @param name of new element to be added
 	 * @param rightElement - the element directly to the right of where the new element is going in
 	 */
-	public WBSElement addNewLeftSibling(String name, WBSElement sibling){
+	public WBSElement addNewLeftSibling(WBSElement sibling, String name){
 		int siblingIndex = sibling.getParent().getIndexOfChild(sibling);
 		WBSElement child = sibling.getParent().addChildByIndex(name, siblingIndex);
 		return child;
@@ -95,7 +95,7 @@ public class ProjectTree {
 	 * @param name - the name for the new sibling
 	 * @param sibling - the sibling element
 	 */
-	public WBSElement addNewRightSibling(String name, WBSElement sibling){
+	public WBSElement addNewRightSibling(WBSElement sibling, String name){
 		int siblingIndex = sibling.getParent().getIndexOfChild(sibling);
 		WBSElement child = sibling.getParent().addChildByIndex(name, siblingIndex + 1);
 		return child;
@@ -113,28 +113,21 @@ public class ProjectTree {
 	
 	public HashMap<String, WBSElement> getProjectElements(){
 		HashMap<String, WBSElement> elements = new HashMap<String, WBSElement>();
-		
 		getProjectElements(rootElement, elements, "0");
-				
 		return elements;
-		
 	}
 
 	private void getProjectElements(WBSElement element, HashMap<String, WBSElement> elements, String key) {
 		elements.put(key, element);
+		
 		for(WBSElement child : element.getChildren()){
-			
-			if(key.equals("0")){
-				
+			if(key.equals("0")){	
 				getProjectElements(child, elements, "" + element.getIndexOfChild(child) + 1);
-				
-			} else {
-				
+			} 
+			else {
 				getProjectElements(child, elements, key + "." + (element.getIndexOfChild(child) + 1));
-			}
-			
-		}
-				
+			}	
+		}	
 	}
 	
 	public static String Test(){

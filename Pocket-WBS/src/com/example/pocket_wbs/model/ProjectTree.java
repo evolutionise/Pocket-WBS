@@ -113,46 +113,33 @@ public class ProjectTree {
 	
 	public HashMap<String, WBSElement> getProjectElements(){
 		HashMap<String, WBSElement> elements = new HashMap<String, WBSElement>();
-		getProjectElements(rootElement, elements, "0");
+		getProjectElements(rootElement, elements);
 		return elements;
 	}
 
-	private void getProjectElements(WBSElement element, HashMap<String, WBSElement> elements, String key) {
-		elements.put(key, element);
-		
+	private void getProjectElements(WBSElement element, HashMap<String, WBSElement> elements) {
+		elements.put(element.getElementKey(), element);
 		for(WBSElement child : element.getChildren()){
-			if(key.equals("0")){	
-				getProjectElements(child, elements, "" + element.getIndexOfChild(child) + 1);
-			} 
-			else {
-				getProjectElements(child, elements, key + "." + (element.getIndexOfChild(child) + 1));
-			}	
+			getProjectElements(child, elements);
 		}	
 	}
 	
 	public static String Test(){
 		
-		ProjectTree project = new ProjectTree("Test");
-		
-		WBSElement WBS1 = project.addChildElement(project.rootElement, "1");
-		WBSElement WBS2 = project.addChildElement(project.rootElement, "2");
-		WBSElement WBS3 = project.addChildElement(project.rootElement, "3");
-		WBSElement WBS11 = WBS1.addChild("1.1");
-		WBSElement WBS111 = WBS11.addChild("1.1.1");
-		WBSElement WBS112 = WBS11.addChild("1.1.2");
-		WBSElement WBS21 = WBS2.addChild("2.1");
-		WBSElement WBS31 = WBS3.addChild("3.1");
-		WBSElement WBS32 = WBS3.addChild("3.2");
-		WBSElement WBS321 = WBS32.addChild("3.2.1");
+		ProjectTree project = new ProjectTree("[Name of Project]");
+		project.addChildElement(project.rootElement, "1");
+		project.addChildElement(project.getProjectElements().get("1"), "1.1");
+		project.addChildElement(project.getProjectElements().get("1"), "1.3");
+		project.addNewLeftSibling(project.getProjectElements().get("1.2"), "1.2");
+		project.addChildElement(project.rootElement, "2");
+		project.addChildElement(project.rootElement, "3");
 				
 		HashMap<String, WBSElement> map = project.getProjectElements();
 		String[] keys = map.keySet().toArray(new String[0]);
 		String output = "";
-		for(int i = 0; i > keys.length; i++){
-			
+		for(int i = 0; i < keys.length; i++){
 			output += "Key: " + keys[i];
 			output += " Value: " + map.get(keys[i]).getName() + "\n";
-			
 		}
 		
 		return output;		

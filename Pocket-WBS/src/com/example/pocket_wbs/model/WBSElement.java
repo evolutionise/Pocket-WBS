@@ -83,6 +83,31 @@ public class WBSElement {
 		return this.children.indexOf(child);
 	}
 	
+	protected boolean isRoot(){
+		boolean root = false;
+		if(this.parent == null){
+			root = true;
+		}
+		return root;
+	}
+	
+	protected String getElementKey(){
+		String key = "";
+		if(this.isRoot()){ // If the key is the root element
+			key = "0";
+		}
+		else
+		{
+			if(this.getParent().isRoot()){ // If the elements parent is root
+				key = "" + (this.getParent().getIndexOfChild(this)+1);
+			}
+			else{
+				key = this.getParent().getElementKey() + "." + (this.getParent().getIndexOfChild(this)+1);
+			}
+		}
+		return key;
+	}
+	
 	/**
 	 * This method is used to get the name of an element
 	 * @return String - the name of the element

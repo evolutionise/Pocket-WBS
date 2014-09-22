@@ -266,7 +266,8 @@ public class MyCanvas extends View {
 			//Horizontal gap between children = width of an element
 			hGapLvlTwo=elementWidth/2;
 			//Start point for the first child element
-			startXLvlTwo+=elementWidth+hGapLvlTwo;
+			//startXLvlTwo=startXLvlOne-(elementWidth+hGapLvlTwo);
+			startXLvlTwo=0;
 		}
 		//If number of elements is > 2 then their Starting position and gap should be the same
 		else
@@ -277,7 +278,8 @@ public class MyCanvas extends View {
 			else
 				hGapLvlTwo=elementWidth/4;
 			
-			startXLvlTwo+=elementWidth+hGapLvlTwo;
+			startXLvlTwo=rootStartxPoint-(hGapLvlTwo+elementWidth);
+
 			
 		}
 

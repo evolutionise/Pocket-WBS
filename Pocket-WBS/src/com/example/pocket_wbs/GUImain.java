@@ -5,6 +5,9 @@ import com.example.pocket_wbs.R.id;
 import com.example.pocket_wbs.R.layout;
 import com.example.pocket_wbs.R.menu;
 import com.example.pocket_wbs.gui.MyCanvas;
+import com.example.pocket_wbs.gui.WBSSurfaceView;
+import com.example.pocket_wbs.model.ProjectTree;
+import com.example.pocket_wbs.model.WBSElement;
 
 import android.support.v7.app.ActionBarActivity;
 import android.graphics.Canvas;
@@ -14,6 +17,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,19 +43,26 @@ public class GUImain extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_guimain);
-		//populateTable(5,5, MaxHorizontalElements);
+	
 		
-		
-		
+	//Initializes screen to scroll to center of canvas
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
-		//Initializes screen to scroll to center of canvas
 		final HorizontalScrollView hsv = (HorizontalScrollView)findViewById(R.id.horizontal_scroll_view);
-		final MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		final int canvasWidth = myCanvas.getLayoutParams().width;
+
+	//Will receive ProjectTree object from previous activity, create manually for now
+		ProjectTree pt = new ProjectTree("Adrian's Project");
+	//Creates instance of MyCanvas onto the XML Layout
+		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 800, getResources().getDisplayMetrics());
+		MyCanvas myCanvas2 = new MyCanvas(this.getApplicationContext(), pt, px);
+		LinearLayout myContainer = (LinearLayout)findViewById(R.id.container1);
+		myCanvas2.setBackgroundColor(Color.parseColor("#E0E6F8"));
 		
-		//Algorithm to calculate screen to scroll to middle of page at start
-		final int scrollToX= (int) ((canvasWidth/2)-(dpWidth/2));
+		
+		myContainer.addView(myCanvas2, px, px);
+
+	//Algorithm to calculate screen to scroll to middle of page at start
+		final int scrollToX= (int) ((px/2)-(dpWidth/2));
 		
 		hsv.post(new Runnable() {
 		    @Override
@@ -59,6 +70,7 @@ public class GUImain extends ActionBarActivity {
 		        hsv.scrollTo(scrollToX, 0);
 		    }
 		});
+		
 	}
 
 	@Override
@@ -78,69 +90,6 @@ public class GUImain extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	
-	/*
-	 * Decomposes an element automatically if it detected to have children
-	 * Requires number of children
-	 */
-	public void autoDecomposeElement()
-	{
-		//Test data : No. of Children (Odd or Even)
-		
-		int noChild = 2;
-		
-		//If even number
-		if (noChild%2==0)
-		{
-			
-		}
-	}
-	
-	public void breakDownElement2(View view)
-	{
-		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		myCanvas.numElementsLvlOne = 2;
-		myCanvas.invalidate();
-		
-	}
-	
-	public void breakDownElement3(View view)
-	{
-		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		myCanvas.numElementsLvlOne = 3;
-		myCanvas.invalidate();
-		
-	}
-	
-	public void breakDownElement4(View view)
-	{
-		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		myCanvas.numElementsLvlOne = 4;
-		myCanvas.invalidate();
-		
-	}
-	
-	public void breakDownElement5(View view)
-	{
-		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		int numElementsLvlTwo = myCanvas.getNumElementsLvlTwo();
-		
-		if(numElementsLvlTwo==0)
-		{
-			myCanvas.setNumElementsLvlTwo(2);
-		}
-
-		myCanvas.invalidate();
-		
-	}
-	
-	public void breakDownElement6(View view)
-	{
-		MyCanvas myCanvas = (MyCanvas)findViewById(R.id.myCanvas);
-		myCanvas.setNumElementsLvlTwo(0);
-		myCanvas.invalidate();
 	}
 
 }

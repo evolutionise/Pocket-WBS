@@ -5,9 +5,11 @@
 
 package com.example.pocket_wbs.model;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class ProjectTree {
 
@@ -111,13 +113,13 @@ public class ProjectTree {
 		return element.hasChildren();
 	}
 	
-	public HashMap<String, WBSElement> getProjectElements(){
-		HashMap<String, WBSElement> elements = new HashMap<String, WBSElement>();
+	public TreeMap<String, WBSElement> getProjectElements(){
+		TreeMap<String, WBSElement> elements = new TreeMap<String, WBSElement>();
 		getProjectElements(rootElement, elements);
 		return elements;
 	}
 
-	private void getProjectElements(WBSElement element, HashMap<String, WBSElement> elements) {
+	private void getProjectElements(WBSElement element, TreeMap<String, WBSElement> elements) {
 		elements.put(element.getElementKey(), element);
 		for(WBSElement child : element.getChildren()){
 			getProjectElements(child, elements);
@@ -127,14 +129,18 @@ public class ProjectTree {
 	public static String Test(){
 		
 		ProjectTree project = new ProjectTree("[Name of Project]");
-		project.addChildElement(project.rootElement, "1");
-		project.addChildElement(project.getProjectElements().get("1"), "1.1");
-		project.addChildElement(project.getProjectElements().get("1"), "1.3");
-		project.addNewLeftSibling(project.getProjectElements().get("1.2"), "1.2");
-		project.addChildElement(project.rootElement, "2");
-		project.addChildElement(project.rootElement, "3");
+		project.addChildElement(project.rootElement, "Hello");
+		project.addChildElement(project.rootElement, "Jamie");
+		project.addChildElement(project.rootElement, "Sup");
+		project.addChildElement(project.getProjectElements().get("1"), "My");
+		project.addChildElement(project.getProjectElements().get("1"), "Name");
+		project.addChildElement(project.getProjectElements().get("1.2"), "Is");
+		project.addChildElement(project.getProjectElements().get("2"), "numba2");
+		project.addChildElement(project.getProjectElements().get("2"), "numba2.1");
+		project.addChildElement(project.getProjectElements().get("2"), "numba2.2");
 				
-		HashMap<String, WBSElement> map = project.getProjectElements();
+		TreeMap<String, WBSElement> map = project.getProjectElements();
+		
 		String[] keys = map.keySet().toArray(new String[0]);
 		String output = "";
 		for(int i = 0; i < keys.length; i++){

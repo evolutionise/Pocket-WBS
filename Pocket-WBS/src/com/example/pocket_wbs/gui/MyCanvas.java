@@ -25,7 +25,7 @@ public class MyCanvas extends View {
 	//General attributes
 	int verticalGap=30;
 	int verticalGapHalf=15;
-	int elementWidth=140;
+	int elementWidth=120;
 	int elementHeight=100;
 	
 	//Root element attributes
@@ -38,34 +38,20 @@ public class MyCanvas extends View {
 	Canvas canvas;
 	
 	//Level One attributes
-	public int numElementsLvlOne=0;
-	public boolean hasChildren=false;
 	int hGapLvlOne=0;
-	int startXLvlOne=0;
-	
-	//Level Two attributes
-	public int numElementsLvlTwo=0;
-	int hGapLvlTwo=0;
-	int startXLvlTwo=0;
-	
-	//Level Three attributes
-	int numElementsLvlThree=0;
-	
-	
-    
-    /*
-     * ***********************************************************************
-     */
 
-    
+    //ArrayList to store all WBS Elements for population
     private List<WBSElement> WBSElements = new ArrayList<WBSElement>();
-    ProjectTree project;
+    private ProjectTree project;
     
     public MyCanvas(Context context) {
         super(context);
 
     }
     
+    /*
+     * Constructor that gets called when the MyCanvas class is instantiated in GUImain
+     */
     public MyCanvas(Context context, ProjectTree project, int width) {
         super(context);
     	this.width=width;
@@ -74,12 +60,18 @@ public class MyCanvas extends View {
         this.rootStartxPoint=rootMidPoint-(elementWidth/2);   
         this.rootEndxPoint=rootStartxPoint + elementWidth; 
         this.project = project;
+        
+        //Retrieves root element from ProjectTree type project to initialize some values
         WBSElement root = project.getRootElement();
         root.setX(rootStartxPoint);
+        root.setMidX(rootStartxPoint+(elementWidth/2));
+        
+        //Adds the root element to our WBSElement type ArrayList for population in onDraw()
         WBSElements.add(root);
 
 
     }
+    
     public MyCanvas(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
@@ -111,12 +103,9 @@ public class MyCanvas extends View {
 
     }
     
-    public void initializeWBS()
-    {
-        WBSElement rootElement = new WBSElement(rootStartxPoint,0);
-        WBSElements.add(rootElement);
-    }
-    
+    /*
+     * Method to add elements to the WBS Elements array list
+     */
     public void addElement(WBSElement wbe)
     {
     	WBSElements.add(wbe);
@@ -124,18 +113,25 @@ public class MyCanvas extends View {
     
     public void decomposeElement(WBSElement parent, int startx, int starty)
     {
+    	//Initializes child element's starting x&y positions based on the parent
     	hGapLvlOne=elementWidth/2;
     	int startxTemp=startx-(elementWidth*3/4);
     	int startyTemp=starty+(elementHeight+verticalGap);
-
+    	
+    	//For decompose, we will be creating 2 elements, so the loop runs twice 
+    	//Adjusts start x for the elements accordingly
     	for (int count=0; count<2; count++)
     	{
-    		WBSElement wbe = new WBSElement(startxTemp, startyTemp);
+    		String name = "Child " + count;
+    		//Adds child to the project with reference to its parent - returns the child to
+    		//be added to the WBS Element arraylist for population
+    		WBSElement wbe = project.addChildElement(parent, name, startxTemp, startyTemp);
     		addElement(wbe);
     		startxTemp+=elementWidth+hGapLvlOne;
     	}
     }
     
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
           for (int i = WBSElements.size()-1; i >= 0; i--) {
@@ -144,12 +140,11 @@ public class MyCanvas extends View {
 
                 	 if(wbse.isRoot())
                 	 {
-                	 decomposeElement(wbse, wbse.getX(),wbse.getY());
-                	 this.invalidate();
+                		 	
                 	 }
-
-                		 
-                		
+                	 //Should sit in IF check, but for testing purposes will be outside for now
+                	 decomposeElement(wbse, wbse.getX(),wbse.getY());
+                	 this.invalidate();	
                  }
           }
           return super.onTouchEvent(event);

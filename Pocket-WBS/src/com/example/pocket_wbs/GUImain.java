@@ -52,13 +52,13 @@ public class GUImain extends ActionBarActivity {
 
 	//Will receive ProjectTree object from previous activity, create manually for now
 		ProjectTree pt = new ProjectTree("Adrian's Project");
-	//Creates instance of MyCanvas onto the XML Layout
+		
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 800, getResources().getDisplayMetrics());
+		
+	//Creates instance of MyCanvas onto the XML Layout
 		MyCanvas myCanvas2 = new MyCanvas(this.getApplicationContext(), pt, px);
 		LinearLayout myContainer = (LinearLayout)findViewById(R.id.container1);
 		myCanvas2.setBackgroundColor(Color.parseColor("#E0E6F8"));
-		
-		
 		myContainer.addView(myCanvas2, px, px);
 
 	//Algorithm to calculate screen to scroll to middle of page at start

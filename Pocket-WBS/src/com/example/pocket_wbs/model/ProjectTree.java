@@ -18,6 +18,7 @@ public class ProjectTree {
 		this.name = name;
 		this.rootElement = new WBSElement(name);
 	}
+
 	
 	/**
 	 * This method is used to change the project's name after creation
@@ -56,6 +57,15 @@ public class ProjectTree {
 	 */
 	public WBSElement addChildElement(WBSElement parent, String name){
 		WBSElement child = parent.addChild(name);
+		return child;
+	}
+	
+	/*
+	 * Method to add child element to an existing tree - with additional parameters
+	 * @author adrian
+	 */
+	public WBSElement addChildElement(WBSElement parent, String name, int startx, int starty){
+		WBSElement child = parent.addChild(name, startx, starty);
 		return child;
 	}
 	

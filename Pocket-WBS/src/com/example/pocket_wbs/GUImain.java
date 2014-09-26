@@ -67,7 +67,7 @@ public class GUImain extends ActionBarActivity {
 	//Creates instance of MyCanvas onto the XML Layout
 		this.myCanvas2 = new MyCanvas(this.getApplicationContext(), pt, px, this);
 		LinearLayout myContainer = (LinearLayout)findViewById(R.id.container1);
-		myCanvas2.setBackgroundColor(Color.parseColor("#F2F2F2"));
+		myCanvas2.setBackgroundColor(Color.parseColor("#FFFFFF"));
 		myContainer.addView(myCanvas2, px, px);
 
 	//Algorithm to calculate screen to scroll to middle of page at start

@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.view.MotionEvent;
 
 public class WBSElement {
 
@@ -25,7 +26,7 @@ public class WBSElement {
 	private int elementHeight=100;
 	int verticalGap=30;
 	int verticalGapHalf=15;
-
+	private boolean selected;
 	
 	/**
 	 * Default constructor (for root element only) - should only ever be called by Project Tree!
@@ -61,20 +62,20 @@ public class WBSElement {
     public void onDraw(Canvas canvas) 
     {
 
-    	Paint p = new Paint();
+    	Paint rectangleP = new Paint();
     	Paint textp = new Paint();
     	Paint textl = new Paint();
     	
-    	p.setColor(Color.LTGRAY); 
+    	rectangleP.setColor(Color.parseColor("#E0E0F8")); 
     	textp.setColor(Color.BLACK);
     	textl.setColor(Color.BLACK);
     	
     	//textp.setTypeface(font);
-	    textp.setTextSize(12);
+	    textp.setTextSize(14);
     	
     	//Set rectangle start position to be in the middle of the screen
     	RectF r = new RectF(startx, starty, startx+elementWidth, starty+elementHeight);
-    	canvas.drawRoundRect(r, 30, 30, p);
+    	canvas.drawRoundRect(r, 30, 30, rectangleP);
     	canvas.drawText(name, startx+(elementWidth/6), starty+(elementHeight/2), textp);
     	
     	//Draw branches from child to parent if parent exists
@@ -126,7 +127,7 @@ public class WBSElement {
 	 * Checks if the WBS element has child elements decomposed from it
 	 * @return true if the element has children
 	 */
-	protected boolean hasChildren(){
+	public boolean hasChildren(){
 		boolean childrenExist = false;
 		if(!this.children.isEmpty()){
 			childrenExist = true;
@@ -179,7 +180,7 @@ public class WBSElement {
 	 * @return String - the name of the element
 	 * @author Alix, Jamie
 	 */
-	protected String getName(){
+	public String getName(){
 		return this.name;
 	}
 	

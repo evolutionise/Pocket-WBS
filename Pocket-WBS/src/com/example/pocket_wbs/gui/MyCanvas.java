@@ -1,20 +1,33 @@
 package com.example.pocket_wbs.gui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import com.example.pocket_wbs.GUImain;
+import com.example.pocket_wbs.R;
+import com.example.pocket_wbs.model.MyGestureListener;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Handler;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
  
 public class MyCanvas extends View {
@@ -43,6 +56,12 @@ public class MyCanvas extends View {
     //ArrayList to store all WBS Elements for population
     private List<WBSElement> WBSElements = new ArrayList<WBSElement>();
     private ProjectTree project;
+    private String tempName="tempName";
+    private GUImain main;
+    
+    //Gestures attributes
+    private GestureDetector gDetector;
+
     
     public MyCanvas(Context context) {
         super(context);
@@ -52,9 +71,13 @@ public class MyCanvas extends View {
     /*
      * Constructor that gets called when the MyCanvas class is instantiated in GUImain
      */
-    public MyCanvas(Context context, ProjectTree project, int width) {
+    public MyCanvas(Context context, ProjectTree project, int width, GUImain main) {
         super(context);
     	this.width=width;
+    	this.main=main;
+    	MyGestureListener gestureListener = new MyGestureListener(this);
+        gDetector = new GestureDetector(context, gestureListener);
+
 
         this.rootMidPoint = width/2;
         this.rootStartxPoint=rootMidPoint-(elementWidth/2);   
@@ -64,6 +87,7 @@ public class MyCanvas extends View {
         //Retrieves root element from ProjectTree type project to initialize some values
         WBSElement root = project.getRootElement();
         root.setX(rootStartxPoint);
+        root.setY(10);
         root.setMidX(rootStartxPoint+(elementWidth/2));
         
         //Adds the root element to our WBSElement type ArrayList for population in onDraw()
@@ -130,26 +154,70 @@ public class MyCanvas extends View {
     		startxTemp+=elementWidth+hGapLvlOne;
     	}
     }
-    
+
+    public void toastMessage(String message){
+    	Toast.makeText(this.getContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-          for (int i = WBSElements.size()-1; i >= 0; i--) {
-                 WBSElement wbse = WBSElements.get(i);
-                 if (wbse.isCollition(event.getX(),event.getY())) {
+    	gDetector.onTouchEvent(event);
+    	this.gDetector.setIsLongpressEnabled(true);
 
-                	 if(wbse.isRoot())
-                	 {
-                		 	
-                	 }
-                	 //Should sit in IF check, but for testing purposes will be outside for now
-                	 decomposeElement(wbse, wbse.getX(),wbse.getY());
-                	 this.invalidate();	
-                 }
-          }
-          return super.onTouchEvent(event);
+    	 return true;
     }
     
+    /*
+     * Method to handle a doubleTap event - for now : Decompose element
+     * @author Adrian
+     */
+    public void doubleTap(MotionEvent event) {
+    	for (int i = WBSElements.size()-1; i >= 0; i--) {
+    	    WBSElement wbse = WBSElements.get(i);
+    	    if (wbse.isCollition(event.getX(),event.getY())) {
+    	   	 
+    	       	 //Check disallows an element to be decomposed if it already has children
+    	       	 if(wbse.hasChildren()){
+    	       		 String tempString = "Can't Decompose, Already has children";
+    	       		 toastMessage(tempString);
+    	       	 }
+    	       	 else{
+    	       		 decomposeElement(wbse, wbse.getX(),wbse.getY());
+    	       		 this.invalidate();	
+    	       	 }
+    	    }
+    	}
+    }
+    
+    
+    /*
+     * Method to handle a longPress event - for now : Rename element
+     */
+    public void longPress(MotionEvent event) {
 
+    	for (int i = WBSElements.size()-1; i >= 0; i--) {
+    	    WBSElement wbse = WBSElements.get(i);
+    	    if (wbse.isCollition(event.getX(),event.getY())) {
+    	    	String newName = main.renameElement();
+    	    }
+    	}
+
+    }
+    
+    public void renameElement(WBSElement wbs, String newName) {
+    	this.tempName=newName;
+    }
+    
+    
+    public void testRename()
+    {
+    	WBSElement root = project.getRootElement();
+    	root.setX(100);
+    	WBSElements.add(root);
+    	toastMessage(project.getProjectName() + "");
+    	
+    	this.invalidate();
+    }
+    
 }
 

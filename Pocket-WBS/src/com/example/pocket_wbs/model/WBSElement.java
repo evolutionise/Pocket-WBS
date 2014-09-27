@@ -171,7 +171,7 @@ public class WBSElement {
 		return child;
 	}
 	
-	protected int getIndexOfChild(WBSElement child){
+	public int getIndexOfChild(WBSElement child){
 		return this.children.indexOf(child);
 	}
 	
@@ -184,10 +184,18 @@ public class WBSElement {
 		return this.name;
 	}
 	
-	protected WBSElement getParent(){
+	public WBSElement getParent(){
 		return this.parent;
 	}
 	
+	public WBSElement getChildByIndex(int i) {
+		return this.children.get(i);
+	}
+	
+	public int getNumChildren()
+	{
+		return this.children.size();
+	}
 	/*
 	 * Check whether element has parent or not - mostly used for branch drawing
 	 * @author adrian
@@ -225,6 +233,19 @@ public class WBSElement {
 		return key;
 	}
 	
+	public int getElementLevel()
+	{
+		int level=0;
+		WBSElement tempElement;
+		tempElement = this;
+		
+		while(tempElement.hasParent()) {
+			tempElement=tempElement.getParent();
+			level++;
+		}
+		
+		return level;
+	}
 	
 	/*
 	 * Getter and setter methods for Element Coordinate variables 
@@ -240,10 +261,14 @@ public class WBSElement {
     	return starty;
     }
     
+    /*
+     * Method to set starting x-coordinate for element. Also changes the Mid x-coordinate when this happens
+     */
     public void setX(int x)
     {
     	this.startx=x;
-    }
+    	this.midx=x+(elementWidth/2);
+	}
     
     public void setY(int y)
     {

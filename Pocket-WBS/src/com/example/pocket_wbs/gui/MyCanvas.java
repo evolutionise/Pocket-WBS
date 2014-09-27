@@ -148,9 +148,10 @@ public class MyCanvas extends View {
     	{
     		String name = "Child " + count;
     		//Adds child to the project with reference to its parent - returns the child to
-    		//be added to the WBS Element arraylist for population
+    		//be added to the WBS Element array list for population
     		WBSElement wbe = project.addChildElement(parent, name, startxTemp, startyTemp);
     		addElement(wbe);
+    		adjustElements(wbe, startxTemp, hGapLvlOne);
     		startxTemp+=elementWidth+hGapLvlOne;
     	}
     }
@@ -191,6 +192,88 @@ public class MyCanvas extends View {
     
     
     /*
+     * Method to automatically adjust/shift elements to maintain a fixed distance between them
+     * @author adrian
+     */
+    public void adjustElements(WBSElement wbs, int startx, int gap)
+    {
+    	int level = wbs.getElementLevel();
+    	int hGap = gap;
+    	List<WBSElement> LevelElements = new ArrayList<WBSElement>();
+    	List<WBSElement> LevelElementsParent = new ArrayList<WBSElement>();
+    	
+    	//Get all elements that are on the same level
+        for (WBSElement element : WBSElements) 
+        {
+        	if(element.getElementLevel()==level) {
+            	LevelElements.add(element);
+        	}
+        	else if (element.getElementLevel()==(level-1)) {
+        		LevelElementsParent.add(element);
+        	}
+        }
+        
+
+        
+        int count=LevelElements.size();
+        int distanceFromRootMid = (elementWidth*count + ((count-1)*hGap))/2;
+        int startX=project.getRootElement().getMidX()-distanceFromRootMid;
+        
+        //Iterate through level elements and adjust their positions
+        //For level 0, 1, 2
+        if (level<3 && count>=3) {
+        	adjustElementsLevel012(count, distanceFromRootMid, startX, LevelElements, LevelElementsParent);
+        } 
+        //Special case for level 3 onwards, will try to seperate them to the right/left
+        else if (level>=3) {
+        	
+        	int distanceFromMid;
+        	
+            for (WBSElement levelElement : LevelElements) {
+            	//Find out if the level 1 node is to the left (before root Mid) or right (after)
+            	//If before then to the left
+            	if(levelElement.getParent().getParent().getX()<project.getRootElement().getMidX()) {
+            		distanceFromMid=levelElement.getX()+elementWidth-project.getRootElement().getMidX();
+                	if(distanceFromMid<0) {
+                		toastMessage("LEFT branch crossing over");
+                	}
+            	}
+            	//If not then to the right
+            	else {
+            		if(levelElement.getX()<project.getRootElement().getMidX()) {
+            			toastMessage("RIGHT branch crossing over");
+            		}
+            		
+            	}
+
+
+            	
+            }
+        }
+
+    }
+    
+    public void adjustElementsLevel012(int count, int distanceFromRootMid,int startX,List<WBSElement> LevelElements, List<WBSElement> LevelElementsParent ) {
+    	
+        for (WBSElement levelElement : LevelElements) {
+        	levelElement.setX(startX);
+        	startX = startX+elementWidth+hGapLvlOne;
+        	
+        }
+        
+        //Adjust parents accordingly (Counts number of children and centres parents
+        for (WBSElement parentElement : LevelElementsParent) {
+        	if(parentElement.hasChildren()) {
+            	int numChild = parentElement.getNumChildren();
+            	int midPoint = parentElement.getChildByIndex(0).getX() + (elementWidth*numChild + ((numChild-1)*hGapLvlOne))/2;
+            	int parentStartX = midPoint-(elementWidth/2);
+            	parentElement.setX(parentStartX);
+        	}
+
+        }
+    }
+    
+    /*
      * Method to handle a longPress event - for now : Rename element
      */
     public void longPress(MotionEvent event) {
@@ -198,7 +281,8 @@ public class MyCanvas extends View {
     	for (int i = WBSElements.size()-1; i >= 0; i--) {
     	    WBSElement wbse = WBSElements.get(i);
     	    if (wbse.isCollition(event.getX(),event.getY())) {
-    	    	String newName = main.renameElement();
+    	    	//String newName = main.renameElement();
+    	    	getElementLevel(wbse);
     	    }
     	}
 
@@ -206,6 +290,14 @@ public class MyCanvas extends View {
     
     public void renameElement(WBSElement wbs, String newName) {
     	this.tempName=newName;
+    }
+    
+    /*
+     * returns the selected element's level
+     */
+    public int getElementLevel(WBSElement element)
+    {
+    	return element.getElementLevel();
     }
     
     

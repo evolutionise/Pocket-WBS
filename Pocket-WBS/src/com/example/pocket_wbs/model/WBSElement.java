@@ -26,6 +26,7 @@ public class WBSElement {
 	private int elementHeight=100;
 	int verticalGap=30;
 	int verticalGapHalf=15;
+	int horizontalGap=elementWidth/2;
 	private boolean selected;
 	
 	/**
@@ -142,6 +143,7 @@ public class WBSElement {
 	public WBSElement addChild(String name){
 		WBSElement child = new WBSElement(name, this);
 		this.children.add(child);
+		this.arrangeChildren();
 		return child;
 	}
 	
@@ -168,6 +170,7 @@ public class WBSElement {
 	protected WBSElement addChildByIndex(String name, int index){
 		WBSElement child = new WBSElement(name, this);
 		this.children.add(index, child);
+		//TODO calls method to re-arrange children
 		return child;
 	}
 	
@@ -216,7 +219,7 @@ public class WBSElement {
 		return root;
 	}
 
-	protected String getElementKey(){
+	public String getElementKey(){
 		String key = "";
 		if(this.isRoot()){ // If the key is the root element
 			key = "0";
@@ -233,8 +236,7 @@ public class WBSElement {
 		return key;
 	}
 	
-	public int getElementLevel()
-	{
+	public int getElementLevel() {
 		int level=0;
 		WBSElement tempElement;
 		tempElement = this;
@@ -247,6 +249,55 @@ public class WBSElement {
 		return level;
 	}
 	
+	/*
+	 * Method to return this WBS Element's Level One Parent, for the purpose of
+	 * determining whether this element is branching left, right or down the middle
+	 * @return The level one parent of this element if it isn't a Level one element
+	 * @author adrian
+	 */
+	public WBSElement getLevelOneParent() {
+		WBSElement lvlOneParent=null;
+		
+		if(getElementLevel()!=1) {
+			for(int i=0; i<getElementLevel()-1; i++) {
+				lvlOneParent=this.getParent();
+			}
+		}
+		else
+			lvlOneParent=this;
+		
+		return lvlOneParent;
+	}
+	
+	/*
+	 * Method that re-arranges children whenever a child is added (after decomposed)
+	 * @author adrian
+	 */
+	public void arrangeChildren()
+	{
+		//only re-arranges if there are more than 2 children
+		if(this.getNumChildren()>2) {
+			
+			int childStartY=starty+(elementHeight+verticalGap);
+			
+			//This value * ElementWidth will give us the starting position for 2 Children
+			double value = 1.25;
+			
+			//Initialize what 'value' should be based on the number of children
+			for (int i=0; i<getNumChildren()-2; i++) {
+				value = value + 0.75;
+			}
+			
+			int childStartX=(int) (this.midx-(value*elementWidth));
+			LinkedList<WBSElement> children = this.getChildren();
+			
+			for (WBSElement child: children) {
+				child.setX(childStartX);
+				child.setY(childStartY);
+				childStartX+=elementWidth+horizontalGap;
+			}
+		}
+	}
 	/*
 	 * Getter and setter methods for Element Coordinate variables 
 	 * @author adrian

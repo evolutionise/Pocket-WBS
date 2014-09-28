@@ -18,6 +18,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView" />
+        
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="15dp"
+            android:minHeight="20dp"
+            android:onClick="addChild"
+            android:text="Add Child"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

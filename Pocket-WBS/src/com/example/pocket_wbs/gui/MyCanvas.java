@@ -119,6 +119,7 @@ public class MyCanvas extends View {
         Paint p = new Paint();
         this.canvas = canvas;
         
+
         for (WBSElement wbs : WBSElements) 
         {
             wbs.onDraw(canvas);
@@ -150,6 +151,7 @@ public class MyCanvas extends View {
     		//Adds child to the project with reference to its parent - returns the child to
     		//be added to the WBS Element array list for population
     		WBSElement wbe = project.addChildElement(parent, name, startxTemp, startyTemp);
+    		wbe.setName(wbe.getElementKey());
     		addElement(wbe);
     		adjustElements(wbe, startxTemp, hGapLvlOne);
     		startxTemp+=elementWidth+hGapLvlOne;
@@ -195,6 +197,26 @@ public class MyCanvas extends View {
      * Method to automatically adjust/shift elements to maintain a fixed distance between them
      * @author adrian
      */
+    public void adjustElements(WBSElement wbs)
+    {
+    	int elementLevel = wbs.getElementLevel();
+    	WBSElement parent = wbs.getParent();
+    	String orientation;
+    	
+    	//Determine the Element's orientation (LEFT, MIDDLE, or RIGHT)
+    	if(parent.getMidX()<rootMidPoint)
+    		orientation="left";
+    	else if (parent.getMidX()>rootMidPoint)
+    		orientation="right";
+    	else if (parent.getMidX()==rootMidPoint)
+    		orientation="middle";
+    		
+    	//This check only runs for elements level 2 and above
+    	if(elementLevel>=2) {
+    		
+    	}
+    }
+    
     public void adjustElements(WBSElement wbs, int startx, int gap)
     {
     	int level = wbs.getElementLevel();
@@ -235,13 +257,13 @@ public class MyCanvas extends View {
             	if(levelElement.getParent().getParent().getX()<project.getRootElement().getMidX()) {
             		distanceFromMid=levelElement.getX()+elementWidth-project.getRootElement().getMidX();
                 	if(distanceFromMid<0) {
-                		toastMessage("LEFT branch crossing over");
+                		//toastMessage("LEFT branch crossing over");
                 	}
             	}
             	//If not then to the right
             	else {
             		if(levelElement.getX()<project.getRootElement().getMidX()) {
-            			toastMessage("RIGHT branch crossing over");
+            			//toastMessage("RIGHT branch crossing over");
             		}
             		
             	}
@@ -309,6 +331,15 @@ public class MyCanvas extends View {
     	toastMessage(project.getProjectName() + "");
     	
     	this.invalidate();
+    }
+    
+    public ProjectTree getTree()
+    {
+    	return this.project;
+    }
+    
+    public List<WBSElement> getArray() {
+    	return this.WBSElements;
     }
     
 }

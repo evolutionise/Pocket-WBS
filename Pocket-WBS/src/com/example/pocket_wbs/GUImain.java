@@ -1,5 +1,7 @@
 package com.example.pocket_wbs;
 
+import java.util.List;
+
 import com.example.pocket_wbs.R;
 import com.example.pocket_wbs.R.id;
 import com.example.pocket_wbs.R.layout;
@@ -145,6 +147,15 @@ public class GUImain extends ActionBarActivity {
         alertDialog.show();
         
         return newName;
+	}
+	
+	public void addChild(View view){
+		ProjectTree pt = myCanvas2.getTree();
+		List<WBSElement> lt = myCanvas2.getArray();
+		WBSElement w = pt.addNewLastSibling(pt.getRootElement().getChildByIndex(0), "Hello");
+		w.setName(w.getElementKey());
+		lt.add(w);
+		myCanvas2.invalidate();
 	}
 	
 }

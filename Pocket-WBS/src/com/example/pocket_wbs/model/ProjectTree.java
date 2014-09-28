@@ -5,13 +5,14 @@
 
 package com.example.pocket_wbs.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class ProjectTree {
+public class ProjectTree implements Serializable{
 
 	private String name;
 	private WBSElement rootElement;
@@ -123,17 +124,27 @@ public class ProjectTree {
 		return element.hasChildren();
 	}
 	
-	public HashMap<String, WBSElement> getProjectElements(){
-		HashMap<String, WBSElement> elements = new HashMap<String, WBSElement>();
+	public TreeMap<String, WBSElement> getProjectElements(){
+		TreeMap<String, WBSElement> elements = new TreeMap<String, WBSElement>();
 		getProjectElements(rootElement, elements);
 		return elements;
 	}
 
-	private void getProjectElements(WBSElement element, HashMap<String, WBSElement> elements) {
+	private void getProjectElements(WBSElement element, TreeMap<String, WBSElement> elements) {
 		elements.put(element.getElementKey(), element);
 		for(WBSElement child : element.getChildren()){
 			getProjectElements(child, elements);
 		}	
+	}
+	
+	public ArrayList<WBSElement> getProjectElementsAsArray(){
+		ArrayList<WBSElement> elements = new ArrayList<WBSElement>();
+		TreeMap<String, WBSElement> elementMap = this.getProjectElements();
+		for(TreeMap.Entry<String, WBSElement> entry : elementMap.entrySet()){
+			WBSElement currentElement = entry.getValue(); 
+			elements.add(currentElement);
+		}
+		return elements;
 	}
 	
 	public static String Test(){
@@ -146,7 +157,7 @@ public class ProjectTree {
 		project.addChildElement(project.rootElement, "2");
 		project.addChildElement(project.rootElement, "3");
 				
-		HashMap<String, WBSElement> map = project.getProjectElements();
+		TreeMap<String, WBSElement> map = project.getProjectElements();
 		String[] keys = map.keySet().toArray(new String[0]);
 		String output = "";
 		for(int i = 0; i < keys.length; i++){

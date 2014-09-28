@@ -119,7 +119,7 @@ public class MyCanvas extends View {
         Paint p = new Paint();
         this.canvas = canvas;
         
-
+        WBSElements = project.getProjectElementsAsArray();
         for (WBSElement wbs : WBSElements) 
         {
             wbs.onDraw(canvas);
@@ -303,8 +303,7 @@ public class MyCanvas extends View {
     	for (int i = WBSElements.size()-1; i >= 0; i--) {
     	    WBSElement wbse = WBSElements.get(i);
     	    if (wbse.isCollition(event.getX(),event.getY())) {
-    	    	//String newName = main.renameElement();
-    	    	getElementLevel(wbse);
+    	    	main.renameElement(wbse);
     	    }
     	}
 

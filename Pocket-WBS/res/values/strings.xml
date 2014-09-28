@@ -4,5 +4,19 @@
     <string name="app_name">Pocket-WBS</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_view_element">ViewElementActivity</string>
+    <string name="element_name_text">Element Name: </string>
+    <string name="direction_up_text">Up</string>
+    <string name="direction_down_text">Down</string>
+    <string name="direction_left_text">Left</string>
+    <string name="direction_right_text">Right</string>
+    <string name="element_key_text">"Element "</string>
+    <string name="title_activity_edit_element">EditElementActivity</string>
+    <string name="edit_page_id_display">"Element ID: "</string>
+    <string name="edit_page_name_display">Element Name:</string>
+    <string name="element_name_request">Please enter a new name...</string>
+    <string name="element_edit_confirm">Confirm</string>
+    <string name="select_element_edit">Edit</string>
+	<string name="view_element_name">View Element</string>
     
 </resources>

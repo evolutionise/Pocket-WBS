@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -44,6 +45,7 @@ import android.widget.Toast;
 public class GUImain extends ActionBarActivity {
 	private int MaxHorizontalElements = 10;
 	private MyCanvas myCanvas2;
+	public ProjectTree pt = new ProjectTree("AUT Project");
 	String newName;
 	
 	@Override
@@ -58,7 +60,10 @@ public class GUImain extends ActionBarActivity {
 		final HorizontalScrollView hsv = (HorizontalScrollView)findViewById(R.id.horizontal_scroll_view);
 
 	//Will receive ProjectTree object from previous activity, create manually for now
-		ProjectTree pt = new ProjectTree("AUT Project");
+		Intent intent = this.getIntent();
+		if(intent.hasExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW")){
+			this.pt = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW");
+		}
 	
 	//Set textView to display project name
 		TextView tv = (TextView)findViewById(R.id.projectTitle);
@@ -103,7 +108,16 @@ public class GUImain extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public String renameElement()
+	public void renameElement(WBSElement element){
+		Intent intent = new Intent(this, ViewElementActivity.class);
+		ProjectTree tree = this.pt;
+		String key = element.getElementKey();
+		intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);
+		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", key);
+		startActivity(intent);
+	}
+	
+	public String renameElementAlert()
 	{	
 
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(GUImain.this);

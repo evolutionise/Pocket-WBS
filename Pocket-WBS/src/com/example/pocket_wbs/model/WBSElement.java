@@ -5,6 +5,7 @@
 
 package com.example.pocket_wbs.model;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import android.graphics.Canvas;
@@ -13,7 +14,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
-public class WBSElement {
+public class WBSElement implements Serializable{
 
 	private String name;
 	private WBSElement parent;
@@ -207,7 +208,7 @@ public class WBSElement {
 		return this.parent!=null;
 	}
 	
-	protected LinkedList<WBSElement> getChildren(){
+	public LinkedList<WBSElement> getChildren(){
 		return this.children;
 	}
 	
@@ -336,5 +337,23 @@ public class WBSElement {
     	this.midx=midx;
     }
     
+	public int getIndex(){
+		int index = 0;
+		if(this.hasParent()){
+			index = this.getParent().getChildren().indexOf(this);
+		}
+		return index;
+	}
+	
+	public LinkedList<WBSElement> getSiblings(){
+		LinkedList<WBSElement> siblings = new LinkedList<WBSElement>();
+		if(this.isRoot()){
+			siblings.add(this);
+		}
+		else{
+			siblings = this.getParent().getChildren();
+		}
+		return siblings;
+	}    
 
 }

@@ -78,6 +78,5 @@ public class EditElementActivity extends ActionBarActivity {
 		intent.putExtra("com.example.pocket_wbs.TREE", tree);
 		intent.putExtra("com.example.pocket_wbs.KEY", elementKey);
 		startActivity(intent);
-		finish();
 	}
 }

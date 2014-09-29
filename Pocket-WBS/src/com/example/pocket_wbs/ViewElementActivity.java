@@ -44,7 +44,8 @@ public class ViewElementActivity extends ActionBarActivity {
 		ProjectTree tree = this.tree;
 		intent.putExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW", tree);
 		startActivity(intent);
-	}
+		finish();
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

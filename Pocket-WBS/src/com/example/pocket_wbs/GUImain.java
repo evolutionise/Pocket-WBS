@@ -45,7 +45,7 @@ import android.widget.Toast;
 public class GUImain extends ActionBarActivity {
 	private int MaxHorizontalElements = 10;
 	private MyCanvas myCanvas2;
-	public ProjectTree pt = new ProjectTree("AUT Project");
+	public ProjectTree pt;
 	String newName;
 	
 	@Override
@@ -54,14 +54,21 @@ public class GUImain extends ActionBarActivity {
 		setContentView(R.layout.activity_guimain);
 	
 		
+
 	//Initializes screen to scroll to center of canvas
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
 		final HorizontalScrollView hsv = (HorizontalScrollView)findViewById(R.id.horizontal_scroll_view);
 
 	//Will receive ProjectTree object from previous activity, create manually for now
-		Intent intent = this.getIntent();
-		if(intent.hasExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW")){
+		Intent intent = getIntent();
+		// If I made a new activity from the screen
+		if(intent.hasExtra(MenuActivity.EXTRA_MESSAGE)){
+			String projectName = intent.getStringExtra(MenuActivity.EXTRA_MESSAGE);
+			pt = new ProjectTree(projectName);
+		}
+		// If I came from the zoom view
+		else if(intent.hasExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW")){
 			this.pt = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW");
 		}
 	
@@ -93,6 +100,10 @@ public class GUImain extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.another, menu);
+		
+		Intent intent = getIntent();
+		String WBSName = intent.getStringExtra(MenuActivity.EXTRA_MESSAGE);
+		
 		return true;
 	}
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
     <string name="app_name">Pocket-WBS</string>
@@ -18,5 +18,9 @@
     <string name="element_edit_confirm">Confirm</string>
     <string name="select_element_edit">Edit</string>
 	<string name="view_element_name">View Element</string>
+	<string name="title_activity_menu">MenuActivity</string>
+    <string name="create_wbs_string">&quot;Create WBS&quot;</string>
+    <string name="view_saved_wbs_string">&quot;View Saved WBSs&quot;</string>
+
     
 </resources>

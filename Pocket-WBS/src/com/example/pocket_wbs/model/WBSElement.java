@@ -156,9 +156,10 @@ public class WBSElement implements Serializable{
 	 */
 	public WBSElement addChild(String name){
 		WBSElement child = new WBSElement(name, this);
+		this.children.add(child);
 		child.setX(this.getChildByIndex(this.getChildren().size()-1).getX()+elementWidth+horizontalGap);
 		child.setY(this.getChildByIndex(this.getChildren().size()-1).getY());
-		this.children.add(child);
+		//this.children.add(child);
 		return child;
 	}
 	

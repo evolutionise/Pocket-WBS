@@ -29,7 +29,8 @@
         </activity>
         <activity
             android:name=".ViewElementActivity"
-            android:label="@string/title_activity_view_element">
+            android:label="@string/title_activity_view_element"
+            android:noHistory="true">
         </activity>
         <activity
             android:name=".EditElementActivity"

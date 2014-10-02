@@ -46,9 +46,9 @@ public class ViewElementActivity extends ActionBarActivity {
 	@Override
 	public void onBackPressed(){
 		EditText elementName = (EditText) findViewById(R.id.editElementName);
-		if(!selectedElement.isRoot())
+		if(!selectedElement.isRoot()){
 			this.selectedElement.setName(elementName.getText().toString());
-		
+		}
 		Intent intent = new Intent(this, GUImain.class);
 		ProjectTree tree = this.tree;
 		intent.putExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW", tree);
@@ -87,6 +87,11 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				if(activity.selectedElement.getIndex() == 0){
+					activity.tree.addNewLeftSibling(activity.selectedElement, "New Element");
+				}
+				EditText elementName = (EditText) findViewById(R.id.editElementName); 
+				activity.selectedElement.setName(elementName.getText().toString());
 				int index = activity.selectedElement.getIndex() - 1;
 				activity.selectedElement = selectedElement.getSiblings().get(index);
 				activity.updateActivity();
@@ -97,9 +102,14 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				if(activity.selectedElement.getIndex()+1 >= activity.selectedElement.getSiblings().size()){
+					activity.tree.addNewRightSibling(activity.selectedElement, "New Element");
+				}
+				EditText elementName = (EditText) findViewById(R.id.editElementName); 
+				activity.selectedElement.setName(elementName.getText().toString());
 				int index = activity.selectedElement.getIndex() + 1;
 				activity.selectedElement = selectedElement.getSiblings().get(index);
-				activity.updateActivity();
+				activity.updateActivity();				
 			}
 		});
 		
@@ -107,6 +117,8 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				EditText elementName = (EditText) findViewById(R.id.editElementName); 
+				activity.selectedElement.setName(elementName.getText().toString());
 				activity.selectedElement = selectedElement.getParent();
 				activity.updateActivity();
 			}
@@ -116,8 +128,14 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				if(!activity.selectedElement.hasChildren()){
+					activity.tree.addChildElement(activity.selectedElement, "New Element 1");
+					activity.tree.addChildElement(activity.selectedElement, "New Element 2");
+				}
+				EditText elementName = (EditText) findViewById(R.id.editElementName); 
+				activity.selectedElement.setName(elementName.getText().toString());
 				activity.selectedElement = activity.selectedElement.getChildren().getFirst();
-				activity.updateActivity();
+				activity.updateActivity();				
 			}
 		});
 		
@@ -162,10 +180,15 @@ public class ViewElementActivity extends ActionBarActivity {
 	private void updateLeftButton(){
 		Button leftButton = (Button) findViewById(R.id.moveLeft);
 		if(selectedElement.getIndex() == 0){
-			leftButton.setEnabled(false);
+			leftButton.setVisibility(View.VISIBLE);
+			leftButton.setText("Add Left");
 		}
 		else{
-			leftButton.setEnabled(true);
+			leftButton.setVisibility(View.VISIBLE);
+			leftButton.setText("Left");
+		}
+		if(selectedElement.isRoot()){
+			leftButton.setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -176,10 +199,16 @@ public class ViewElementActivity extends ActionBarActivity {
 	private void updateRightButton(){
 		Button rightButton = (Button) findViewById(R.id.moveRight);
 		if(selectedElement.getIndex()+1 >= selectedElement.getSiblings().size()){
-			rightButton.setEnabled(false);
+			rightButton.setVisibility(View.VISIBLE);
+			rightButton.setText("Add Right");
 		}
 		else{
-			rightButton.setEnabled(true);
+			rightButton.setVisibility(View.VISIBLE);
+			rightButton.setText("Right");
+		}
+		
+		if(selectedElement.isRoot()){
+			rightButton.setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -202,14 +231,14 @@ public class ViewElementActivity extends ActionBarActivity {
 	private void updateDownButton(){
 		Button downButton = (Button) findViewById(R.id.moveDown);
 		if(!selectedElement.hasChildren()){
-			downButton.setEnabled(false);
+			downButton.setText("Add Down");
 		}
 		else{
-			downButton.setEnabled(true);
+			downButton.setText("Down");
 		}
 	}
 	
-	public void goToEditActivity(View v){
+	/*public void goToEditActivity(View v){
 		Intent intent = new Intent(this, EditElementActivity.class);
 		String elementKey = this.selectedElement.getElementKey();
 		ProjectTree tree = this.tree;
@@ -217,5 +246,5 @@ public class ViewElementActivity extends ActionBarActivity {
 		intent.putExtra("com.example.pocket_wbs.TREE", tree);
 		startActivity(intent);
 		finish();
-	}
+	}*/
 }

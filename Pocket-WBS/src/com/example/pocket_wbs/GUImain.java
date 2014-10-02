@@ -129,6 +129,7 @@ public class GUImain extends ActionBarActivity {
 		intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);
 		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", key);
 		startActivity(intent);
+		finish();
 	}
 	
 	public String renameElementAlert()

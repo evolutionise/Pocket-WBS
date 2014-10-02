@@ -32,6 +32,7 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -51,6 +52,8 @@ public class GUImain extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	    //Remove title bar
+	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_guimain);
 	
 		
@@ -73,19 +76,19 @@ public class GUImain extends ActionBarActivity {
 		}
 	
 	//Set textView to display project name
-		TextView tv = (TextView)findViewById(R.id.projectTitle);
-		tv.setText(pt.getProjectName());
+		//TextView tv = (TextView)findViewById(R.id.projectTitle);
+		//tv.setText(pt.getProjectName());
 		
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 800, getResources().getDisplayMetrics());
-		
+		int pxW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 2000, getResources().getDisplayMetrics());
 	//Creates instance of MyCanvas onto the XML Layout
-		this.myCanvas2 = new MyCanvas(this.getApplicationContext(), pt, px, this);
+		this.myCanvas2 = new MyCanvas(this.getApplicationContext(), pt, pxW, this);
 		LinearLayout myContainer = (LinearLayout)findViewById(R.id.container1);
 		myCanvas2.setBackgroundColor(Color.parseColor("#FFFFFF"));
-		myContainer.addView(myCanvas2, px, px);
+		myContainer.addView(myCanvas2, pxW, px);
 
 	//Algorithm to calculate screen to scroll to middle of page at start
-		final int scrollToX= (int) ((px/2)-(dpWidth/2));
+		final int scrollToX= (int) ((pxW/2)-(dpWidth/2));
 		
 		hsv.post(new Runnable() {
 		    @Override
@@ -181,6 +184,10 @@ public class GUImain extends ActionBarActivity {
 		w.setName(w.getElementKey());
 		lt.add(w);
 		myCanvas2.invalidate();
+	}
+	
+	public void checkOrientation(View view){
+		myCanvas2.displayOrientation();
 	}
 	
 }

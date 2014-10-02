@@ -25,4 +25,9 @@ public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
     	myCanvas.longPress(event);
     }
     
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent event) {
+        myCanvas.singleTap(event);
+        return true;
+    }
 }

@@ -27,19 +27,23 @@ public class WBSElement implements Serializable{
 	private int elementHeight=100;
 	int verticalGap=30;
 	int verticalGapHalf=15;
-	int horizontalGap=elementWidth/2;
+	int horizontalGap=elementWidth/4;
 	private boolean selected;
+	String orientation;
 	
 	/**
 	 * Default constructor (for root element only) - should only ever be called by Project Tree!
 	 * @param name
 	 * @author Alix, Jamie
 	 */
-	protected WBSElement(String name){
+	public WBSElement(String name){
 		this.name = name;
 		this.children = new LinkedList<WBSElement>();
 	}
 	
+	public void isSelected(boolean selected){
+		this.selected=selected;
+	}
 	/**
 	 * Constructor for an element object
 	 * @param name
@@ -65,21 +69,30 @@ public class WBSElement implements Serializable{
     {
 
     	Paint rectangleP = new Paint();
+    	Paint rectangleS = new Paint();
     	Paint textp = new Paint();
     	Paint textl = new Paint();
     	
-    	rectangleP.setColor(Color.parseColor("#E0E0F8")); 
-    	textp.setColor(Color.BLACK);
+    	
+    	rectangleS.setColor(Color.parseColor("#848484"));
+    	rectangleP.setColor(Color.parseColor("#819FF7")); 
+    	
+    	textp.setColor(Color.WHITE);
     	textl.setColor(Color.BLACK);
     	
     	//textp.setTypeface(font);
 	    textp.setTextSize(14);
-    	
+	    
+    	//Rectangle shadow
+	    RectF s = new RectF(startx+5, starty+5, startx+elementWidth+5, starty+elementHeight+5);
+	    canvas.drawRoundRect(s, 30, 30, rectangleS);
     	//Set rectangle start position to be in the middle of the screen
     	RectF r = new RectF(startx, starty, startx+elementWidth, starty+elementHeight);
     	canvas.drawRoundRect(r, 30, 30, rectangleP);
     	canvas.drawText(name, startx+(elementWidth/6), starty+(elementHeight/2), textp);
     	
+    	//If Element is selected, change colour
+
     	//Draw branches from child to parent if parent exists
     	if(hasParent()){
     	//Draw branch upwards from child
@@ -143,8 +156,9 @@ public class WBSElement implements Serializable{
 	 */
 	public WBSElement addChild(String name){
 		WBSElement child = new WBSElement(name, this);
+		child.setX(this.getChildByIndex(this.getChildren().size()-1).getX()+elementWidth+horizontalGap);
+		child.setY(this.getChildByIndex(this.getChildren().size()-1).getY());
 		this.children.add(child);
-		this.arrangeChildren();
 		return child;
 	}
 	
@@ -160,6 +174,7 @@ public class WBSElement implements Serializable{
 		child.setX(startx);
 		child.setY(starty);
 		child.setMidX(startx+(elementWidth/2));
+		child.setOrientation();
 		this.children.add(child);
 		return child;
 	}
@@ -167,6 +182,8 @@ public class WBSElement implements Serializable{
 	public void addChild(WBSElement child){
 		this.children.add(child);
 	}
+	
+
 	
 	protected WBSElement addChildByIndex(String name, int index){
 		WBSElement child = new WBSElement(name, this);
@@ -211,6 +228,7 @@ public class WBSElement implements Serializable{
 	public LinkedList<WBSElement> getChildren(){
 		return this.children;
 	}
+	
 	
 	public boolean isRoot(){
 		boolean root = false;
@@ -257,17 +275,27 @@ public class WBSElement implements Serializable{
 	 * @author adrian
 	 */
 	public WBSElement getLevelOneParent() {
-		WBSElement lvlOneParent=null;
+		WBSElement lvlOneParent=this;
 		
 		if(getElementLevel()!=1) {
-			for(int i=0; i<getElementLevel()-1; i++) {
-				lvlOneParent=this.getParent();
+			for(int i=0; i<getElementLevel(); i++) {
+				lvlOneParent=lvlOneParent.getParent();
 			}
 		}
-		else
-			lvlOneParent=this;
 		
 		return lvlOneParent;
+	}
+	
+	public WBSElement getRoot()
+	{
+		WBSElement tempElement;
+		tempElement = this;
+		
+		while(tempElement.hasParent()) {
+			tempElement=tempElement.getParent();
+		}
+		
+		return tempElement;
 	}
 	
 	/*
@@ -277,16 +305,17 @@ public class WBSElement implements Serializable{
 	public void arrangeChildren()
 	{
 		//only re-arranges if there are more than 2 children
-		if(this.getNumChildren()>2) {
+		if(this.hasChildren()) {
 			
 			int childStartY=starty+(elementHeight+verticalGap);
 			
 			//This value * ElementWidth will give us the starting position for 2 Children
-			double value = 1.25;
-			
+			//double value = 1.25;
+			  double value = 0.5;
+			  
 			//Initialize what 'value' should be based on the number of children
-			for (int i=0; i<getNumChildren()-2; i++) {
-				value = value + 0.75;
+			for (int i=0; i<getNumChildren()-1; i++) {
+				value = value + 0.625;
 			}
 			
 			int childStartX=(int) (this.midx-(value*elementWidth));
@@ -295,7 +324,9 @@ public class WBSElement implements Serializable{
 			for (WBSElement child: children) {
 				child.setX(childStartX);
 				child.setY(childStartY);
+				child.setOrientation();
 				childStartX+=elementWidth+horizontalGap;
+				
 			}
 		}
 	}
@@ -322,6 +353,16 @@ public class WBSElement implements Serializable{
     	this.midx=x+(elementWidth/2);
 	}
     
+    public void moveX(int x){
+    	this.startx+=x;
+    	this.midx=startx+(elementWidth/2);
+    	this.setOrientation();
+    	
+    	if(!this.getParent().isRoot())
+    		this.moveParent(x);
+    	
+    	
+    }
     public void setY(int y)
     {
     	this.starty=y;
@@ -355,5 +396,53 @@ public class WBSElement implements Serializable{
 		}
 		return siblings;
 	}    
+	
+	public void moveParent(int x) {
+		this.parent.parentMove(x);
+		//this.parent.arrangeChildren();
 
+	}
+	
+	public void parentMove(int x) {
+		this.startx+=x;
+    	this.midx=startx+(elementWidth/2);
+    	this.arrangeChildren();
+    	LinkedList<WBSElement> parentSiblings = this.getSiblings();
+    	for(WBSElement ps : parentSiblings){
+    		if(ps.orientation==this.orientation && ps!=this){
+    			ps.siblingMove(x);
+    		}
+    	}
+    	
+    	this.setOrientation();
+
+	}
+	
+	public void siblingMove(int x){
+		this.startx+=x;
+		this.midx=startx+(elementWidth/2);
+		this.setOrientation();
+	}
+	/*
+	 * Method to determine where this element branches (LEFT or RIGHT)
+	 */
+	public void setOrientation(){
+		WBSElement root = getRoot();
+		
+    	if(this.midx<root.getMidX())
+    		orientation="left";
+    	else if (this.midx>root.getMidX())
+    		orientation="right";
+    	else if (this.midx==root.getMidX())
+    		orientation="middle";
+	}
+	
+
+	public String getOrientation()
+	{
+		return this.orientation;
+		
+	}
+	
+	
 }

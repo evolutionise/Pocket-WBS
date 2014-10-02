@@ -12,8 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.os.Build;
 
 public class MenuActivity extends ActionBarActivity {
@@ -25,6 +27,8 @@ public class MenuActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//Remove title bar
+	    //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_menu);
 
 		if (savedInstanceState == null) {
@@ -89,10 +93,10 @@ public class MenuActivity extends ActionBarActivity {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(MenuActivity.this);
 
         // Setting Dialog Title
-        alertDialog.setTitle("Name WBS");
+        alertDialog.setTitle(" ");
 
         // Setting Dialog Message
-        alertDialog.setMessage("Enter name");
+        alertDialog.setMessage("Enter Name:");
         final EditText input = new EditText(MenuActivity.this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -102,7 +106,7 @@ public class MenuActivity extends ActionBarActivity {
 
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.ic_launcher);
+        alertDialog.setIcon(R.drawable.pocketwbsicon2);
 
         // Setting Positive "Yes" Button
         alertDialog.setPositiveButton("OK",
@@ -110,7 +114,11 @@ public class MenuActivity extends ActionBarActivity {
                     public void onClick(DialogInterface dialog,int which) {
                         // Write your code here to execute after dialog
                     	WBSName = input.getText().toString();
-                		newWBS();
+                    	if(WBSName.equals("")){
+                    		toastMessage("Please Enter a Valid Name");
+                    	}
+                    	else
+                    		newWBS();
 
 
                     }
@@ -130,5 +138,8 @@ public class MenuActivity extends ActionBarActivity {
         alertDialog.show();
 
 	}
-
+	
+    public void toastMessage(String message){
+    	Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }

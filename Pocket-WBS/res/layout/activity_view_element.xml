@@ -1,86 +1,169 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:label="@string/view_element_name"
-    android:screenOrientation="portrait"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:label="@string/view_element_name"
+    android:background="#BDBDBD"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:screenOrientation="portrait"
     tools:context="com.example.pocket_wbs.ViewElementActivity" >
+    <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+	<LinearLayout
+    android:focusable="true" android:focusableInTouchMode="true"
+    android:layout_width="0px" android:layout_height="0px"/>
 
-    <Button
-        android:id="@+id/moveLeft"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:gravity="left|center_vertical"
-        android:text="@string/direction_left_text" />
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/moveUp"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="top|center_horizontal"
-        android:text="@string/direction_up_text" />
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="376dp"
+		    android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/moveRight"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:gravity="right|center_vertical"
-        android:text="@string/direction_right_text" />
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:paddingBottom="10dp" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/moveRight"
-        android:layout_centerHorizontal="true"
-        android:gravity="top|center_horizontal"
-        android:orientation="vertical" >
+		        <ImageView
+		            android:id="@+id/imageView1"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/pocketwbsicon2" />
+		    </LinearLayout>
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:orientation="horizontal"
+		        android:paddingBottom="2dp" >
 
-        <TextView
-            android:id="@+id/elementKeyView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/element_key_text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+		        <TextView
+		            android:id="@+id/textView2"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="Index: "
+		            android:textColor="#585858"
+		            android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/elementNameView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="37dp"
-            android:text="@string/element_name_text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-    </LinearLayout>
+		        <TextView
+		            android:id="@+id/elementKeyView"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/element_key_text"
+		            android:textAppearance="?android:attr/textAppearanceLarge"
+		            android:textColor="#585858"
+		            android:textSize="15sp" />
+		    </LinearLayout>
 
-    <Button
-        android:id="@+id/editElementButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/moveRight"
-        android:layout_centerHorizontal="true"
-        android:text="@string/select_element_edit" />
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:paddingBottom="5dp" >
 
-    <Button
-        android:id="@+id/moveDown"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:gravity="bottom|center_horizontal"
-        android:text="@string/direction_down_text" />
+		        <EditText
+		            android:id="@+id/editElementName"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:background="#FFFFFF"
+		            android:ems="10"
+		            android:nextFocusLeft="@id/editElementName"
+		            android:nextFocusUp="@id/editElementName"
+		            android:textColor="#585858"
+		            android:textColorLink="#FFFFFF"
+		            android:textSize="15sp" />
+
+		    </LinearLayout>
+
+		    <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="5dp"
+		        android:text="Activities: "
+		        android:textColor="#585858"
+		        android:textSize="15sp" />
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:background="#FFFFFF"
+		        android:paddingTop="5dp" >
+		    </LinearLayout>
+		</LinearLayout>
+
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:gravity="bottom|center_horizontal"
+		    android:orientation="horizontal" >
+
+		    <LinearLayout
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:orientation="horizontal"
+		        android:weightSum="1" >
+
+		        <Button
+		            android:id="@+id/moveLeft"
+		            style="?android:attr/buttonStyleSmall"
+		            android:layout_width="60dp"
+		            android:layout_height="50dp"
+		            android:text="@string/direction_left_text" />
+		    </LinearLayout>
+
+		    <LinearLayout
+		        android:layout_width="wrap_content"
+		        android:layout_height="match_parent"
+		        android:gravity="bottom"
+		        android:orientation="horizontal" >
+
+		        <Button
+		            android:id="@+id/moveUp"
+		            style="?android:attr/buttonStyleSmall"
+		            android:layout_width="60dp"
+		            android:layout_height="50dp"
+		            android:gravity="top|center_horizontal"
+		            android:text="@string/direction_up_text" />
+		    </LinearLayout>
+
+		    <LinearLayout
+		        android:layout_width="wrap_content"
+		        android:layout_height="match_parent"
+		        android:gravity="bottom" >
+
+		        <Button
+		            android:id="@+id/moveDown"
+		            style="?android:attr/buttonStyleSmall"
+		            android:layout_width="60dp"
+		            android:layout_height="50dp"
+		            android:gravity="bottom|center_horizontal"
+		            android:text="@string/direction_down_text" />
+		    </LinearLayout>
+
+		    <LinearLayout
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="right"
+		        android:orientation="horizontal"
+		        android:weightSum="1" >
+
+		        <Button
+		            android:id="@+id/moveRight"
+		            style="?android:attr/buttonStyleSmall"
+		            android:layout_width="60dp"
+		            android:layout_height="50dp"
+		            android:text="@string/direction_right_text" />
+		    </LinearLayout>
+		</LinearLayout>
+
+	</LinearLayout>
 
 </RelativeLayout>

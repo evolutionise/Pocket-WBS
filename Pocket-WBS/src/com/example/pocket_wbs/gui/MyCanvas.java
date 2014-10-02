@@ -2,6 +2,7 @@ package com.example.pocket_wbs.gui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.example.pocket_wbs.GUImain;
@@ -58,7 +59,7 @@ public class MyCanvas extends View {
     private ProjectTree project;
     private String tempName="tempName";
     private GUImain main;
-    
+    private WBSElement selected;
     //Gestures attributes
     private GestureDetector gDetector;
 
@@ -135,13 +136,14 @@ public class MyCanvas extends View {
     {
     	WBSElements.add(wbe);
     }
-    
+   
     public void decomposeElement(WBSElement parent, int startx, int starty)
     {
     	//Initializes child element's starting x&y positions based on the parent
-    	hGapLvlOne=elementWidth/2;
-    	int startxTemp=startx-(elementWidth*3/4);
+    	hGapLvlOne=elementWidth/4;
+    	int startxTemp=parent.getMidX()-((hGapLvlOne/2)+elementWidth);
     	int startyTemp=starty+(elementHeight+verticalGap);
+    	WBSElement wbe = new WBSElement("tempName");
     	
     	//For decompose, we will be creating 2 elements, so the loop runs twice 
     	//Adjusts start x for the elements accordingly
@@ -150,49 +152,20 @@ public class MyCanvas extends View {
     		String name = "Child " + count;
     		//Adds child to the project with reference to its parent - returns the child to
     		//be added to the WBS Element array list for population
-    		WBSElement wbe = project.addChildElement(parent, name, startxTemp, startyTemp);
+    		wbe = project.addChildElement(parent, name, startxTemp, startyTemp);
     		wbe.setName(wbe.getElementKey());
     		addElement(wbe);
-    		adjustElements(wbe, startxTemp, hGapLvlOne);
+    		//adjustElements(wbe, startxTemp, hGapLvlOne);
     		startxTemp+=elementWidth+hGapLvlOne;
     	}
+    	
+    	adjustElements(wbe);
     }
 
     public void toastMessage(String message){
     	Toast.makeText(this.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-    	gDetector.onTouchEvent(event);
-    	this.gDetector.setIsLongpressEnabled(true);
-
-    	 return true;
-    }
-    
-    /*
-     * Method to handle a doubleTap event - for now : Decompose element
-     * @author Adrian
-     */
-    public void doubleTap(MotionEvent event) {
-    	for (int i = WBSElements.size()-1; i >= 0; i--) {
-    	    WBSElement wbse = WBSElements.get(i);
-    	    if (wbse.isCollition(event.getX(),event.getY())) {
-    	   	 
-    	       	 //Check disallows an element to be decomposed if it already has children
-    	       	 if(wbse.hasChildren()){
-    	       		 String tempString = "Can't Decompose, Already has children";
-    	       		 toastMessage(tempString);
-    	       	 }
-    	       	 else{
-    	       		 decomposeElement(wbse, wbse.getX(),wbse.getY());
-    	       		 this.invalidate();	
-    	       	 }
-    	    }
-    	}
-    }
-    
-    
     /*
      * Method to automatically adjust/shift elements to maintain a fixed distance between them
      * @author adrian
@@ -201,7 +174,10 @@ public class MyCanvas extends View {
     {
     	int elementLevel = wbs.getElementLevel();
     	WBSElement parent = wbs.getParent();
-    	String orientation;
+    	int parentLevel = parent.getElementLevel();
+    	
+    	ArrayList<WBSElement> parentSiblings = new ArrayList<WBSElement>();
+    	String orientation="";
     	
     	//Determine the Element's orientation (LEFT, MIDDLE, or RIGHT)
     	if(parent.getMidX()<rootMidPoint)
@@ -213,105 +189,194 @@ public class MyCanvas extends View {
     		
     	//This check only runs for elements level 2 and above
     	if(elementLevel>=2) {
-    		
+    		if(orientation.equals("left")) {
+    			//Check to see if there are other elements on the
+    			//same level as parent, filter according to branch (LEFT)
+    			
+    			/*for (WBSElement sibling : parent.getSiblings()) {
+    				//If sibling is on the same branch side, add to LinkedList
+    				if (sibling.getMidX()<rootMidPoint && sibling.hasChildren()) {
+    					parentSiblings.add(sibling);
+    					toastMessage(sibling.getName());
+    				}
+    				
+    			}*/
+    			for (WBSElement parentSibling : project.getProjectElementsAsArray()) {
+    				if (parentSibling.getElementLevel()==parentLevel && parentSibling.getMidX()<=rootMidPoint) {
+    					if(parentSibling.hasChildren()) {
+    						parentSiblings.add(parentSibling);
+    					}
+    						
+    				}
+    			}
+    			
+    			//Now that we have siblings with children.. adjust from right to left
+    			int lastIndexParent = parentSiblings.size()-1;
+    			
+    			ArrayList<WBSElement> parentChildren = new ArrayList<WBSElement>();
+    			//Get most right parent first
+    			for (int count=lastIndexParent; count>=0; count--) {
+    				
+    				//Get last parent to first parent
+    				WBSElement p = parentSiblings.get(count);
+    				
+    				//Get all children in the parent
+    				LinkedList<WBSElement> children = p.getChildren();
+    				int lastIndexChild = children.size()-1;
+    				
+    				//Get right most child to left most child
+    				WBSElement c = children.get(lastIndexChild);
+    				
+    				//If right most child is further than root mid point, shift family left.
+    				if (c.getX()+elementWidth>rootMidPoint) {
+    					while(c.getX()+elementWidth>rootMidPoint) {
+    						//Move this element left (negative integer?)
+    						c.moveX(-10);	
+    			
+        					//TODO MOVE ANY ELEMENTS ON THE SAME LEVEL towards the left
+        					//of this element to the left (negative integer)
+    						/*for(WBSElement allChildren : children){
+    							allChildren.moveX(-10, children.size());
+    						}*/
+    					}
+    				//Check if this element's parent has a sibling towards the right
+    				//If the current count is less than the last IndexParent = there's a parent sibling to the right
+    				} 
+
+    				if (count<lastIndexParent) {
+    					//If family to the right has children... then check if left most
+    					//element in that family clashes with right most in this one
+    					if(parentSiblings.get(count+1).hasChildren()) {
+    						//If right most element in this family crosses over the start of the left most element
+    						//in the family on the right
+    						if(c.getX()+elementWidth>=parentSiblings.get(count+1).getChildByIndex(0).getX()) {
+    							while(c.getX()+elementWidth+(hGapLvlOne)>=parentSiblings.get(count+1).getChildByIndex(0).getX()) {
+    								c.moveX(-10);
+
+    								//TODO MOVE ANY ELEMENTS ON THE SAME LEVEL towards the left
+    	        					//of this element to the left (negative integer)
+    	    						/*for(WBSElement allChildren : children){
+	    							allChildren.moveX(-10, children.size());
+	    							}*/
+    							}
+    						}
+    					}
+    				}
+    				//Now check if this element's parent has a sibling towards the left
+    				//If count is bigger than 0 that means there is a parent to the left
+    				if(count>0) {
+    					//If the family on the left has children
+    					if(parentSiblings.get(count-1).hasChildren()) {
+    						//If the left most element in this family touches the right
+    						//most element in the family on the left
+    						WBSElement neighbourParent = parentSiblings.get(count-1);
+    						LinkedList<WBSElement> neighbourChildren = neighbourParent.getChildren();
+    						//This gets the right most child in the neighbouring family to the left of this family
+    						WBSElement neighbour = neighbourParent.getChildByIndex(neighbourParent.getNumChildren()-1);
+    						if(c.getX()-hGapLvlOne<neighbour.getX()+elementWidth){
+    							while(c.getX()-hGapLvlOne<neighbour.getX()+elementWidth) {
+    								neighbour.moveX(-10);
+    	    						/*for(WBSElement Children : neighbourChildren){
+    	    							Children.moveX(-10, neighbourChildren.size());
+    	    						}*/
+    							}
+    						}
+    					}
+    				}
+    				
+    			}
+
+    			
+				
+    		} else if (orientation.equals("right")) {
+    			
+    		}
     	}
     }
-    
-    public void adjustElements(WBSElement wbs, int startx, int gap)
-    {
-    	int level = wbs.getElementLevel();
-    	int hGap = gap;
-    	List<WBSElement> LevelElements = new ArrayList<WBSElement>();
-    	List<WBSElement> LevelElementsParent = new ArrayList<WBSElement>();
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+    	gDetector.onTouchEvent(event);
+    	this.gDetector.setIsLongpressEnabled(true);
     	
-    	//Get all elements that are on the same level
-        for (WBSElement element : WBSElements) 
-        {
-        	if(element.getElementLevel()==level) {
-            	LevelElements.add(element);
-        	}
-        	else if (element.getElementLevel()==(level-1)) {
-        		LevelElementsParent.add(element);
-        	}
-        }
-        
-
-        
-        int count=LevelElements.size();
-        int distanceFromRootMid = (elementWidth*count + ((count-1)*hGap))/2;
-        int startX=project.getRootElement().getMidX()-distanceFromRootMid;
-        
-        //Iterate through level elements and adjust their positions
-        //For level 0, 1, 2
-        if (level<3 && count>=3) {
-        	adjustElementsLevel012(count, distanceFromRootMid, startX, LevelElements, LevelElementsParent);
-        } 
-        //Special case for level 3 onwards, will try to seperate them to the right/left
-        else if (level>=3) {
-        	
-        	int distanceFromMid;
-        	
-            for (WBSElement levelElement : LevelElements) {
-            	//Find out if the level 1 node is to the left (before root Mid) or right (after)
-            	//If before then to the left
-            	if(levelElement.getParent().getParent().getX()<project.getRootElement().getMidX()) {
-            		distanceFromMid=levelElement.getX()+elementWidth-project.getRootElement().getMidX();
-                	if(distanceFromMid<0) {
-                		//toastMessage("LEFT branch crossing over");
-                	}
-            	}
-            	//If not then to the right
-            	else {
-            		if(levelElement.getX()<project.getRootElement().getMidX()) {
-            			//toastMessage("RIGHT branch crossing over");
-            		}
-            		
-            	}
-
-
-            	
-            }
-        }
-
-    }
-    
-    public void adjustElementsLevel012(int count, int distanceFromRootMid,int startX,List<WBSElement> LevelElements, List<WBSElement> LevelElementsParent ) {
-    	
-        for (WBSElement levelElement : LevelElements) {
-        	levelElement.setX(startX);
-        	startX = startX+elementWidth+hGapLvlOne;
-        	
-        }
-        
-        //Adjust parents accordingly (Counts number of children and centres parents
-        for (WBSElement parentElement : LevelElementsParent) {
-        	if(parentElement.hasChildren()) {
-            	int numChild = parentElement.getNumChildren();
-            	int midPoint = parentElement.getChildByIndex(0).getX() + (elementWidth*numChild + ((numChild-1)*hGapLvlOne))/2;
-            	int parentStartX = midPoint-(elementWidth/2);
-            	parentElement.setX(parentStartX);
-        	}
-
-        }
+    	 return true;
     }
     
     /*
-     * Method to handle a longPress event - for now : Rename element
+     * Method to handle a longPress event - Decompose element
      */
     public void longPress(MotionEvent event) {
 
     	for (int i = WBSElements.size()-1; i >= 0; i--) {
     	    WBSElement wbse = WBSElements.get(i);
     	    if (wbse.isCollition(event.getX(),event.getY())) {
-    	    	main.renameElement(wbse);
+    	    	
+   	       	 //Check disallows an element to be decomposed if it already has children
+   	       	 if(wbse.hasChildren()){
+   	       		  WBSElement w=project.addNewLastSibling(wbse.getChildByIndex(0), "default");
+   	       	      w.setName(w.getElementKey());
+   	       	      
+   	       	      //If an element is added, the children of this element should arrange their 
+   	       	      //children accordingly
+   	       	      /*int siblingLevel = w.getElementLevel();
+   	       	      for (WBSElement sibling : project.getProjectElementsAsArray()){
+   	       	    	  if(sibling.getElementLevel()==siblingLevel){
+   	       	    		  adjustElements(sibling);
+   	       	    		  if(sibling.hasChildren()){
+   	       	    			  adjustElements(sibling.getChildByIndex(0));
+   	       	    			  sibling.arrangeChildren();
+   	       	    		  }
+   	       	    			  
+   	       	    	  }
+   	       	      }*/
+   	       	      adjustElements(w);
+   	       	      this.invalidate();
+   	       	 }
+   	       	 else{
+   	       		 decomposeElement(wbse, wbse.getX(),wbse.getY());
+   	       		 this.invalidate();	
+   	       	 }
+    	    	
     	    }
     	}
 
     }
     
-    public void renameElement(WBSElement wbs, String newName) {
-    	this.tempName=newName;
+    /*
+     * Method to handle a doubleTap event - Open/View Element
+     * @author Adrian
+     */
+    public void doubleTap(MotionEvent event) {
+    	for (int i = WBSElements.size()-1; i >= 0; i--) {
+    	    WBSElement wbse = WBSElements.get(i);
+    	    if (wbse.isCollition(event.getX(),event.getY())) {
+    	    	main.renameElement(wbse);
+    	    }
+    	}
     }
+    
+    public void singleTap(MotionEvent event){
+    	boolean yes=false;
+    	for (int i = WBSElements.size()-1; i >= 0; i--) {
+    	    WBSElement wbse = WBSElements.get(i);
+    	    if (wbse.isCollition(event.getX(),event.getY())) {
+    	    	/*
+    	    	yes=true;
+    	    	if(this.selected==null){
+    	    		this.selected=wbse;
+    	    		wbse.isSelected(true);
+    	    	}
+    	    	else{
+    	    		this.selected.isSelected(false);
+    	    		this.selected=wbse;
+    	    		wbse.isSelected(true);
+    	    	}
+    	    	this.invalidate();*/	
+    	    }
+    	}
+    }
+    
     
     /*
      * returns the selected element's level
@@ -322,16 +387,6 @@ public class MyCanvas extends View {
     }
     
     
-    public void testRename()
-    {
-    	WBSElement root = project.getRootElement();
-    	root.setX(100);
-    	WBSElements.add(root);
-    	toastMessage(project.getProjectName() + "");
-    	
-    	this.invalidate();
-    }
-    
     public ProjectTree getTree()
     {
     	return this.project;
@@ -341,5 +396,14 @@ public class MyCanvas extends View {
     	return this.WBSElements;
     }
     
+    
+    public void displayOrientation()
+    {
+    	if(selected!=null) {
+    		toastMessage("Orientation: " + selected.getOrientation());
+    	}
+    	else
+    		toastMessage("no element selected");
+    }
 }
 

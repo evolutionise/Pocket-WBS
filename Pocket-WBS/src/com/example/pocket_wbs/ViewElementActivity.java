@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class ViewElementActivity extends ActionBarActivity {
@@ -33,6 +36,8 @@ public class ViewElementActivity extends ActionBarActivity {
 			String elementKey = intent.getStringExtra("com.example.pocket_wbs.ELEMENT_KEY");
 			this.selectedElement = this.tree.getProjectElements().get(elementKey);
 		}
+		//Remove title bar
+	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_view_element);
 		setUpEventListeners();
 		updateActivity();
@@ -40,6 +45,10 @@ public class ViewElementActivity extends ActionBarActivity {
 	
 	@Override
 	public void onBackPressed(){
+		EditText elementName = (EditText) findViewById(R.id.editElementName);
+		if(!selectedElement.isRoot())
+			this.selectedElement.setName(elementName.getText().toString());
+		
 		Intent intent = new Intent(this, GUImain.class);
 		ProjectTree tree = this.tree;
 		intent.putExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW", tree);
@@ -72,7 +81,7 @@ public class ViewElementActivity extends ActionBarActivity {
 		Button rightButton = (Button) findViewById(R.id.moveRight);
 		Button upButton = (Button) findViewById(R.id.moveUp);
 		Button downButton = (Button) findViewById(R.id.moveDown);
-		Button editButton = (Button) findViewById(R.id.editElementButton);
+		//Button editButton = (Button) findViewById(R.id.editElementButton);
 		
 		leftButton.setOnClickListener(new View.OnClickListener(){
 			@Override
@@ -112,14 +121,14 @@ public class ViewElementActivity extends ActionBarActivity {
 			}
 		});
 		
-		editButton.setOnClickListener(new View.OnClickListener() {
+		/*editButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
 				activity.goToEditActivity(v);
 			}
-		});
+		});*/
 		
 		
 	}
@@ -140,9 +149,11 @@ public class ViewElementActivity extends ActionBarActivity {
 	 */
 	private void updateTextViews(){
 		TextView elementKey = (TextView) findViewById(R.id.elementKeyView);
-		TextView elementName = (TextView) findViewById(R.id.elementNameView);
+		//TextView elementName = (TextView) findViewById(R.id.elementNameView);
+		EditText editElementName = (EditText) findViewById(R.id.editElementName);
 		elementKey.setText("Element " + selectedElement.getElementKey());
-		elementName.setText("Element Name: " + "\n" + selectedElement.getName());
+		//elementName.setText("Element Name: " + "\n" + selectedElement.getName());
+		editElementName.setText(selectedElement.getName());
 	}
 	
 	/**
@@ -151,10 +162,10 @@ public class ViewElementActivity extends ActionBarActivity {
 	private void updateLeftButton(){
 		Button leftButton = (Button) findViewById(R.id.moveLeft);
 		if(selectedElement.getIndex() == 0){
-			leftButton.setVisibility(View.INVISIBLE);
+			leftButton.setEnabled(false);
 		}
 		else{
-			leftButton.setVisibility(View.VISIBLE);
+			leftButton.setEnabled(true);
 		}
 	}
 	
@@ -165,10 +176,10 @@ public class ViewElementActivity extends ActionBarActivity {
 	private void updateRightButton(){
 		Button rightButton = (Button) findViewById(R.id.moveRight);
 		if(selectedElement.getIndex()+1 >= selectedElement.getSiblings().size()){
-			rightButton.setVisibility(View.INVISIBLE);
+			rightButton.setEnabled(false);
 		}
 		else{
-			rightButton.setVisibility(View.VISIBLE);
+			rightButton.setEnabled(true);
 		}
 	}
 	
@@ -178,10 +189,10 @@ public class ViewElementActivity extends ActionBarActivity {
 	private void updateUpButton(){
 		Button upButton = (Button) findViewById(R.id.moveUp);
 		if(selectedElement.isRoot()){
-			upButton.setVisibility(View.INVISIBLE);
+			upButton.setEnabled(false);
 		}
 		else{
-			upButton.setVisibility(View.VISIBLE);
+			upButton.setEnabled(true);
 		}
 	}
 	
@@ -191,10 +202,10 @@ public class ViewElementActivity extends ActionBarActivity {
 	private void updateDownButton(){
 		Button downButton = (Button) findViewById(R.id.moveDown);
 		if(!selectedElement.hasChildren()){
-			downButton.setVisibility(View.INVISIBLE);
+			downButton.setEnabled(false);
 		}
 		else{
-			downButton.setVisibility(View.VISIBLE);
+			downButton.setEnabled(true);
 		}
 	}
 	

@@ -1,67 +1,65 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:textAlignment="gravity" >
+    android:layout_height="fill_parent" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F78181"
-        android:gravity="center_horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp" >
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:gravity="center_horizontal"
+	    android:orientation="vertical"
+	    android:textAlignment="gravity" >
 
-        <TextView
-            android:id="@+id/projectTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-        
-        <Button
-            android:id="@+id/btn1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxHeight="15dp"
-            android:minHeight="20dp"
-            android:onClick="addChild"
-            android:text="Add Child"
-            android:textSize="12sp" />
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="#BDBDBD"
+	        android:gravity="left"
+	        android:paddingBottom="10dp"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp"
+	        android:paddingTop="10dp" >
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:minHeight="2dp"
-        android:background="#F2F2F2" >
-
-    </LinearLayout>
-   
-       <HorizontalScrollView
-           android:id="@+id/horizontal_scroll_view"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:scrollbars="horizontal">
-                                                                    
-           <ScrollView                                                                          
-               android:id="@+id/vertical_scroll_view"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:scrollbars="vertical">
-               
-          <LinearLayout
-              android:id="@+id/container1"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:paddingTop="0dp" >
-
-           </LinearLayout>
-
-          </ScrollView>
-          
-      </HorizontalScrollView>
+	        <ImageView
+	            android:id="@+id/imageView1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:src="@drawable/pocketwbsicon2" />
+	
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="2dp"
+	        android:minHeight="2dp"
+	        android:background="#F2F2F2" >
+	
+	    </LinearLayout>
+	   
+	       <HorizontalScrollView
+	           android:id="@+id/horizontal_scroll_view"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:scrollbars="horizontal">
+	                                                                    
+	           <ScrollView                                                                          
+	               android:id="@+id/vertical_scroll_view"
+	               android:layout_width="wrap_content"
+	               android:layout_height="wrap_content"
+	               android:scrollbars="vertical">
+	               
+	          <LinearLayout
+	              android:id="@+id/container1"
+	              android:layout_width="wrap_content"
+	              android:layout_height="wrap_content"
+	              android:orientation="vertical"
+	              android:paddingTop="0dp" >
+	
+	           </LinearLayout>
+	
+	          </ScrollView>
+	          
+	      </HorizontalScrollView>
   
-</LinearLayout>
+	</LinearLayout>
+
+</FrameLayout>

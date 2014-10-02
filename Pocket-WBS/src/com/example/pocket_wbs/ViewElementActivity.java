@@ -90,8 +90,10 @@ public class ViewElementActivity extends ActionBarActivity {
 				if(activity.selectedElement.getIndex() == 0){
 					activity.tree.addNewLeftSibling(activity.selectedElement, "New Element");
 				}
-				EditText elementName = (EditText) findViewById(R.id.editElementName); 
-				activity.selectedElement.setName(elementName.getText().toString());
+				if(!activity.selectedElement.isRoot()){
+					EditText elementName = (EditText) findViewById(R.id.editElementName); 
+					activity.selectedElement.setName(elementName.getText().toString());
+				}
 				int index = activity.selectedElement.getIndex() - 1;
 				activity.selectedElement = selectedElement.getSiblings().get(index);
 				activity.updateActivity();
@@ -105,8 +107,10 @@ public class ViewElementActivity extends ActionBarActivity {
 				if(activity.selectedElement.getIndex()+1 >= activity.selectedElement.getSiblings().size()){
 					activity.tree.addNewRightSibling(activity.selectedElement, "New Element");
 				}
-				EditText elementName = (EditText) findViewById(R.id.editElementName); 
-				activity.selectedElement.setName(elementName.getText().toString());
+				if(!activity.selectedElement.isRoot()){
+					EditText elementName = (EditText) findViewById(R.id.editElementName); 
+					activity.selectedElement.setName(elementName.getText().toString());
+				}
 				int index = activity.selectedElement.getIndex() + 1;
 				activity.selectedElement = selectedElement.getSiblings().get(index);
 				activity.updateActivity();				
@@ -117,8 +121,10 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
-				EditText elementName = (EditText) findViewById(R.id.editElementName); 
-				activity.selectedElement.setName(elementName.getText().toString());
+				if(!activity.selectedElement.isRoot()){
+					EditText elementName = (EditText) findViewById(R.id.editElementName); 
+					activity.selectedElement.setName(elementName.getText().toString());
+				}
 				activity.selectedElement = selectedElement.getParent();
 				activity.updateActivity();
 			}
@@ -132,8 +138,10 @@ public class ViewElementActivity extends ActionBarActivity {
 					activity.tree.addChildElement(activity.selectedElement, "New Element 1");
 					activity.tree.addChildElement(activity.selectedElement, "New Element 2");
 				}
-				EditText elementName = (EditText) findViewById(R.id.editElementName); 
-				activity.selectedElement.setName(elementName.getText().toString());
+				if(!activity.selectedElement.isRoot()){
+					EditText elementName = (EditText) findViewById(R.id.editElementName); 
+					activity.selectedElement.setName(elementName.getText().toString());
+				}
 				activity.selectedElement = activity.selectedElement.getChildren().getFirst();
 				activity.updateActivity();				
 			}

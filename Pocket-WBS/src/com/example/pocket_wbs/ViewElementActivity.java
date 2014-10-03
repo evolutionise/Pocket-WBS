@@ -135,8 +135,12 @@ public class ViewElementActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
 				if(!activity.selectedElement.hasChildren()){
-					activity.tree.addChildElement(activity.selectedElement, "New Element 1");
-					activity.tree.addChildElement(activity.selectedElement, "New Element 2");
+			    	int hGapLvlOne=activity.selectedElement.elementWidth/4;
+			    	int startxTemp=activity.selectedElement.getMidX()-((hGapLvlOne/2)+activity.selectedElement.elementWidth);
+			    	int startyTemp=activity.selectedElement.starty+(activity.selectedElement.elementHeight+activity.selectedElement.verticalGap);
+					activity.tree.addChildElement(activity.selectedElement, "New Element 1", startxTemp, startyTemp);
+					startxTemp+=activity.selectedElement.elementWidth+hGapLvlOne;
+					activity.tree.addChildElement(activity.selectedElement, "New Element 2", startxTemp, startyTemp);
 				}
 				if(!activity.selectedElement.isRoot()){
 					EditText elementName = (EditText) findViewById(R.id.editElementName); 

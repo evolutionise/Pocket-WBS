@@ -1,31 +1,32 @@
 /**
  * Class for an object representing a WBS element
- * @author Alix, Jamie
+ * @author Alix, Jamie, Adrian
  */
 
 package com.example.pocket_wbs.model;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.view.MotionEvent;
 
 public class WBSElement implements Serializable{
 
 	private String name;
 	private WBSElement parent;
 	private LinkedList<WBSElement> children;
+	private List<WBSActivity> activities;
 
 	private int startx;
-	private int starty;
+	public int starty;
 	private int midx;
-	private int elementWidth=120;
-	private int elementHeight=100;
-	int verticalGap=30;
+	public int elementWidth=120;
+	public int elementHeight=100;
+	public int verticalGap=30;
 	int verticalGapHalf=15;
 	int horizontalGap=elementWidth/4;
 	private boolean selected;
@@ -157,8 +158,8 @@ public class WBSElement implements Serializable{
 	public WBSElement addChild(String name){
 		WBSElement child = new WBSElement(name, this);
 		this.children.add(child);
-		child.setX(this.getChildByIndex(this.getChildren().size()-1).getX()+elementWidth+horizontalGap);
-		child.setY(this.getChildByIndex(this.getChildren().size()-1).getY());
+		child.setX(this.getChildByIndex(this.getChildren().size()-2).getX()+elementWidth+horizontalGap);
+		child.setY(this.getChildByIndex(this.getChildren().size()-2).getY());
 		//this.children.add(child);
 		return child;
 	}
@@ -273,8 +274,9 @@ public class WBSElement implements Serializable{
 	 * Method to return this WBS Element's Level One Parent, for the purpose of
 	 * determining whether this element is branching left, right or down the middle
 	 * @return The level one parent of this element if it isn't a Level one element
-	 * @author adrian
+	 * @author Adrian
 	 */
+	
 	public WBSElement getLevelOneParent() {
 		WBSElement lvlOneParent=this;
 		
@@ -400,7 +402,7 @@ public class WBSElement implements Serializable{
 	
 	public void moveParent(int x) {
 		this.parent.parentMove(x);
-		//this.parent.arrangeChildren();
+		this.parent.arrangeChildren();
 
 	}
 	
@@ -445,5 +447,43 @@ public class WBSElement implements Serializable{
 		
 	}
 	
+	public WBSActivity addActivity(String description){
+		
+		WBSActivity newActivity = new WBSActivity(description, this);
+		activities.add(newActivity);
+		return newActivity;
+		
+	}
 	
+	public void deleteActivity(WBSActivity activity){
+		activities.remove(activity);
+	}
+	
+	/*
+	 * All activities including the one currently at the index parameter will have 1 added to their index.
+	 */
+	public void setActivityIndex(int index, WBSActivity activity){
+		activities.remove(activity);
+		activities.set(index, activity);
+	}
+	
+	public int getActivityIndex(WBSActivity activity){
+		return activities.indexOf(activity);
+	}
+	
+	/*
+	 * This method may never be used but added it in here just in case.  Less reliable than setting the activity index directly. 
+	 * 
+	 * @author Alix
+	 */
+	public void swapActivities(WBSActivity act1, WBSActivity act2){
+		//take index of act1 to use later
+		int index = activities.indexOf(act1);
+		//remove act1 so it isn't duplicated
+		activities.remove(act1);
+		//replace act2 with act 1
+		activities.set(activities.indexOf(act2), act1);
+		//add in act2 where act1 previously was
+		activities.add(index, act2);		
+	}
 }

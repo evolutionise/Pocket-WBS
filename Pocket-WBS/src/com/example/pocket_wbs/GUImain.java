@@ -123,7 +123,7 @@ public class GUImain extends ActionBarActivity {
 	}
 	
 	public void renameElement(WBSElement element){
-		Intent intent = new Intent(this, ViewElementActivity.class);
+		Intent intent = new Intent(this, ViewElementOverview.class);
 		ProjectTree tree = this.pt;
 		String key = element.getElementKey();
 		intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);

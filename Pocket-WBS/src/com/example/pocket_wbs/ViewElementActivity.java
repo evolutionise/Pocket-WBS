@@ -49,9 +49,11 @@ public class ViewElementActivity extends ActionBarActivity {
 		if(!selectedElement.isRoot()){
 			this.selectedElement.setName(elementName.getText().toString());
 		}
-		Intent intent = new Intent(this, GUImain.class);
+		Intent intent = new Intent(this, ViewElementOverview.class);
 		ProjectTree tree = this.tree;
-		intent.putExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW", tree);
+		String key = this.selectedElement.getElementKey();
+		intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);
+		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", key);
 		startActivity(intent);
 		finish();
 	};

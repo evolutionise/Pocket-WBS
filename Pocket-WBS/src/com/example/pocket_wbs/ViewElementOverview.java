@@ -225,7 +225,5 @@ public class ViewElementOverview extends ActionBarActivity {
 		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", key);
 		startActivity(intent);
 		finish();
-	}
-	
-		
+	}	
 }

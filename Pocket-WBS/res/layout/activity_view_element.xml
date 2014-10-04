@@ -110,13 +110,6 @@
 		        android:gravity="left"
 		        android:orientation="horizontal"
 		        android:weightSum="1" >
-
-		        <Button
-		            android:id="@+id/moveLeft"
-		            style="?android:attr/buttonStyleSmall"
-		            android:layout_width="60dp"
-		            android:layout_height="50dp"
-		            android:text="@string/direction_left_text" />
 		    </LinearLayout>
 
 		    <LinearLayout
@@ -124,28 +117,12 @@
 		        android:layout_height="match_parent"
 		        android:gravity="bottom"
 		        android:orientation="horizontal" >
-
-		        <Button
-		            android:id="@+id/moveUp"
-		            style="?android:attr/buttonStyleSmall"
-		            android:layout_width="60dp"
-		            android:layout_height="50dp"
-		            android:gravity="top|center_horizontal"
-		            android:text="@string/direction_up_text" />
 		    </LinearLayout>
 
 		    <LinearLayout
 		        android:layout_width="wrap_content"
 		        android:layout_height="match_parent"
 		        android:gravity="bottom" >
-
-		        <Button
-		            android:id="@+id/moveDown"
-		            style="?android:attr/buttonStyleSmall"
-		            android:layout_width="60dp"
-		            android:layout_height="50dp"
-		            android:gravity="bottom|center_horizontal"
-		            android:text="@string/direction_down_text" />
 		    </LinearLayout>
 
 		    <LinearLayout
@@ -154,13 +131,6 @@
 		        android:gravity="right"
 		        android:orientation="horizontal"
 		        android:weightSum="1" >
-
-		        <Button
-		            android:id="@+id/moveRight"
-		            style="?android:attr/buttonStyleSmall"
-		            android:layout_width="60dp"
-		            android:layout_height="50dp"
-		            android:text="@string/direction_right_text" />
 		    </LinearLayout>
 		</LinearLayout>
 

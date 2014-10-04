@@ -19,7 +19,6 @@ public class ViewElementActivity extends ActionBarActivity {
 
 	public ProjectTree tree;
 	public WBSElement selectedElement;
-	public boolean testSetUp = false; // For testing purposes
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class ViewElementActivity extends ActionBarActivity {
 		if(!selectedElement.isRoot()){
 			this.selectedElement.setName(elementName.getText().toString());
 		}
-		Intent intent = new Intent(this, ViewElementOverview.class);
+		Intent intent = new Intent(this, ViewElementActivity.class);
 		ProjectTree tree = this.tree;
 		String key = this.selectedElement.getElementKey();
 		intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);
@@ -89,8 +88,12 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				WBSElement e = activity.selectedElement;
 				if(activity.selectedElement.getIndex() == 0){
-					activity.tree.addNewLeftSibling(activity.selectedElement, "New Element");
+					int hGapLvlOne = e.elementWidth/4;
+			    	int startxTemp = e.getMidX() - ((hGapLvlOne / 2) + e.elementWidth);
+			    	int startyTemp = e.starty;
+					activity.tree.addNewLeftSibling(activity.selectedElement, "New Element", startxTemp, startyTemp);
 				}
 				if(!activity.selectedElement.isRoot()){
 					EditText elementName = (EditText) findViewById(R.id.editElementName); 
@@ -106,8 +109,12 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				WBSElement e = activity.selectedElement;
 				if(activity.selectedElement.getIndex()+1 >= activity.selectedElement.getSiblings().size()){
-					activity.tree.addNewRightSibling(activity.selectedElement, "New Element");
+					int hGapLvlOne = e.elementWidth/4;
+			    	int startxTemp = e.getMidX() - ((hGapLvlOne / 2) + e.elementWidth);
+			    	int startyTemp = e.starty;
+					activity.tree.addNewRightSibling(activity.selectedElement, "New Element", startxTemp, startyTemp);
 				}
 				if(!activity.selectedElement.isRoot()){
 					EditText elementName = (EditText) findViewById(R.id.editElementName); 
@@ -123,11 +130,12 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
-				if(!activity.selectedElement.isRoot()){
+				WBSElement e = activity.selectedElement;
+				if(!e.isRoot()){
 					EditText elementName = (EditText) findViewById(R.id.editElementName); 
-					activity.selectedElement.setName(elementName.getText().toString());
+					e.setName(elementName.getText().toString());
 				}
-				activity.selectedElement = selectedElement.getParent();
+				e = selectedElement.getParent();
 				activity.updateActivity();
 			}
 		});
@@ -136,33 +144,23 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
-				if(!activity.selectedElement.hasChildren()){
-			    	int hGapLvlOne=activity.selectedElement.elementWidth/4;
-			    	int startxTemp=activity.selectedElement.getMidX()-((hGapLvlOne/2)+activity.selectedElement.elementWidth);
-			    	int startyTemp=activity.selectedElement.starty+(activity.selectedElement.elementHeight+activity.selectedElement.verticalGap);
-					activity.tree.addChildElement(activity.selectedElement, "New Element 1", startxTemp, startyTemp);
-					startxTemp+=activity.selectedElement.elementWidth+hGapLvlOne;
-					activity.tree.addChildElement(activity.selectedElement, "New Element 2", startxTemp, startyTemp);
+				WBSElement e = activity.selectedElement;
+				if(!e.hasChildren()){
+			    	int hGapLvlOne = e.elementWidth/4;
+			    	int startxTemp = e.getMidX() - ((hGapLvlOne / 2) + e.elementWidth);
+			    	int startyTemp = e.starty + (e.elementHeight + e.verticalGap);
+					activity.tree.addChildElement(e, "New Element 1", startxTemp, startyTemp);
+					startxTemp += e.elementWidth + hGapLvlOne;
+					activity.tree.addChildElement(e, "New Element 2", startxTemp, startyTemp);
 				}
-				if(!activity.selectedElement.isRoot()){
+				if(!e.isRoot()){
 					EditText elementName = (EditText) findViewById(R.id.editElementName); 
-					activity.selectedElement.setName(elementName.getText().toString());
+					e.setName(elementName.getText().toString());
 				}
-				activity.selectedElement = activity.selectedElement.getChildren().getFirst();
+				e = e.getChildren().getFirst();
 				activity.updateActivity();				
 			}
 		});
-		
-		/*editButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				ViewElementActivity activity = (ViewElementActivity) v.getContext();
-				activity.goToEditActivity(v);
-			}
-		});*/
-		
-		
 	}
 	
 	/**

@@ -181,12 +181,25 @@ public class WBSElement implements Serializable{
 		return child;
 	}
 	
+	// Legacy Method
 	public void addChild(WBSElement child){
 		this.children.add(child);
 	}
 	
 
 	
+	protected WBSElement addChildByIndex(String name, int index, int startx, int starty){
+		WBSElement child = new WBSElement(name, this);
+		this.children.add(index, child);
+		child.setX(startx);
+		child.setY(starty);
+		child.setMidX(startx+(elementWidth/2));
+		child.setOrientation();
+		//TODO calls method to re-arrange children
+		return child;
+	}
+	
+	// Legacy Method
 	protected WBSElement addChildByIndex(String name, int index){
 		WBSElement child = new WBSElement(name, this);
 		this.children.add(index, child);

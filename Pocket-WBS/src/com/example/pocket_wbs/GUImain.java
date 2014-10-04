@@ -122,7 +122,7 @@ public class GUImain extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void renameElement(WBSElement element){
+	public void renameElement(WBSElement element){ // Probably gonna need to change the name of this at some point
 		Intent intent = new Intent(this, ViewElementOverview.class);
 		ProjectTree tree = this.pt;
 		String key = element.getElementKey();

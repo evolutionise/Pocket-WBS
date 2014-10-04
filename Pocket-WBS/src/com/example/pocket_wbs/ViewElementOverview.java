@@ -36,8 +36,100 @@ public class ViewElementOverview extends ActionBarActivity {
 		//Remove title bar
 	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_view_element_overview);
+		setUpEventListeners();
+		updateActivity();
+	}
+	
+	public void setUpEventListeners(){
 		
+		Button leftButton = (Button) findViewById(R.id.arrowLeft);
+		Button rightButton = (Button) findViewById(R.id.arrowRight);
+		Button upButton = (Button) findViewById(R.id.arrowUp);
+		Button downButton = (Button) findViewById(R.id.arrowDown);
+		//Button editButton = (Button) findViewById(R.id.editElementButton);
+		
+		leftButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				ViewElementOverview activity = (ViewElementOverview) v.getContext();
+				if(selectedElement.getIndex() == 0){
+					activity.tree.addNewLeftSibling(activity.selectedElement, "New Element");
+				}
+				if(!selectedElement.isRoot()){
+					// There will be a new implementation for this in the new edit screen
+					//EditText elementName = (EditText) findViewById(R.id.editElementName); 
+					//activity.selectedElement.setName(elementName.getText().toString());
+				}
+				int index = selectedElement.getIndex() - 1;
+				selectedElement = selectedElement.getSiblings().get(index);
+				activity.updateActivity();
+			}
+		});
+		
+		rightButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				ViewElementOverview activity = (ViewElementOverview) v.getContext();
+				if(activity.selectedElement.getIndex()+1 >= activity.selectedElement.getSiblings().size()){
+					activity.tree.addNewRightSibling(activity.selectedElement, "New Element");
+				}
+				if(!activity.selectedElement.isRoot()){
+					// There will be a new implementation for this in the new edit screen
+					//EditText elementName = (EditText) findViewById(R.id.editElementName); 
+					//activity.selectedElement.setName(elementName.getText().toString());
+				}
+				int index = activity.selectedElement.getIndex() + 1;
+				activity.selectedElement = selectedElement.getSiblings().get(index);
+				activity.updateActivity();				
+			}
+		});
+		
+		upButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				ViewElementOverview activity = (ViewElementOverview) v.getContext();
+				if(!selectedElement.isRoot()){
+					// There will be a new implementation for this in the new edit screen
+					//EditText elementName = (EditText) findViewById(R.id.editElementName); 
+					//e.setName(elementName.getText().toString());
+				}
+				selectedElement = selectedElement.getParent();
+				activity.updateActivity();
+			}
+		});
+		
+		downButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				ViewElementOverview activity = (ViewElementOverview) v.getContext();
+				if(!selectedElement.hasChildren()){
+			    	int hGapLvlOne = selectedElement.elementWidth/4;
+			    	int startxTemp = selectedElement.getMidX() - ((hGapLvlOne / 2) + selectedElement.elementWidth);
+			    	int startyTemp = selectedElement.starty + (selectedElement.elementHeight + selectedElement.verticalGap);
+					activity.tree.addChildElement(selectedElement, "New Element 1", startxTemp, startyTemp);
+					startxTemp += selectedElement.elementWidth + hGapLvlOne;
+					activity.tree.addChildElement(selectedElement, "New Element 2", startxTemp, startyTemp);
+				}
+				if(!selectedElement.isRoot()){
+					// There will be a new implementation for this in the new edit screen
+					//EditText elementName = (EditText) findViewById(R.id.editElementName); 
+					//e.setName(elementName.getText().toString());
+				}
+				selectedElement = selectedElement.getChildren().getFirst();
+				activity.updateActivity();				
+			}
+		});
+	}
+	
+	/**
+	 * This method updates the activity based on the currently selected element
+	 */
+	private void updateActivity(){
 		updateTextViews();
+		updateLeftButton();
+		updateRightButton();
+		updateUpButton();
+		updateDownButton();
 	}
 
 	private void updateTextViews(){
@@ -53,6 +145,67 @@ public class ViewElementOverview extends ActionBarActivity {
 		//elementKey.setText("Element " + selectedElement.getElementKey());
 
 		//editElementName.setText(selectedElement.getName());
+	}
+	
+	private void updateLeftButton(){
+		Button leftButton = (Button) findViewById(R.id.arrowLeft);
+		if(selectedElement.getIndex() == 0){
+			leftButton.setVisibility(View.VISIBLE);
+			leftButton.setText("Add Left");
+		}
+		else{
+			leftButton.setVisibility(View.VISIBLE);
+			leftButton.setText("Left");
+		}
+		if(selectedElement.isRoot()){
+			leftButton.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	
+	/**
+	 * This method updates the right button based on the currently selected activity
+	 */
+	private void updateRightButton(){
+		Button rightButton = (Button) findViewById(R.id.arrowRight);
+		if(selectedElement.getIndex()+1 >= selectedElement.getSiblings().size()){
+			rightButton.setVisibility(View.VISIBLE);
+			rightButton.setText("Add Right");
+		}
+		else{
+			rightButton.setVisibility(View.VISIBLE);
+			rightButton.setText("Right");
+		}
+		
+		if(selectedElement.isRoot()){
+			rightButton.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	/**
+	 * This method updates the right button based on the currently selected activity
+	 */
+	private void updateUpButton(){
+		Button upButton = (Button) findViewById(R.id.arrowUp);
+		if(selectedElement.isRoot()){
+			upButton.setVisibility(View.INVISIBLE);
+		}
+		else{
+			upButton.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	/**
+	 * This method updates the down button based on the currently selected activity
+	 */
+	private void updateDownButton(){
+		Button downButton = (Button) findViewById(R.id.arrowDown);
+		if(!selectedElement.hasChildren()){
+			downButton.setText("Add Down");
+		}
+		else{
+			downButton.setText("Down");
+		}
 	}
 	
 	@Override

@@ -21,6 +21,8 @@
 	<string name="title_activity_menu">MenuActivity</string>
     <string name="create_wbs_string">&quot;Create WBS&quot;</string>
     <string name="view_saved_wbs_string">&quot;View Saved WBSs&quot;</string>
+    <string name="index_text">Index: </string>
+    <string name="activities_text">Activities: </string>
 
     
 </resources>

@@ -16,6 +16,11 @@ public class WBSActivity {
 		description = newDescription;
 	}
 	
+	@Override
+	public String toString(){
+		return description;
+	}
+	
 
 	
 }

@@ -1,5 +1,6 @@
 package com.example.pocket_wbs;
 
+import com.example.pocket_wbs.gui.WBSActivityArrayAdapter;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
 
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ViewElementActivity extends ActionBarActivity {
@@ -39,6 +41,13 @@ public class ViewElementActivity extends ActionBarActivity {
 	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_view_element);
 		updateActivity();
+		
+		//Create ListView to put WBSActivities into
+		
+		ListView activitiesList = (ListView) findViewById(R.id.activitiesList);
+		
+		WBSActivityArrayAdapter adapter = new WBSActivityArrayAdapter(this, selectedElement);
+		activitiesList.setAdapter(adapter);
 	}
 	
 	@Override

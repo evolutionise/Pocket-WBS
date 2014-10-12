@@ -19,7 +19,7 @@ public class WBSElement implements Serializable{
 	private String name;
 	private WBSElement parent;
 	private LinkedList<WBSElement> children;
-	private List<WBSActivity> activities;
+	private List<WBSActivity> activities = new LinkedList<WBSActivity>();
 
 	private int startx;
 	public int starty;
@@ -499,4 +499,23 @@ public class WBSElement implements Serializable{
 		//add in act2 where act1 previously was
 		activities.add(index, act2);		
 	}
+	
+	/*
+	 * Method to get a string array of all of the WBSActivities for the ListView 
+	 * Used in Sprint Two, may not be needed after adding WBSAttributes as the ListView will change type
+	 * 
+	 * @author Alix
+	 */
+	
+	public List<String> getActivitiesAsStringArray(){
+
+		List<String> activitiesArray = new LinkedList();
+		for(int i = 0; i < activities.size(); i++){
+			String activityDescription = activities.get(i).getDescription();
+			activitiesArray.add(activityDescription);
+		}
+		
+		return activitiesArray;
+	}
+	
 }

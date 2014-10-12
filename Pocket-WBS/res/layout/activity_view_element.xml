@@ -47,7 +47,7 @@
 		            android:id="@+id/textView2"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="Index: "
+		            android:text="@string/index_text"
 		            android:textColor="#585858"
 		            android:textSize="15sp" />
 
@@ -86,16 +86,17 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:paddingTop="5dp"
-		        android:text="Activities: "
+		        android:text="@string/activities_text"
 		        android:textColor="#585858"
 		        android:textSize="15sp" />
 
-		    <LinearLayout
+		    <ListView
+		        android:id="@+id/activitiesList"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:background="#FFFFFF"
 		        android:paddingTop="5dp" >
-		    </LinearLayout>
+		    </ListView>
 		</LinearLayout>
 
 		<LinearLayout
@@ -104,34 +105,7 @@
 		    android:gravity="bottom|center_horizontal"
 		    android:orientation="horizontal" >
 
-		    <LinearLayout
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:gravity="left"
-		        android:orientation="horizontal"
-		        android:weightSum="1" >
-		    </LinearLayout>
 
-		    <LinearLayout
-		        android:layout_width="wrap_content"
-		        android:layout_height="match_parent"
-		        android:gravity="bottom"
-		        android:orientation="horizontal" >
-		    </LinearLayout>
-
-		    <LinearLayout
-		        android:layout_width="wrap_content"
-		        android:layout_height="match_parent"
-		        android:gravity="bottom" >
-		    </LinearLayout>
-
-		    <LinearLayout
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:gravity="right"
-		        android:orientation="horizontal"
-		        android:weightSum="1" >
-		    </LinearLayout>
 		</LinearLayout>
 
 	</LinearLayout>

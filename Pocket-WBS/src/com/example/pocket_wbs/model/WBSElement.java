@@ -484,6 +484,10 @@ public class WBSElement implements Serializable{
 		return activities.indexOf(activity);
 	}
 	
+	public WBSActivity getActivityByIndex(int position){
+		return activities.get(position);
+	}
+	
 	/*
 	 * This method may never be used but added it in here just in case.  Less reliable than setting the activity index directly. 
 	 * 
@@ -517,5 +521,7 @@ public class WBSElement implements Serializable{
 		
 		return activitiesArray;
 	}
+	
+
 	
 }

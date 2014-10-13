@@ -2,6 +2,7 @@ package com.example.pocket_wbs;
 
 import com.example.pocket_wbs.gui.WBSActivityArrayAdapter;
 import com.example.pocket_wbs.model.ProjectTree;
+import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;
 
 import android.support.v7.app.ActionBarActivity;
@@ -46,7 +47,7 @@ public class ViewElementActivity extends ActionBarActivity {
 		
 		ListView activitiesList = (ListView) findViewById(R.id.activitiesList);
 		
-		WBSActivityArrayAdapter adapter = new WBSActivityArrayAdapter(this, selectedElement);
+		WBSActivityArrayAdapter adapter = new WBSActivityArrayAdapter(this, selectedElement, tree);
 		activitiesList.setAdapter(adapter);
 	}
 	
@@ -102,5 +103,5 @@ public class ViewElementActivity extends ActionBarActivity {
 		//elementName.setText("Element Name: " + "\n" + selectedElement.getName());
 		editElementName.setText(selectedElement.getName());
 	}
-
+	
 }

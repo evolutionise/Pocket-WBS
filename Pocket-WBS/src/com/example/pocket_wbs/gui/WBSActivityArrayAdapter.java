@@ -2,10 +2,14 @@ package com.example.pocket_wbs.gui;
 
 
 
+
+import com.example.pocket_wbs.EditWBSActivityActivity;
+import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +21,13 @@ import android.view.View.OnClickListener;
 public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
 	  private final Context context;
 	  private final WBSElement parent;
+	  private final ProjectTree tree;
 
-	  public WBSActivityArrayAdapter(Context context, WBSElement parent) {
+	  public WBSActivityArrayAdapter(Context context, WBSElement parent, ProjectTree tree) {
 		super(context, android.R.layout.simple_list_item_1, parent.getActivitiesAsStringArray());
 	    this.context = context;
 	    this.parent = parent;
+	    this.tree = tree;
 	    add("Tap to add new Activity");
 	  }
 	  
@@ -30,12 +36,23 @@ public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
 		  insert(activity.getDescription(), getCount() - 1);
 	  }
 	  
+	  private void editWBSActivity(int position){
+		  WBSActivity activity = parent.getActivityByIndex(position);
+		  Intent intent = new Intent(context, EditWBSActivityActivity.class);
+		  intent.putExtra("com.example.pocket_wbs.model.PROJECT_TREE", tree);		  
+		  intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", parent.getElementKey());
+		  intent.putExtra("com.example.pocket_wbs.model.ACTIVITY_INDEX", position);
+		  context.startActivity(intent);
+	  }
+	  
 	  @Override
 	  public View getView (int position, View convertView, ViewGroup parent){
 		  convertView = super.getView(position, convertView, parent);
 		  //If we are building the view for the last element in the list, we add an onclick listener so it can be used to add new WBSActivities
 		  if(position + 1 == getCount()){	
 			  convertView.setOnClickListener(new NewWBSActivityOnClickListener(this));
+		  } else {
+			  convertView.setOnClickListener(new EditWBSActivityOnClickListener(this, position));
 		  }
 		  
 		  return convertView;
@@ -54,5 +71,20 @@ public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
 			  adapter.addWBSActivity();			
 		  }
 		  
+	  }
+	  
+	  class EditWBSActivityOnClickListener implements OnClickListener{
+		  private WBSActivityArrayAdapter adapter;
+		  int position;
+		  
+		  private EditWBSActivityOnClickListener(WBSActivityArrayAdapter adapter, int position){
+			  this.adapter = adapter;
+			  this.position = position;
+		  }
+		  
+		  @Override
+		  public void onClick(View v){
+			  adapter.editWBSActivity(position);
+		  }
 	  }
 }

@@ -200,10 +200,51 @@ public class WBSElement implements Serializable{
 	}
 	
 	// Legacy Method
-	protected WBSElement addChildByIndex(String name, int index){
+	protected WBSElement addChildByIndex(String name, int index, String direction){
 		WBSElement child = new WBSElement(name, this);
-		this.children.add(index, child);
+		
 		//TODO calls method to re-arrange children
+		
+		//Checks direction to see if the added child is to the left/right/front
+		if(direction.equals("front")){
+			
+		} else if(direction.equals("left")){
+			int startXTemp = this.getChildByIndex(index).startx;
+			int startYTemp = this.getChildByIndex(index).starty;
+			child.setX(startXTemp-horizontalGap-elementWidth);
+			child.setY(startYTemp);
+			this.children.add(index, child);
+
+			//TODO can have renaming code here? All elements index would have changed.
+			
+			//Move the index to the sibling on the left
+			index=index-1;
+			//Loop to make sure every element to the left of the newly added one is shifted
+			
+			while(index>0){
+				WBSElement temp = this.getChildByIndex(index);
+				temp.setX(temp.startx-horizontalGap-elementWidth);
+				index--;
+			}
+		} else if(direction.equals("right")){
+			int startXTemp = this.getChildByIndex(index-1).startx;
+			int startYTemp = this.getChildByIndex(index-1).starty;
+			child.setX(startXTemp+horizontalGap+elementWidth);
+			child.setY(startYTemp);
+			this.children.add(index, child);
+			
+			//Move the index to the sibling on the right (if applicable)
+			index=index+1;
+			
+			//Loop to make sure every element to the right of the newly added one is shifted
+			while(index<this.children.size()){
+				WBSElement temp = this.getChildByIndex(index);
+				temp.setX(temp.startx+horizontalGap+elementWidth);
+				index++;
+			}
+		}
+		
+		//this.children.add(index, child);
 		return child;
 	}
 	

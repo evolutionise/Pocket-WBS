@@ -152,10 +152,13 @@ public class ViewElementOverview extends ActionBarActivity {
 		if(selectedElement.getIndex() == 0){
 			leftButton.setVisibility(View.VISIBLE);
 			leftButton.setText("Add Left");
+			leftButton.setBackgroundResource(R.drawable.arrow_down);
 		}
 		else{
 			leftButton.setVisibility(View.VISIBLE);
-			leftButton.setText("Left");
+			String disp = selectedElement.getParent().getChildByIndex(selectedElement.getIndex()-1).getElementKey();
+			leftButton.setText(disp);
+			leftButton.setBackgroundResource(R.drawable.arrow_up);
 		}
 		if(selectedElement.isRoot()){
 			leftButton.setVisibility(View.INVISIBLE);
@@ -171,10 +174,13 @@ public class ViewElementOverview extends ActionBarActivity {
 		if(selectedElement.getIndex()+1 >= selectedElement.getSiblings().size()){
 			rightButton.setVisibility(View.VISIBLE);
 			rightButton.setText("Add Right");
+			rightButton.setBackgroundResource(R.drawable.arrow_down);
 		}
 		else{
 			rightButton.setVisibility(View.VISIBLE);
-			rightButton.setText("Right");
+			String disp = selectedElement.getParent().getChildByIndex(selectedElement.getIndex()+1).getElementKey();
+			rightButton.setText(disp);
+			rightButton.setBackgroundResource(R.drawable.arrow_up);
 		}
 		
 		if(selectedElement.isRoot()){
@@ -202,9 +208,11 @@ public class ViewElementOverview extends ActionBarActivity {
 		Button downButton = (Button) findViewById(R.id.arrowDown);
 		if(!selectedElement.hasChildren()){
 			downButton.setText("Add Down");
+			downButton.setBackgroundResource(R.drawable.arrow_down);
 		}
 		else{
 			downButton.setText("Down");
+			downButton.setBackgroundResource(R.drawable.arrow_up);
 		}
 	}
 	

@@ -85,7 +85,7 @@ public class ProjectTree implements Serializable{
 	
 	// Legacy Method
 	public WBSElement addNewFirstSibling(WBSElement sibling, String name){
-		WBSElement child = sibling.getParent().addChildByIndex(name, 0);
+		WBSElement child = sibling.getParent().addChildByIndex(name, 0, "front");
 		return child;
 	}
 	
@@ -119,7 +119,7 @@ public class ProjectTree implements Serializable{
 	// Legacy Method
 	public WBSElement addNewLeftSibling(WBSElement sibling, String name){
 		int siblingIndex = sibling.getParent().getIndexOfChild(sibling);
-		WBSElement child = sibling.getParent().addChildByIndex(name, siblingIndex);
+		WBSElement child = sibling.getParent().addChildByIndex(name, siblingIndex, "left");
 		return child;
 	}
 	
@@ -137,7 +137,7 @@ public class ProjectTree implements Serializable{
 	// Legacy Method
 	public WBSElement addNewRightSibling(WBSElement sibling, String name){
 		int siblingIndex = sibling.getParent().getIndexOfChild(sibling);
-		WBSElement child = sibling.getParent().addChildByIndex(name, siblingIndex + 1);
+		WBSElement child = sibling.getParent().addChildByIndex(name, siblingIndex + 1, "right");
 		return child;
 	}
 	

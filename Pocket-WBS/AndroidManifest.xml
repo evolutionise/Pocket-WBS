@@ -41,6 +41,7 @@
         </activity>
         <activity
             android:name=".EditWBSActivityActivity">
+            android:noHistory="true">
         </activity>
         <activity
             android:name="com.example.pocket_wbs.MenuActivity">

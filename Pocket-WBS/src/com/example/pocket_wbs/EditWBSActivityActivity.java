@@ -58,5 +58,6 @@ public class EditWBSActivityActivity extends Activity{
 		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", element.getElementKey());
 		intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);
 		startActivity(intent);
+		finish();
 	}
 }

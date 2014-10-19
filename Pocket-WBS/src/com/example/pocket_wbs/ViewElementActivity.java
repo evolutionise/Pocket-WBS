@@ -6,6 +6,7 @@ import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewElementActivity extends ActionBarActivity {
 
@@ -41,6 +43,7 @@ public class ViewElementActivity extends ActionBarActivity {
 		//Remove title bar
 	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_view_element);
+		setUpEventListeners();
 		updateActivity();
 		
 		//Create ListView to put WBSActivities into
@@ -53,10 +56,6 @@ public class ViewElementActivity extends ActionBarActivity {
 	
 	@Override
 	public void onBackPressed(){
-		EditText elementName = (EditText) findViewById(R.id.editElementName);
-		if(!selectedElement.isRoot()){
-			this.selectedElement.setName(elementName.getText().toString());
-		}
 		Intent intent = new Intent(this, ViewElementOverview.class);
 		ProjectTree tree = this.tree;
 		String key = this.selectedElement.getElementKey();
@@ -102,6 +101,36 @@ public class ViewElementActivity extends ActionBarActivity {
 		elementKey.setText("Element " + selectedElement.getElementKey());
 		//elementName.setText("Element Name: " + "\n" + selectedElement.getName());
 		editElementName.setText(selectedElement.getName());
+	}
+	
+	private void setUpEventListeners(){
+		Button save = (Button) this.findViewById(R.id.elementSaveButton);
+		Button cancel = (Button) this.findViewById(R.id.elementCancelButton);
+		save.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				EditText elementName = (EditText) findViewById(R.id.editElementName);
+				if(!activity.selectedElement.isRoot()){
+					activity.selectedElement.setName(elementName.getText().toString());
+					Context context = getApplicationContext();
+					Toast saveMessage = new Toast(context);
+					int displayTime = Toast.LENGTH_SHORT;
+					CharSequence message = "Changes Saved";
+					saveMessage.makeText(context, message, displayTime).show();
+				}
+			}
+		});
+		cancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				EditText elementName = (EditText) findViewById(R.id.editElementName);
+				elementName.setText(activity.selectedElement.getName());
+			}
+		});
 	}
 	
 }

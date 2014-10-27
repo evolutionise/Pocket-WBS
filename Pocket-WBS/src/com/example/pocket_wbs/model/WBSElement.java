@@ -17,6 +17,9 @@ import android.graphics.RectF;
 public class WBSElement implements Serializable{
 
 	private String name;
+	private int duration = 0;
+	private double budget = 0.00;
+	private String responsibleStaff = "";
 	private WBSElement parent;
 	private LinkedList<WBSElement> children;
 	private List<WBSActivity> activities = new LinkedList<WBSActivity>();
@@ -561,6 +564,40 @@ public class WBSElement implements Serializable{
 		}
 		
 		return activitiesArray;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		if(duration < 0){
+			throw new IllegalArgumentException("Duration can not be less than zero");
+		}
+		else {
+			this.duration = duration;
+		}
+	}
+
+	public double getBudget() {
+		return budget;
+	}
+
+	public void setBudget(double budget) {
+		if(budget < 0) {
+			throw new IllegalArgumentException("Budget can not be less than zero");
+		}
+		else {
+			this.budget = budget;
+		}
+	}
+
+	public String getResponsibleStaff() {
+		return responsibleStaff;
+	}
+
+	public void setResponsibleStaff(String responsibleStaff) {
+		this.responsibleStaff = responsibleStaff;
 	}
 	
 

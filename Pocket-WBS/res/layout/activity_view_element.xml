@@ -36,6 +36,7 @@
 		            android:layout_height="wrap_content"
 		            android:src="@drawable/pocketwbsicon2" />
 		    </LinearLayout>
+
 		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
@@ -78,6 +79,79 @@
 		            android:textColor="#585858"
 		            android:textColorLink="#FFFFFF"
 		            android:textSize="15sp" />
+		    </LinearLayout>
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="3dp"
+		        android:layout_marginTop="3dp" >
+
+		        <TextView
+		            android:id="@+id/budgetText"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/budget_string"
+		            android:textColor="#585858"
+		            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+		        <EditText
+		            android:id="@+id/budgetEditText"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:background="#FFFFFF"
+		            android:ems="10" >
+
+		            <requestFocus />
+		        </EditText>
+
+		    </LinearLayout>
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="3dp"
+		        android:layout_marginTop="3dp" >
+
+		        <TextView
+		            android:id="@+id/durationText"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:textColor="#585858"
+		            android:text="@string/duration_string"
+		            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+		        <EditText
+		            android:id="@+id/durationEditText"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:background="#FFFFFF"
+		            android:ems="10" />
+		    </LinearLayout>
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="3dp"
+		        android:layout_marginTop="3dp" >
+
+		        <TextView
+		            android:id="@+id/managerText"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:textColor="#585858"
+		            android:text="@string/manager_string"
+		            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+		        <EditText
+		            android:id="@+id/managerEditText"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:background="#FFFFFF"
+		            android:ems="10" />
 
 		    </LinearLayout>
 

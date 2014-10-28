@@ -25,15 +25,13 @@
 	        	<EditText
 	        	    android:id="@+id/activity_description_edit_text"
 	        	    android:layout_width="fill_parent"
-	        	    android:layout_height="293dp"
-	        	    android:gravity="top"
+	        	    android:layout_height="wrap_content"
 	        	    android:layout_marginBottom="17dp"
 	        	    android:layout_marginTop="17dp"
 	        	    android:background="#FFFFFF"
+	        	    android:gravity="top"
 	        	    android:inputType="textMultiLine"
 	        	    android:textColor="#585858" />
-	        
-	       		 
 
 	       		 <LinearLayout
 	       		     android:layout_width="wrap_content"

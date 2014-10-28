@@ -26,6 +26,9 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="budget_string">&quot;Budget: &quot;</string>
+    <string name="duration_string">&quot;Duration (weeks): &quot;</string>
+    <string name="manager_string">&quot;Manager: &quot;</string>
 
     
 </resources>

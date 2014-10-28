@@ -1,5 +1,7 @@
 package com.example.pocket_wbs;
 
+import java.text.DecimalFormat;
+
 import com.example.pocket_wbs.gui.WBSActivityArrayAdapter;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
@@ -96,10 +98,15 @@ public class ViewElementActivity extends ActionBarActivity {
 	 */
 	private void updateTextViews(){
 		TextView elementKey = (TextView) findViewById(R.id.elementKeyView);
-		//TextView elementName = (TextView) findViewById(R.id.elementNameView);
 		EditText editElementName = (EditText) findViewById(R.id.editElementName);
+		EditText budget = (EditText) findViewById(R.id.budgetEditText);
+		EditText duration = (EditText) findViewById(R.id.durationEditText);
+		EditText manager = (EditText) findViewById(R.id.managerEditText);
+		DecimalFormat df = new DecimalFormat("0.00");
+		budget.setText(df.format(selectedElement.getBudget()));
+		duration.setText(Integer.toString(selectedElement.getDuration()));
+		manager.setText(selectedElement.getResponsibleStaff());
 		elementKey.setText("Element " + selectedElement.getElementKey());
-		//elementName.setText("Element Name: " + "\n" + selectedElement.getName());
 		editElementName.setText(selectedElement.getName());
 	}
 	
@@ -111,14 +118,39 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				Context context = getApplicationContext();
 				EditText elementName = (EditText) findViewById(R.id.editElementName);
-				if(!activity.selectedElement.isRoot()){
-					activity.selectedElement.setName(elementName.getText().toString());
-					Context context = getApplicationContext();
+				EditText budget = (EditText) findViewById(R.id.budgetEditText);
+				EditText duration = (EditText) findViewById(R.id.durationEditText);
+				EditText manager = (EditText) findViewById(R.id.managerEditText);
+				
+				String newName = elementName.getText().toString();
+				double newBudget = Double.parseDouble(budget.getText().toString());
+				int newDuration = Integer.parseInt(duration.getText().toString());
+				String newManager = manager.getText().toString();
+				
+				if(activity.selectedElement.validateFormInputs(newName, newBudget, newDuration).equals("")){
+					if(!activity.selectedElement.isRoot()){
+						activity.selectedElement.setName(newName);
+					}
+					activity.selectedElement.setBudget(newBudget);
+					activity.selectedElement.setDuration(newDuration);
+					activity.selectedElement.setResponsibleStaff(newManager);
 					Toast saveMessage = new Toast(context);
 					int displayTime = Toast.LENGTH_SHORT;
 					CharSequence message = "Changes Saved";
+					updateActivity();
 					saveMessage.makeText(context, message, displayTime).show();
+				}
+				else{
+					Toast saveMessage = new Toast(context);
+					int displayTime = Toast.LENGTH_LONG;
+					CharSequence message = "You need to fix the following errors...\n" 
+								+ activity.selectedElement.validateFormInputs(newName, newBudget, newDuration);
+					for (int i=0; i < 2; i++)
+					{
+					    saveMessage.makeText(activity, message, Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		});
@@ -128,9 +160,14 @@ public class ViewElementActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
 				EditText elementName = (EditText) findViewById(R.id.editElementName);
-				elementName.setText(activity.selectedElement.getName());
+				EditText budget = (EditText) findViewById(R.id.budgetEditText);
+				EditText duration = (EditText) findViewById(R.id.durationEditText);
+				EditText manager = (EditText) findViewById(R.id.managerEditText);
+				elementName.setText(selectedElement.getName());
+				budget.setText(Double.toString(selectedElement.getBudget()));
+				duration.setText(Integer.toString(selectedElement.getDuration()));
+				manager.setText(selectedElement.getResponsibleStaff());
 			}
 		});
 	}
-	
 }

@@ -600,6 +600,20 @@ public class WBSElement implements Serializable{
 		this.responsibleStaff = responsibleStaff;
 	}
 	
-
+	public String validateFormInputs(String name, double budget, int duration){
+		String output = "";
+		
+		if(!this.isRoot() && name.equals("")){
+			output += "You need to enter a name for the activity.\n";
+		}
+		if(budget < 0){
+			output += "The budget you set was less than zero.\n";
+		}
+		if(duration < 0){
+			output += "The duration you set was less than zero.\n";
+		}
+		
+		return output;
+	}
 	
 }

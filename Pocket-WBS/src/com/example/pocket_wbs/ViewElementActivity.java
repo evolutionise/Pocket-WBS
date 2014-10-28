@@ -8,6 +8,7 @@ import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;
 
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputFilter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

@@ -45,7 +45,7 @@
 		        android:paddingBottom="2dp" >
 
 		        <TextView
-		            android:id="@+id/textView2"
+		            android:id="@+id/activityBudgetCost"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/index_text"
@@ -101,7 +101,8 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:background="#FFFFFF"
-		            android:ems="10" >
+		            android:ems="10"
+		            android:inputType="numberDecimal" >
 
 		            <requestFocus />
 		        </EditText>
@@ -128,7 +129,9 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:background="#FFFFFF"
-		            android:ems="10" />
+		            android:ems="10"
+		            android:inputType="numberDecimal" />
+
 		    </LinearLayout>
 
 		    <LinearLayout
@@ -156,7 +159,7 @@
 		    </LinearLayout>
 
 		    <TextView
-		        android:id="@+id/textView1"
+		        android:id="@+id/activityBudgetText"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:paddingTop="5dp"

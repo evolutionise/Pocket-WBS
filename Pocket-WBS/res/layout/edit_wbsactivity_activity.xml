@@ -33,9 +33,186 @@
 	        	    android:inputType="textMultiLine"
 	        	    android:textColor="#585858" />
 
+	        	<LinearLayout
+	        	    android:layout_width="match_parent"
+	        	    android:layout_height="wrap_content"
+	        	    android:layout_marginBottom="6dp"
+	        	    android:layout_marginTop="6dp" >
+
+	        		<TextView
+	        		    android:id="@+id/activityBudgetText"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:text="@string/budget_string"
+	        		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	        		<EditText
+	        		    android:id="@+id/activityBudgetEdit"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:layout_weight="1"
+	        		    android:background="#FFFFFF"
+	        		    android:ems="10"
+	        		    android:inputType="numberDecimal" >
+
+	        		    <requestFocus />
+	        		</EditText>
+
+	        	</LinearLayout>
+
+	        	<LinearLayout
+	        	    android:layout_width="match_parent"
+	        	    android:layout_height="wrap_content"
+	        	    android:layout_marginBottom="6dp"
+	        	    android:layout_marginTop="6dp" >
+
+	        		<TextView
+	        		    android:id="@+id/activityBudgetCost"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:text="@string/cost_string"
+	        		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	        		<EditText
+	        		    android:id="@+id/activityCostEdit"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:layout_weight="1"
+	        		    android:background="#FFFFFF"
+	        		    android:inputType="numberDecimal"
+	        		    android:ems="10" />
+
+	        	</LinearLayout>
+
+	        	<LinearLayout
+	        	    android:layout_width="match_parent"
+	        	    android:layout_height="wrap_content"
+	        	    android:layout_marginBottom="6dp"
+	        	    android:layout_marginTop="6dp" >
+
+	        		<TextView
+	        		    android:id="@+id/startDateText"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:text="@string/starting_date"
+	        		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	        		<EditText
+	        		    android:id="@+id/editStartDay"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:layout_weight="1"
+	        		    android:background="#FFFFFF"
+	        		    android:ems="10"
+	        		    android:maxLength="2"
+	        		    android:inputType="number" />
+
+	        		<TextView
+	        		    android:id="@+id/dateDivider1"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:text="@string/date_divider"
+	        		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	        		<EditText
+	        		    android:id="@+id/editStartMonth"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:layout_weight="1"
+	        		    android:background="#FFFFFF"
+	        		    android:ems="10"
+	        		    android:maxLength="2"
+	        		    android:inputType="number" />
+
+	        		<TextView
+	        		    android:id="@+id/dateDivider2"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:text="@string/date_divider"
+	        		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	        		<EditText
+	        		    android:id="@+id/editStartYear"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:layout_weight="1"
+	        		    android:background="#FFFFFF"
+	        		    android:ems="10"
+	        		    android:maxLength="4"
+	        		    android:inputType="number" />
+
+	        	</LinearLayout>
+
+	        	<LinearLayout
+	        	    android:layout_width="match_parent"
+	        	    android:layout_height="wrap_content"
+	        	    android:layout_marginBottom="6dp"
+	        	    android:layout_marginTop="6dp" >
+
+	        		<TextView
+	        		    android:id="@+id/finishDateText"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:text="@string/finish_date"
+	        		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	        		<EditText
+	        		    android:id="@+id/editFinishDay"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:layout_weight="1"
+	        		    android:background="#FFFFFF"
+	        		    android:ems="10"
+	        		    android:maxLength="2"
+	        		    android:inputType="number" />
+
+	        		<TextView
+	        		    android:id="@+id/dateDivider3"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:text="@string/date_divider"
+	        		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	        		<EditText
+	        		    android:id="@+id/editFinishMonth"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:layout_weight="1"
+	        		    android:background="#FFFFFF"
+	        		    android:ems="10"
+	        		    android:maxLength="2"
+	        		    android:inputType="number" />
+
+	        		<TextView
+	        		    android:id="@+id/dateDivider4"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:text="@string/date_divider"	        		 
+	        		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	        		<EditText
+	        		    android:id="@+id/editFinishYear"
+	        		    android:layout_width="wrap_content"
+	        		    android:layout_height="wrap_content"
+	        		    android:layout_weight="1"
+	        		    android:background="#FFFFFF"
+	        		    android:ems="10"
+	        		    android:maxLength="4"
+	        		    android:inputType="number" />
+
+	        	</LinearLayout>
+
+	        	<TextView
+	        	    android:id="@+id/textView1"
+	        	    android:layout_width="wrap_content"
+	        	    android:layout_height="wrap_content"
+	        	    android:text="@string/date_format_description"
+	        	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
 	       		 <LinearLayout
 	       		     android:layout_width="wrap_content"
-	       		     android:layout_height="wrap_content">
+	       		     android:layout_height="wrap_content"
+	       		     android:gravity="bottom|center" >
 	       		     
 	       		     <Button
 			            android:id="@+id/save_button"

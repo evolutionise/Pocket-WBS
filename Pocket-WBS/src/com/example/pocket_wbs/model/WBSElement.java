@@ -604,7 +604,7 @@ public class WBSElement implements Serializable{
 		String output = "";
 		
 		if(!this.isRoot() && name.equals("")){
-			output += "You need to enter a name for the activity.\n";
+			output += "You need to enter a name for the element.\n";
 		}
 		if(budget < 0){
 			output += "The budget you set was less than zero.\n";

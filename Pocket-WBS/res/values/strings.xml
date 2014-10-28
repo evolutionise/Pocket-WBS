@@ -27,8 +27,13 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="budget_string">&quot;Budget: &quot;</string>
-    <string name="duration_string">&quot;Duration (weeks): &quot;</string>
+    <string name="duration_string">&quot;Duration (days): &quot;</string>
     <string name="manager_string">&quot;Manager: &quot;</string>
+    <string name="cost_string">"Actual Cost: "</string>
+    <string name="date_divider">/</string>
+    <string name="starting_date">Start Date:</string>
+    <string name="finish_date">Finish Date:</string>
+    <string name="date_format_description">Date Format: dd/mm/yyyy</string>
 
     
 </resources>

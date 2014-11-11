@@ -43,6 +43,7 @@ public class WBSElement implements Serializable{
 	public WBSElement(String name){
 		this.name = name;
 		this.children = new LinkedList<WBSElement>();
+		setOrientation();
 	}
 	
 	public void isSelected(boolean selected){
@@ -57,6 +58,7 @@ public class WBSElement implements Serializable{
 		this.name = name;
 		this.parent = parent;
 		this.children = new LinkedList<WBSElement>();
+		setOrientation();
 	}
 	
 	/*
@@ -66,6 +68,7 @@ public class WBSElement implements Serializable{
 	public WBSElement(int startx, int starty){
 		this.startx=startx;
 		this.starty=starty;
+		setOrientation();
 
 	}
 	
@@ -86,6 +89,7 @@ public class WBSElement implements Serializable{
     	
     	//textp.setTypeface(font);
 	    textp.setTextSize(14);
+	    textl.setStrokeWidth(2);
 	    
     	//Rectangle shadow
 	    RectF s = new RectF(startx+5, starty+5, startx+elementWidth+5, starty+elementHeight+5);
@@ -416,7 +420,6 @@ public class WBSElement implements Serializable{
     public void moveX(int x){
     	this.startx+=x;
     	this.midx=startx+(elementWidth/2);
-    	this.setOrientation();
     	
     	if(!this.getParent().isRoot())
     		this.moveParent(x);
@@ -474,14 +477,14 @@ public class WBSElement implements Serializable{
     		}
     	}
     	
-    	this.setOrientation();
+    	//this.setOrientation();
 
 	}
 	
 	public void siblingMove(int x){
 		this.startx+=x;
 		this.midx=startx+(elementWidth/2);
-		this.setOrientation();
+		//this.setOrientation();
 	}
 	/*
 	 * Method to determine where this element branches (LEFT or RIGHT)

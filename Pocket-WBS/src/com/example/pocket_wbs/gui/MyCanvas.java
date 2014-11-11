@@ -290,6 +290,90 @@ public class MyCanvas extends View {
 				
     		} else if (orientation.equals("right")) {
     			
+    			//Get parent's siblings on the same orientation
+    			for (WBSElement parentSibling : project.getProjectElementsAsArray()) {
+    				if (parentSibling.getElementLevel()==parentLevel && parentSibling.getMidX()>=rootMidPoint) {
+    					if(parentSibling.hasChildren()) {
+    						parentSiblings.add(parentSibling);
+    					}
+    						
+    				}
+    			}
+    			
+    			
+    			//Iterate through each parent sibling from left to right
+    			for (int count=0; count<parentSiblings.size(); count++) {
+    				
+    				//Get first parent to last parent
+    				WBSElement p = parentSiblings.get(count);
+    				
+    				//Get all children in the parent
+    				LinkedList<WBSElement> children = p.getChildren();
+    				//int lastIndexChild = children.size()-1;
+    				
+    				//Get left most child to the right most child
+    				WBSElement c = children.get(0);
+    				
+    				//If left most child is less than root mid point, shift family right.
+    				if (c.getX()<=rootMidPoint) {
+    					while(c.getX()-hGapLvlOne<=rootMidPoint) {
+    						//Move this element left (negative integer?)
+    						c.moveX(10);	
+    			
+        					//TODO MOVE ANY ELEMENTS ON THE SAME LEVEL towards the left
+        					//of this element to the left (negative integer)
+    						/*for(WBSElement allChildren : children){
+    							allChildren.moveX(-10, children.size());
+    						}*/
+    					}
+    				//Check if this element's parent has a sibling towards the left
+    				//If the current count is less than the last IndexParent = there's a parent sibling to the right
+    				} 
+
+    				if (count>0) {
+    					//If family to the left has children... then check if right most
+    					//element in that family clashes with the left most in this one
+    					if(parentSiblings.get(count-1).hasChildren()) {
+    						//If left most element in this family crosses over the start of the right most element
+    						//in the family on the left
+    						WBSElement neighbourParent = parentSiblings.get(count-1);
+    						if(c.getX()<=neighbourParent.getChildByIndex(neighbourParent.getNumChildren()-1).getX()+elementWidth) {
+    							while(c.getX()-hGapLvlOne<=neighbourParent.getChildByIndex(neighbourParent.getNumChildren()-1).getX()+elementWidth) {
+    								c.moveX(10);
+
+    								//TODO MOVE ANY ELEMENTS ON THE SAME LEVEL towards the left
+    	        					//of this element to the left (negative integer)
+    	    						/*for(WBSElement allChildren : children){
+	    							allChildren.moveX(-10, children.size());
+	    							}*/
+    							}
+    						}
+    					}
+    				}
+    				//Now check if this element's parent has a sibling towards the right
+    				//If count is less than the parents sibling size minus 1 ... then there is a parent sibling to the right
+    				/*if(count<parentSiblings.size()-1) {
+    					//If the family on the right has children
+    					if(parentSiblings.get(count+1).hasChildren()) {
+    						//If the right most element in this family touches the left
+    						//most element in the family on the right
+    						WBSElement neighbourParent = parentSiblings.get(count+1);
+    						LinkedList<WBSElement> neighbourChildren = neighbourParent.getChildren();
+    						//This gets the left most child in the neighbouring family to the right of this family
+    						WBSElement neighbour = neighbourParent.getChildByIndex(0);
+    						if(c.getX()+elementWidth>=neighbour.getX()){
+    							while(c.getX()+hGapLvlOne+elementWidth>=neighbour.getX()) {
+    								neighbour.moveX(10);
+    	    						/*for(WBSElement Children : neighbourChildren){
+    	    							Children.moveX(-10, neighbourChildren.size());
+    	    						}
+    							}
+    						}
+    					}
+    				}*/
+    				
+    			}
+    			
     		}
     	}
     }
@@ -314,8 +398,8 @@ public class MyCanvas extends View {
     	    	
    	       	 //Check disallows an element to be decomposed if it already has children
    	       	 if(wbse.hasChildren()){
-   	       		  WBSElement w=project.addNewLastSibling(wbse.getChildByIndex(0), "default");
-   	       	      w.setName(w.getElementKey());
+   	       		  WBSElement w=project.addNewLastSibling(wbse.getChildByIndex(0), "New Element");
+   	       	      //w.setName(w.getElementKey());
    	       	      
    	       	      //If an element is added, the children of this element should arrange their 
    	       	      //children accordingly

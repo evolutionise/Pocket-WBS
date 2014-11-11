@@ -32,8 +32,10 @@ public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
 	  }
 	  
 	  private void addWBSActivity(){
-		  WBSActivity activity = parent.addActivity("Activity " + getCount());
-		  insert(activity.getDescription(), getCount() - 1);
+		  if(!parent.hasChildren()){
+			  WBSActivity activity = parent.addActivity("Activity " + getCount());
+			  insert(activity.getDescription(), getCount() - 1);
+		  }
 	  }
 	  
 	  private void editWBSActivity(int position){

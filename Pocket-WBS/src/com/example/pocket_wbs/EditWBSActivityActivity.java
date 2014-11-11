@@ -1,5 +1,7 @@
 package com.example.pocket_wbs;
 
+import java.text.DecimalFormat;
+
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;
@@ -59,14 +61,23 @@ public class EditWBSActivityActivity extends Activity{
 		EditText fYear = (EditText) findViewById(R.id.editFinishYear);
 		String newFinishYear = fYear.getText().toString();
 		
+		int sDayNum = Integer.parseInt(newStartDay);
+		int fDayNum = Integer.parseInt(newFinishDay);
+		int sMonthNum = Integer.parseInt(newStartMonth);
+		int fMonthNum = Integer.parseInt(newFinishMonth);
+		int sYearNum = Integer.parseInt(newStartYear);
+		int fYearNum = Integer.parseInt(newFinishYear);
+		
+		
 		double newBudget = Double.parseDouble(budget.getText().toString());
 		double newCost = Double.parseDouble(actualCost.getText().toString());
 		String startDate =  sDay + "/" + sMonth + "/" + sYear;
 		String FinishDate = fDay + "/" + fMonth + "/" + fYear;
 		
 		String validatingString = activity.validateFormInputs(newDescription, newBudget, newCost);
-		validatingString += activity.validateStartDate(Integer.parseInt(newStartDay), Integer.parseInt(newStartMonth), Integer.parseInt(newStartYear));
-		validatingString += activity.validateFinishDate(Integer.parseInt(newFinishDay), Integer.parseInt(newFinishMonth), Integer.parseInt(newFinishYear));
+		validatingString += activity.validateStartDate(sDayNum, sMonthNum, sYearNum);
+		validatingString += activity.validateFinishDate(fDayNum, fMonthNum, fYearNum);
+		validatingString += activity.validateTimeFrame(sDayNum, sMonthNum, sYearNum, fDayNum, fMonthNum, fYearNum);
 		
 		if(validatingString == ""){
 			activity.setDescription(newDescription);
@@ -113,6 +124,8 @@ public class EditWBSActivityActivity extends Activity{
 	}
 	
 	public void updateTextViews(){
+		DecimalFormat df = new DecimalFormat("0.00");
+		
 		EditText budget = (EditText) findViewById(R.id.activityBudgetEdit);
 		EditText actualCost = (EditText) findViewById(R.id.activityCostEdit);
 		EditText sDay = (EditText) findViewById(R.id.editStartDay);
@@ -123,8 +136,8 @@ public class EditWBSActivityActivity extends Activity{
 		EditText fYear = (EditText) findViewById(R.id.editFinishYear);
 		
 		description.setText(activity.getDescription());
-		budget.setText(Double.toString(activity.getBudget()));
-		actualCost.setText(Double.toString(activity.getActualCost()));
+		budget.setText(df.format(activity.getBudget()));
+		actualCost.setText(df.format((activity.getActualCost())));
 		sDay.setText(Integer.toString(activity.getStartDays()));
 		sMonth.setText(Integer.toString(activity.getStartMonths()));
 		sYear.setText(Integer.toString(activity.getStartYears()));

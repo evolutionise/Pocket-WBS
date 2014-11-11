@@ -505,11 +505,9 @@ public class WBSElement implements Serializable{
 	}
 	
 	public WBSActivity addActivity(String description){
-		
-		WBSActivity newActivity = new WBSActivity(description, this);
-		activities.add(newActivity);
-		return newActivity;
-		
+			WBSActivity newActivity = new WBSActivity(description, this);
+			activities.add(newActivity);
+			return newActivity;
 	}
 	
 	public void deleteActivity(WBSActivity activity){
@@ -554,9 +552,7 @@ public class WBSElement implements Serializable{
 	 * 
 	 * @author Alix
 	 */
-	
 	public List<String> getActivitiesAsStringArray(){
-
 		List<String> activitiesArray = new LinkedList();
 		for(int i = 0; i < activities.size(); i++){
 			String activityDescription = activities.get(i).getDescription();
@@ -616,4 +612,49 @@ public class WBSElement implements Serializable{
 		return output;
 	}
 	
+	public boolean hasActivities(){
+		boolean activitiesExist = !this.activities.isEmpty();
+		return activitiesExist;
+	}
+	
+	public double getBudgetTotalOfChildren(){
+		double totalBudget = 0;
+		
+		if(this.hasChildren()){
+			for(WBSElement element : this.children){
+				totalBudget += element.getBudget();
+			}
+		}
+		else{
+			if(this.hasActivities()){
+				for(WBSActivity activity : this.activities){
+					totalBudget += activity.getBudget();
+				}
+			}
+		}
+		
+		return totalBudget;
+	}
+	
+	public double getRemainingBudget(){
+		double remainingBudget = this.getBudget() - this.getBudgetTotalOfChildren();
+		return remainingBudget;
+	}
+	
+	public boolean elementOverBudget(){
+		boolean overBudget = false;
+		if(this.getBudget() - this.getBudgetTotalOfChildren() < 0){
+			overBudget = true;
+		}
+		return overBudget;
+	}
+	
+	public void removeChild(int childIndex){
+		if(this.getNumChildren() == 2){
+			this.children.clear();
+		}
+		else{
+			this.children.remove(childIndex);
+		}		
+	}
 }

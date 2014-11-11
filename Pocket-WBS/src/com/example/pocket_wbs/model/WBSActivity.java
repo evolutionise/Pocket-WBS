@@ -125,7 +125,7 @@ public class WBSActivity implements Serializable {
 			}
 		}
 		else if(month == 2){
-			if(year % 4 == 0 && (!(year % 100 == 0) || year % 400 == 0)){
+			if((year % 400 == 0) || ((year % 100 != 0 && year % 4 == 0))){
 				if(day <= 0 || day > 29){
 					valid = false;
 				}
@@ -210,5 +210,13 @@ public class WBSActivity implements Serializable {
 			output = "The finish date is not a valid date\n";
 		}
 		return output;
+	}
+	
+	public String validateTimeFrame(int sDay, int sMonth, int sYear, int fDay, int fMonth, int fYear){
+		String output = "";
+		if(!(sDay <= fDay && sMonth <= fMonth && sYear <= fYear)){
+			output = "The start date cannot be later than the finish date";
+		}
+		return output; 
 	}
 }

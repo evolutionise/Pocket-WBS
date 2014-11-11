@@ -106,9 +106,9 @@ public class ViewElementOverview extends ActionBarActivity {
 			    	int hGapLvlOne = selectedElement.elementWidth/4;
 			    	int startxTemp = selectedElement.getMidX() - ((hGapLvlOne / 2) + selectedElement.elementWidth);
 			    	int startyTemp = selectedElement.starty + (selectedElement.elementHeight + selectedElement.verticalGap);
-					activity.tree.addChildElement(selectedElement, "New Element 1", startxTemp, startyTemp);
+					activity.tree.addChildElement(selectedElement, "New Element", startxTemp, startyTemp);
 					startxTemp += selectedElement.elementWidth + hGapLvlOne;
-					activity.tree.addChildElement(selectedElement, "New Element 2", startxTemp, startyTemp);
+					activity.tree.addChildElement(selectedElement, "New Element", startxTemp, startyTemp);
 				}
 				if(!selectedElement.isRoot()){
 					// There will be a new implementation for this in the new edit screen
@@ -198,6 +198,7 @@ public class ViewElementOverview extends ActionBarActivity {
 		}
 		else{
 			upButton.setVisibility(View.VISIBLE);
+			upButton.setText("Up");
 		}
 	}
 	
@@ -207,8 +208,13 @@ public class ViewElementOverview extends ActionBarActivity {
 	private void updateDownButton(){
 		Button downButton = (Button) findViewById(R.id.arrowDown);
 		if(!selectedElement.hasChildren()){
-			downButton.setText("Add Down");
-			downButton.setBackgroundResource(R.drawable.arrow_down);
+			if(!selectedElement.hasActivities()){
+				downButton.setText("Add Down");
+				downButton.setBackgroundResource(R.drawable.arrow_down);
+			}
+			else{
+				downButton.setVisibility(View.INVISIBLE);
+			}
 		}
 		else{
 			downButton.setText("Down");

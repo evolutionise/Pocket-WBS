@@ -9,7 +9,9 @@ import com.example.pocket_wbs.model.WBSElement;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -92,27 +94,51 @@ public class ViewElementActivity extends ActionBarActivity {
 	 */
 	private void updateActivity(){
 		updateTextViews();
+		updateWBSActivityView();
+		updateDeleteButton();
+	}
+	
+	private void updateWBSActivityView(){
+		TextView activitiesText = (TextView) findViewById(R.id.activityHeadingText);
+		ListView activitiesList = (ListView) findViewById(R.id.activitiesList);
+		if(selectedElement.hasChildren()){
+			activitiesText.setVisibility(View.INVISIBLE);
+			activitiesList.setVisibility(View.INVISIBLE);
+		}
+		else{
+			activitiesText.setVisibility(View.VISIBLE);
+			activitiesList.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	/**
 	 * This method updates the text views based on the currently selected activity
 	 */
 	private void updateTextViews(){
+		DecimalFormat df = new DecimalFormat("0.00");
+		
 		TextView elementKey = (TextView) findViewById(R.id.elementKeyView);
+		TextView childAllocatedBudget = (TextView) findViewById(R.id.childBudgetTotalText);
+		TextView remainingBudget = (TextView) findViewById(R.id.remainingBudgetText);
+		
 		EditText editElementName = (EditText) findViewById(R.id.editElementName);
 		EditText budget = (EditText) findViewById(R.id.budgetEditText);
 		EditText duration = (EditText) findViewById(R.id.durationEditText);
 		EditText manager = (EditText) findViewById(R.id.managerEditText);
-		DecimalFormat df = new DecimalFormat("0.00");
+		
+		elementKey.setText("Element " + selectedElement.getElementKey());
+		childAllocatedBudget.setText("Sub-Element Budget Total: " + df.format(selectedElement.getBudgetTotalOfChildren()));
+		remainingBudget.setText("Remaining Budget: " + df.format(selectedElement.getRemainingBudget()));
+		
 		budget.setText(df.format(selectedElement.getBudget()));
 		duration.setText(Integer.toString(selectedElement.getDuration()));
 		manager.setText(selectedElement.getResponsibleStaff());
-		elementKey.setText("Element " + selectedElement.getElementKey());
 		editElementName.setText(selectedElement.getName());
 	}
 	
 	private void setUpEventListeners(){
 		Button save = (Button) this.findViewById(R.id.elementSaveButton);
+		Button delete = (Button) this.findViewById(R.id.deleteElementButton);
 		Button cancel = (Button) this.findViewById(R.id.elementCancelButton);
 		save.setOnClickListener(new View.OnClickListener() {
 			
@@ -160,15 +186,44 @@ public class ViewElementActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				ViewElementActivity activity = (ViewElementActivity) v.getContext();
-				EditText elementName = (EditText) findViewById(R.id.editElementName);
-				EditText budget = (EditText) findViewById(R.id.budgetEditText);
-				EditText duration = (EditText) findViewById(R.id.durationEditText);
-				EditText manager = (EditText) findViewById(R.id.managerEditText);
-				elementName.setText(selectedElement.getName());
-				budget.setText(Double.toString(selectedElement.getBudget()));
-				duration.setText(Integer.toString(selectedElement.getDuration()));
-				manager.setText(selectedElement.getResponsibleStaff());
+				activity.updateTextViews();				
 			}
 		});
+		
+		delete.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final ViewElementActivity activity = (ViewElementActivity) v.getContext();
+				new AlertDialog.Builder(activity)
+		        .setIcon(android.R.drawable.ic_dialog_alert)
+		        .setTitle("Delete Element")
+		        .setMessage("Are you sure you want to delete this element?\n(This will delete the other sibling if there are only two elements)")
+		        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+		        {
+		        	@Override
+		        	public void onClick(DialogInterface dialog, int which) {
+		        		activity.selectedElement.getParent().removeChild(selectedElement.getIndex());
+		        		Intent intent = new Intent(activity, GUImain.class);
+		        		ProjectTree tree = activity.tree;
+		        		intent.putExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW", tree);
+		        		startActivity(intent);		    
+		        		finish();
+		        	}
+
+		        })
+		        .setNegativeButton("No", null)
+		        .show();
+			}
+		});
+	}
+	
+	private void updateDeleteButton(){
+		Button delete = (Button) findViewById(R.id.deleteElementButton);
+		if(this.selectedElement.isRoot()){
+			delete.setVisibility(View.INVISIBLE);
+		}
+		else{
+			delete.setVisibility(View.VISIBLE);
+		}
 	}
 }

@@ -24,7 +24,7 @@ public class WBSmain extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
-		TextView view = (TextView)findViewById(R.id.activityBudgetText);
+		TextView view = (TextView)findViewById(R.id.activityHeadingText);
 		//view.setText("Test");   //ProjectTree.Test());
 	}
 

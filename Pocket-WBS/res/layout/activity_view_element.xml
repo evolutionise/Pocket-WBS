@@ -11,18 +11,15 @@
     android:screenOrientation="portrait"
     tools:context="com.example.pocket_wbs.ViewElementActivity" >
     <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
-	<LinearLayout
-    android:focusable="true" android:focusableInTouchMode="true"
-    android:layout_width="0px" android:layout_height="0px"/>
 
 	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
 	    android:orientation="vertical" >
 
 		<LinearLayout
 		    android:layout_width="match_parent"
-		    android:layout_height="376dp"
+		    android:layout_height="match_parent"
 		    android:orientation="vertical" >
 
 		    <LinearLayout
@@ -92,8 +89,8 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/budget_string"
-		            android:textColor="#585858"
-		            android:textAppearance="?android:attr/textAppearanceSmall" />
+		            android:textAppearance="?android:attr/textAppearanceSmall"
+		            android:textColor="#585858" />
 
 		        <EditText
 		            android:id="@+id/budgetEditText"
@@ -106,7 +103,6 @@
 
 		            <requestFocus />
 		        </EditText>
-
 		    </LinearLayout>
 
 		    <LinearLayout
@@ -119,9 +115,9 @@
 		            android:id="@+id/durationText"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:textColor="#585858"
 		            android:text="@string/duration_string"
-		            android:textAppearance="?android:attr/textAppearanceSmall" />
+		            android:textAppearance="?android:attr/textAppearanceSmall"
+		            android:textColor="#585858" />
 
 		        <EditText
 		            android:id="@+id/durationEditText"
@@ -131,7 +127,6 @@
 		            android:background="#FFFFFF"
 		            android:ems="10"
 		            android:inputType="numberDecimal" />
-
 		    </LinearLayout>
 
 		    <LinearLayout
@@ -144,9 +139,9 @@
 		            android:id="@+id/managerText"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:textColor="#585858"
 		            android:text="@string/manager_string"
-		            android:textAppearance="?android:attr/textAppearanceSmall" />
+		            android:textAppearance="?android:attr/textAppearanceSmall"
+		            android:textColor="#585858" />
 
 		        <EditText
 		            android:id="@+id/managerEditText"
@@ -155,13 +150,35 @@
 		            android:layout_weight="1"
 		            android:background="#FFFFFF"
 		            android:ems="10" />
-
 		    </LinearLayout>
 
 		    <TextView
-		        android:id="@+id/activityBudgetText"
+		        android:id="@+id/childBudgetTotalText"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="3dp"
+		        android:layout_marginTop="3dp"
+		        android:paddingTop="5dp"
+		        android:text="@string/sub_element_budget_string"
+		        android:textColor="#585858"
+		        android:textSize="15sp" />
+
+		    <TextView
+		        android:id="@+id/remainingBudgetText"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="3dp"
+		        android:layout_marginTop="3dp"
+		        android:paddingTop="5dp"
+		        android:text="@string/remaining_budget"
+		        android:textColor="#585858"
+		        android:textSize="15sp" />
+
+		    <TextView
+		        android:id="@+id/activityHeadingText"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="bottom"
 		        android:paddingTop="5dp"
 		        android:text="@string/activities_text"
 		        android:textColor="#585858"
@@ -170,29 +187,39 @@
 		    <ListView
 		        android:id="@+id/activitiesList"
 		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_gravity="bottom"
+		        android:layout_weight="1.29"
 		        android:background="#FFFFFF"
 		        android:paddingTop="5dp" >
+
 		    </ListView>
-		</LinearLayout>
 
-		<LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:gravity="bottom|center_horizontal"
-		    android:orientation="horizontal" >
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="48dp"
+		        android:layout_gravity="top|center_vertical"
+		        android:gravity="bottom|center_horizontal"
+		        android:orientation="horizontal" >
 
-			<Button
-			    android:id="@+id/elementSaveButton"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:text="@string/save" />
+		        <Button
+		            android:id="@+id/elementSaveButton"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/save" />
 
-			<Button
-			    android:id="@+id/elementCancelButton"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:text="@string/cancel" />
+		        <Button
+		            android:id="@+id/deleteElementButton"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/delete" />
+
+		        <Button
+		            android:id="@+id/elementCancelButton"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/cancel" />
+		    </LinearLayout>
 
 		</LinearLayout>
 

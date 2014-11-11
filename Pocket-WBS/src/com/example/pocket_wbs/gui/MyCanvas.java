@@ -153,7 +153,7 @@ public class MyCanvas extends View {
     		//Adds child to the project with reference to its parent - returns the child to
     		//be added to the WBS Element array list for population
     		wbe = project.addChildElement(parent, name, startxTemp, startyTemp);
-    		wbe.setName(wbe.getElementKey());
+    		wbe.setName("New Element");
     		addElement(wbe);
     		//adjustElements(wbe, startxTemp, hGapLvlOne);
     		startxTemp+=elementWidth+hGapLvlOne;
@@ -334,8 +334,10 @@ public class MyCanvas extends View {
    	       	      this.invalidate();
    	       	 }
    	       	 else{
-   	       		 decomposeElement(wbse, wbse.getX(),wbse.getY());
-   	       		 this.invalidate();	
+   	       		 if(!wbse.hasActivities()){
+   	       			 decomposeElement(wbse, wbse.getX(),wbse.getY());
+   	       			 this.invalidate();
+   	       		 }	
    	       	 }
     	    	
     	    }

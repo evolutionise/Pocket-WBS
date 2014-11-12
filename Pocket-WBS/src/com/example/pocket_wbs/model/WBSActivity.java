@@ -214,7 +214,13 @@ public class WBSActivity implements Serializable {
 	
 	public String validateTimeFrame(int sDay, int sMonth, int sYear, int fDay, int fMonth, int fYear){
 		String output = "";
-		if(!(sDay <= fDay && sMonth <= fMonth && sYear <= fYear)){
+		if(!(sYear <= fYear)){
+			output = "The start date cannot be later than the finish date";
+		}
+		else if(!(sMonth <= fMonth)){
+			output = "The start date cannot be later than the finish date";
+		}
+		else if(!(sDay <= fDay)){
 			output = "The start date cannot be later than the finish date";
 		}
 		return output; 

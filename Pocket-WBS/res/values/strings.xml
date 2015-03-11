@@ -36,6 +36,7 @@
     <string name="date_format_description">Date Format: dd/mm/yyyy</string>
     <string name="sub_element_budget_string">"Sub-Element Budget Total: "</string>
     <string name="remaining_budget">"Remaining Budget: "</string>
+    <string name="work_text">Work (Hours)</string>
 
     
 </resources>

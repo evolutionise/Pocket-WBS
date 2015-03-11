@@ -115,7 +115,7 @@
 		            android:id="@+id/durationText"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/duration_string"
+		            android:text="@string/work_text"
 		            android:textAppearance="?android:attr/textAppearanceSmall"
 		            android:textColor="#585858" />
 

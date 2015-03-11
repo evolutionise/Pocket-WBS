@@ -46,9 +46,14 @@ public class WBSElement implements Serializable{
 		setOrientation();
 	}
 	
+	/**
+	 * Method to check whether an element has been selected
+	 * @param true if the element was selected
+	 */
 	public void isSelected(boolean selected){
 		this.selected=selected;
 	}
+	
 	/**
 	 * Constructor for an element object
 	 * @param name
@@ -61,7 +66,7 @@ public class WBSElement implements Serializable{
 		setOrientation();
 	}
 	
-	/*
+	/**
 	 * Alternative Constructor for an element object
 	 * @author adrian
 	 */
@@ -72,14 +77,18 @@ public class WBSElement implements Serializable{
 
 	}
 	
-    public void onDraw(Canvas canvas) 
+    /**
+     * Method used to draw an element onto the project tree
+     * display in th GUI.
+     * @param canvas - the canvas to which the element is being drawn
+     */
+	public void onDraw(Canvas canvas) 
     {
 
     	Paint rectangleP = new Paint();
     	Paint rectangleS = new Paint();
     	Paint textp = new Paint();
     	Paint textl = new Paint();
-    	
     	
     	rectangleS.setColor(Color.parseColor("#848484"));
     	rectangleP.setColor(Color.parseColor("#819FF7")); 
@@ -120,7 +129,7 @@ public class WBSElement implements Serializable{
     	}
     }
     
-    /*
+    /**
      * Method to check whether the on-click is within the element's bounds
      */
     public boolean isCollition(float x2, float y2) 
@@ -171,7 +180,7 @@ public class WBSElement implements Serializable{
 		return child;
 	}
 	
-	/*
+	/**
 	 * This method adds a child element to the end of the list
 	 * @param name - name for the element
 	 * @param startx - starting x coordinates for element
@@ -193,8 +202,15 @@ public class WBSElement implements Serializable{
 		this.children.add(child);
 	}
 	
-
-	
+	/**
+	 * Adds a child element to the specified index in the elements
+	 * list of children
+	 * @param name - the name of the new element
+	 * @param index - where to place the new element
+	 * @param startx - the x location of the new element in the GUI
+	 * @param starty - the y location of the new element in the GUI
+	 * @return
+	 */
 	protected WBSElement addChildByIndex(String name, int index, int startx, int starty){
 		WBSElement child = new WBSElement(name, this);
 		this.children.add(index, child);
@@ -255,6 +271,10 @@ public class WBSElement implements Serializable{
 		return child;
 	}
 	
+	/**
+	 * Method used to find the index of a specific child element
+	 * within an elements list of children.
+	 */
 	public int getIndexOfChild(WBSElement child){
 		return this.children.indexOf(child);
 	}
@@ -268,19 +288,37 @@ public class WBSElement implements Serializable{
 		return this.name;
 	}
 	
+	/**
+	 * Method used to find the parent element to which the
+	 * element is assigned
+	 * @return WBSElement - the elements parent
+	 */
 	public WBSElement getParent(){
 		return this.parent;
 	}
 	
+	/**
+	 * Method used to get the child element at a specific index
+	 * in the elements child list
+	 * @param i - the index to look for
+	 * @return - WBSElement - the child element at that index
+	 */
 	public WBSElement getChildByIndex(int i) {
+		// Check for IndexOutOfBoundsException?
 		return this.children.get(i);
 	}
 	
+	/**
+	 * Method for finding the number of children that an element 
+	 * currently has
+	 * @return int - the number of children that an element has
+	 */
 	public int getNumChildren()
 	{
 		return this.children.size();
 	}
-	/*
+	
+	/**
 	 * Check whether element has parent or not - mostly used for branch drawing
 	 * @author adrian
 	 */
@@ -288,11 +326,18 @@ public class WBSElement implements Serializable{
 		return this.parent!=null;
 	}
 	
+	/**
+	 * Method used to get the list of children for an element
+	 * @return LinkedList<WBSElement> - an elements list of children
+	 */
 	public LinkedList<WBSElement> getChildren(){
 		return this.children;
 	}
 	
-	
+	/**
+	 * Method to check if the selected element is the root element
+	 * @return true when the element is the root element
+	 */
 	public boolean isRoot(){
 		boolean root = false;
 		if(this.parent == null){
@@ -301,6 +346,11 @@ public class WBSElement implements Serializable{
 		return root;
 	}
 
+	/**
+	 * Method used to find a string representation of an elements location
+	 * within the data structure (0, 1, 1.1, 1.1.1, 2, 2.1 etc).
+	 * @return String - the location of the element within the data structure
+	 */
 	public String getElementKey(){
 		String key = "";
 		if(this.isRoot()){ // If the key is the root element
@@ -318,6 +368,10 @@ public class WBSElement implements Serializable{
 		return key;
 	}
 	
+	/**
+	 * Method used to find the decomposition level of the element
+	 * @return
+	 */
 	public int getElementLevel() {
 		int level=0;
 		WBSElement tempElement;
@@ -327,11 +381,10 @@ public class WBSElement implements Serializable{
 			tempElement=tempElement.getParent();
 			level++;
 		}
-		
 		return level;
 	}
 	
-	/*
+	/**
 	 * Method to return this WBS Element's Level One Parent, for the purpose of
 	 * determining whether this element is branching left, right or down the middle
 	 * @return The level one parent of this element if it isn't a Level one element
@@ -350,6 +403,7 @@ public class WBSElement implements Serializable{
 		return lvlOneParent;
 	}
 	
+	// Redundant - method available in project tree
 	public WBSElement getRoot()
 	{
 		WBSElement tempElement;
@@ -362,7 +416,7 @@ public class WBSElement implements Serializable{
 		return tempElement;
 	}
 	
-	/*
+	/**
 	 * Method that re-arranges children whenever a child is added (after decomposed)
 	 * @author adrian
 	 */
@@ -394,38 +448,37 @@ public class WBSElement implements Serializable{
 			}
 		}
 	}
-	/*
+	
+	//====Beginning of element location methods section====//
+	
+	/**
 	 * Getter and setter methods for Element Coordinate variables 
 	 * @author adrian
 	 */
-    public int getX()
-    {
+    public int getX() {
     	return startx;
     }
     
-    public int getY()
-    {
+    public int getY() {
     	return starty;
     }
     
-    /*
+    /**
      * Method to set starting x-coordinate for element. Also changes the Mid x-coordinate when this happens
      */
-    public void setX(int x)
-    {
+    public void setX(int x) {
     	this.startx=x;
     	this.midx=x+(elementWidth/2);
 	}
     
-    public void moveX(int x){
+    public void moveX(int x) {
     	this.startx+=x;
     	this.midx=startx+(elementWidth/2);
     	
     	if(!this.getParent().isRoot())
     		this.moveParent(x);
-    	
-    	
     }
+    
     public void setY(int y)
     {
     	this.starty=y;
@@ -441,7 +494,14 @@ public class WBSElement implements Serializable{
     	this.midx=midx;
     }
     
-	public int getIndex(){
+    //====End of location methods sections===//
+    
+	/**
+	 * Method used to find the elements index in the child array
+	 * that it resides.
+	 * @return int - the elements index
+	 */
+    public int getIndex(){
 		int index = 0;
 		if(this.hasParent()){
 			index = this.getParent().getChildren().indexOf(this);
@@ -449,7 +509,11 @@ public class WBSElement implements Serializable{
 		return index;
 	}
 	
-	public LinkedList<WBSElement> getSiblings(){
+	/**
+	 * Method used to get a list of the elements siblings.
+	 * @return LinkedList<WBSElement> - A list of the element and its sibilings
+	 */
+    public LinkedList<WBSElement> getSiblings(){
 		LinkedList<WBSElement> siblings = new LinkedList<WBSElement>();
 		if(this.isRoot()){
 			siblings.add(this);
@@ -476,17 +540,14 @@ public class WBSElement implements Serializable{
     			ps.siblingMove(x);
     		}
     	}
-    	
-    	//this.setOrientation();
-
 	}
 	
 	public void siblingMove(int x){
 		this.startx+=x;
 		this.midx=startx+(elementWidth/2);
-		//this.setOrientation();
 	}
-	/*
+	
+	/**
 	 * Method to determine where this element branches (LEFT or RIGHT)
 	 */
 	public void setOrientation(){
@@ -500,24 +561,34 @@ public class WBSElement implements Serializable{
     		orientation="middle";
 	}
 	
-
+	
 	public String getOrientation()
 	{
 		return this.orientation;
 		
 	}
 	
+	/**
+	 * Method used to add a new activity to an element
+	 * @param description - the description of the new activity
+	 * @return WBSActivity - the activity that was added to the element
+	 */
 	public WBSActivity addActivity(String description){
 			WBSActivity newActivity = new WBSActivity(description, this);
 			activities.add(newActivity);
 			return newActivity;
 	}
 	
+	/**
+	 * Method used to remove a selected activity from an elements list of
+	 * activities
+	 * @param activity - the activity to be removed
+	 */
 	public void deleteActivity(WBSActivity activity){
 		activities.remove(activity);
 	}
 	
-	/*
+	/**
 	 * All activities including the one currently at the index parameter will have 1 added to their index.
 	 */
 	public void setActivityIndex(int index, WBSActivity activity){
@@ -525,17 +596,27 @@ public class WBSElement implements Serializable{
 		activities.set(index, activity);
 	}
 	
+	/**
+	 * Method used to find the index of an activity within the elements
+	 * activity list.
+	 * @param activity - the activity to find the index of
+	 * @return int - the index of the specified activity
+	 */
 	public int getActivityIndex(WBSActivity activity){
 		return activities.indexOf(activity);
 	}
 	
+	/**
+	 * Method used to find a specific activity from the given position
+	 * @param position - the index of the activity to find
+	 * @return WBSActivity - the activity at the specified position
+	 */
 	public WBSActivity getActivityByIndex(int position){
 		return activities.get(position);
 	}
 	
-	/*
+	/**
 	 * This method may never be used but added it in here just in case.  Less reliable than setting the activity index directly. 
-	 * 
 	 * @author Alix
 	 */
 	public void swapActivities(WBSActivity act1, WBSActivity act2){
@@ -549,10 +630,9 @@ public class WBSElement implements Serializable{
 		activities.add(index, act2);		
 	}
 	
-	/*
+	/**
 	 * Method to get a string array of all of the WBSActivities for the ListView 
 	 * Used in Sprint Two, may not be needed after adding WBSAttributes as the ListView will change type
-	 * 
 	 * @author Alix
 	 */
 	public List<String> getActivitiesAsStringArray(){
@@ -565,10 +645,19 @@ public class WBSElement implements Serializable{
 		return activitiesArray;
 	}
 
+	/**
+	 * Method used to find the duration of an element
+	 * @return int - the element's duration
+	 */
 	public int getDuration() {
 		return duration;
 	}
 
+	/**
+	 * Method used to change the duration of an activity
+	 * @throws IllegalArgumentException when the new duration is lower than zero
+	 * @param duration
+	 */
 	public void setDuration(int duration) {
 		if(duration < 0){
 			throw new IllegalArgumentException("Duration can not be less than zero");
@@ -578,10 +667,19 @@ public class WBSElement implements Serializable{
 		}
 	}
 
+	/**
+	 * Method used to get an element's budget
+	 * @return double - an element's assigned budget
+	 */
 	public double getBudget() {
 		return budget;
 	}
 
+	/**
+	 * Method used to change the budget of an activity
+	 * @throws IllegalArgumentException when the new budget is lower than zero
+	 * @param budget - the new value to assign the budget to
+	 */
 	public void setBudget(double budget) {
 		if(budget < 0) {
 			throw new IllegalArgumentException("Budget can not be less than zero");
@@ -591,14 +689,31 @@ public class WBSElement implements Serializable{
 		}
 	}
 
+	/**
+	 * Method used to get the name of the staff member assigned as
+	 * the responsible manager for an activity.
+	 * @return String - the name of the individual responsible for the activity
+	 */
 	public String getResponsibleStaff() {
 		return responsibleStaff;
 	}
 
+	/**
+	 * Method used to change the name of the responsible staff member
+	 * @param responsibleStaff
+	 */
 	public void setResponsibleStaff(String responsibleStaff) {
 		this.responsibleStaff = responsibleStaff;
 	}
 	
+	/**
+	 * Method used to print out an error message with any invalid inputs for
+	 * an elements attribute when set in the GUI.
+	 * @param name
+	 * @param budget
+	 * @param duration
+	 * @return
+	 */
 	public String validateFormInputs(String name, double budget, int duration){
 		String output = "";
 		
@@ -615,11 +730,21 @@ public class WBSElement implements Serializable{
 		return output;
 	}
 	
+	/**
+	 * Method used to check whether the elements has activities assigned
+	 * to it
+	 * @return true if the element has activities
+	 */
 	public boolean hasActivities(){
 		boolean activitiesExist = !this.activities.isEmpty();
 		return activitiesExist;
 	}
 	
+	/**
+	 * Method used to find the total budget assigned to an elements
+	 * children
+	 * @return double - the total budget of all children
+	 */
 	public double getBudgetTotalOfChildren(){
 		double totalBudget = 0;
 		
@@ -639,11 +764,20 @@ public class WBSElement implements Serializable{
 		return totalBudget;
 	}
 	
+	/**
+	 * Method used to find the remaining budget of an element
+	 * @return double - the amount of money left for assignment
+	 */
 	public double getRemainingBudget(){
 		double remainingBudget = this.getBudget() - this.getBudgetTotalOfChildren();
 		return remainingBudget;
 	}
 	
+	/**
+	 * Method used to find whether the total budget of on element's children
+	 * is over the element's assigned budget
+	 * @return true if the element is over budget
+	 */
 	public boolean elementOverBudget(){
 		boolean overBudget = false;
 		if(this.getBudget() - this.getBudgetTotalOfChildren() < 0){
@@ -652,6 +786,11 @@ public class WBSElement implements Serializable{
 		return overBudget;
 	}
 	
+	/**
+	 * Method used to remove a child element at a specific index in the
+	 * elements list of children
+	 * @param childIndex - the index of the child to be removed
+	 */
 	public void removeChild(int childIndex){
 		if(this.getNumChildren() == 2){
 			this.children.clear();

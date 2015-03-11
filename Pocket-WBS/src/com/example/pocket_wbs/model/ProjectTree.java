@@ -5,6 +5,11 @@
 
 package com.example.pocket_wbs.model;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +27,6 @@ public class ProjectTree implements Serializable{
 		this.rootElement = new WBSElement(name);
 	}
 
-	
 	/**
 	 * This method is used to change the project's name after creation
 	 * @param name - the new name for the project
@@ -151,12 +155,23 @@ public class ProjectTree implements Serializable{
 		return element.hasChildren();
 	}
 	
+	/**
+	 * Method used to create a tree map of all elements so any element can
+	 * be accessed by key.
+	 * @return TreeMap - a map of all elements
+	 */
 	public TreeMap<String, WBSElement> getProjectElements(){
 		TreeMap<String, WBSElement> elements = new TreeMap<String, WBSElement>();
 		getProjectElements(rootElement, elements);
 		return elements;
 	}
 
+	/**
+	 * Method used in TreeMap getProjectElements to place elements into the TreeMap
+	 * itself to make it look simpler.
+	 * @param element - the element to put into the tree
+	 * @param elements - the map where the elements are being put into
+	 */
 	private void getProjectElements(WBSElement element, TreeMap<String, WBSElement> elements) {
 		elements.put(element.getElementKey(), element);
 		for(WBSElement child : element.getChildren()){
@@ -164,6 +179,11 @@ public class ProjectTree implements Serializable{
 		}	
 	}
 	
+	/**
+	 * Method used to get all elements as an ArrayList. It is simpler to iterate through
+	 * all elements in an ArrayList than it is a TreeMap.
+	 * @return ArrayList of all elements
+	 */
 	public ArrayList<WBSElement> getProjectElementsAsArray(){
 		ArrayList<WBSElement> elements = new ArrayList<WBSElement>();
 		TreeMap<String, WBSElement> elementMap = this.getProjectElements();
@@ -173,7 +193,7 @@ public class ProjectTree implements Serializable{
 		}
 		return elements;
 	}
-	
+
 	/*public static String Test(){
 		
 		ProjectTree project = new ProjectTree("[Name of Project]");

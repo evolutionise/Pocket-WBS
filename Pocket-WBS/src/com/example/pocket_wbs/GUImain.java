@@ -10,6 +10,7 @@ import com.example.pocket_wbs.gui.MyCanvas;
 import com.example.pocket_wbs.gui.WBSSurfaceView;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
+import com.example.pocket_wbs.model.WBSFileManager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -66,9 +67,8 @@ public class GUImain extends ActionBarActivity {
 	//Will receive ProjectTree object from previous activity, create manually for now
 		Intent intent = getIntent();
 		// If I made a new activity from the screen
-		if(intent.hasExtra(MenuActivity.EXTRA_MESSAGE)){
-			String projectName = intent.getStringExtra(MenuActivity.EXTRA_MESSAGE);
-			pt = new ProjectTree(projectName);
+		if(intent.hasExtra("com.example.pocket_wbs.NEW_TREE")){
+			this.pt = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.NEW_TREE");
 		}
 		// If I came from the zoom view
 		else if(intent.hasExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW")){

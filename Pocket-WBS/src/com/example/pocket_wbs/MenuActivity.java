@@ -1,9 +1,14 @@
 package com.example.pocket_wbs;
 
+import com.example.pocket_wbs.model.ProjectTree;
+import com.example.pocket_wbs.model.WBSFileManager;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.app.AlertDialog;
+import android.app.Application;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -78,10 +84,22 @@ public class MenuActivity extends ActionBarActivity {
 	
 	public void newWBS(){
 		
+		ProjectTree tree = new ProjectTree(WBSName);
 		Intent intent = new Intent(this, GUImain.class);
-		intent.putExtra(EXTRA_MESSAGE, WBSName);
+		intent.putExtra("com.example.pocket_wbs.NEW_TREE", tree);
 		startActivity(intent);
 		
+	}
+	
+	//On click method to load an existing WBS
+	
+	public void loadExistingWBS(View view){ 
+		Context context = getApplicationContext();
+		WBSFileManager fileManager = new WBSFileManager();
+		ProjectTree tree = fileManager.loadTreeFromFile(context);
+		Intent intent = new Intent(this, GUImain.class);
+		intent.putExtra("com.example.pocket_wbs.NEW_TREE", tree);
+		startActivity(intent);
 	}
 	
 	

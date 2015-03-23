@@ -9,37 +9,36 @@ import java.io.ObjectOutputStream;
 
 import android.content.Context;
 
-public class WBSFileReadWrite {
+public class WBSFileManager {
+	
+	private static String fileName = "project_file.ser";
+	
+	public WBSFileManager(){
 
-	
-	private ProjectTree tree;
-	
-	public WBSFileReadWrite(ProjectTree tree){
-		this.tree = tree;
 	}
 	
-	public void saveTreeToFile(){
+	public void saveTreeToFile(Context context, ProjectTree tree){
 		try {
-			FileOutputStream fileOutput = new FileOutputStream("/pocket_wbs/save_data/project_tree.ser");
+			FileOutputStream fileOutput = context.openFileOutput(fileName, Context.MODE_PRIVATE);
 			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
-			objectOutput.writeObject(this);
+			objectOutput.writeObject(tree);
 			objectOutput.close();
 			fileOutput.close();
 		}
-		catch(IOException e){
-			//TODO
+		catch(Exception e){
+			System.out.println("Error: " + e.getMessage());
 		}
 	}
 	
-	public ProjectTree loadTreeFromFile(){
+	public ProjectTree loadTreeFromFile(Context context){
 		ProjectTree tree = new ProjectTree("Project");
 		try{
-			FileInputStream fileInput = new FileInputStream("/pocket_wbs/save_data/project_tree.ser");
+			FileInputStream fileInput = context.openFileInput(fileName);
 			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 			tree = (ProjectTree) objectInput.readObject();
 		}
 		catch(Exception e){
-			//TODO
+			System.out.println("Error: " + e.getMessage());
 		}
 		return tree;
 	}

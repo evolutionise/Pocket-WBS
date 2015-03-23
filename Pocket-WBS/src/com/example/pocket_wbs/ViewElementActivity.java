@@ -6,6 +6,7 @@ import com.example.pocket_wbs.gui.WBSActivityArrayAdapter;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;
+import com.example.pocket_wbs.model.WBSFileManager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
@@ -167,6 +168,8 @@ public class ViewElementActivity extends ActionBarActivity {
 					int displayTime = Toast.LENGTH_SHORT;
 					CharSequence message = "Changes Saved";
 					updateActivity();
+					WBSFileManager wbsManager = new WBSFileManager();
+					wbsManager.saveTreeToFile(context, tree);
 					saveMessage.makeText(context, message, displayTime).show();
 				}
 				else{

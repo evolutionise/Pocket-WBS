@@ -30,7 +30,7 @@
             android:id="@+id/savedWBSButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
+            android:onClick="loadExistingWBS"
             android:text="@string/view_saved_wbs_string" />
     </LinearLayout>
 

@@ -11,6 +11,7 @@ public class WBSActivity implements Serializable {
 	private String startDate = "01/01/2015";
 	private String finishDate = "01/01/2015";
 	private WBSElement containingElement;
+	private WBSAttributes attributes;
 	
 	/**
 	 * Constructor for a new WBS activity
@@ -22,6 +23,14 @@ public class WBSActivity implements Serializable {
 		this.containingElement = element;
 	}
 
+	
+	public WBSAttributes getAttributes() {
+		if (attributes == null) {
+			attributes = new WBSAttributes(this);
+		}
+		return attributes;
+	}
+	
 	/**
 	 * Method that gets an activities description
 	 * @return String - the activities description

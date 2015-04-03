@@ -23,6 +23,7 @@ public class WBSElement implements Serializable{
 	private WBSElement parent;
 	private LinkedList<WBSElement> children;
 	private List<WBSActivity> activities = new LinkedList<WBSActivity>();
+	private WBSAttributes attributes;
 
 	private int startx;
 	public int starty;
@@ -75,6 +76,14 @@ public class WBSElement implements Serializable{
 		this.starty=starty;
 		setOrientation();
 
+	}
+	
+	
+	public WBSAttributes getAttributes() {
+		if (attributes == null) {
+			attributes = new WBSAttributes(this);
+		}
+		return attributes;
 	}
 	
     /**

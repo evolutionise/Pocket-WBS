@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-class WBSAttributes {
+public class WBSAttributes {
 	
 	final private static Map<String, Map<String, String>> allNames = new HashMap<String, Map<String, String>>();
 	private WBSAttributeCollection collection;

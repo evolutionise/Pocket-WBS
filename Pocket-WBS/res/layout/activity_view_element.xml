@@ -12,217 +12,253 @@
     tools:context="com.example.pocket_wbs.ViewElementActivity" >
     <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
 
-	<LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
 
-		<LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:orientation="vertical" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
 
-		    <LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:paddingBottom="10dp" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp" >
 
-		        <ImageView
-		            android:id="@+id/imageView1"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:src="@drawable/pocketwbsicon2" />
-		    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/pocketwbsicon2" />
+                </LinearLayout>
 
-		    <LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:gravity="left"
-		        android:orientation="horizontal"
-		        android:paddingBottom="2dp" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingBottom="2dp" >
 
-		        <TextView
-		            android:id="@+id/activityBudgetCost"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/index_text"
-		            android:textColor="#585858"
-		            android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/activityBudgetCost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/index_text"
+                        android:textSize="15sp" />
 
-		        <TextView
-		            android:id="@+id/elementKeyView"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/element_key_text"
-		            android:textAppearance="?android:attr/textAppearanceLarge"
-		            android:textColor="#585858"
-		            android:textSize="15sp" />
-		    </LinearLayout>
+                    <TextView
+                        android:id="@+id/elementKeyView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/element_key_text"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="#585858"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
-		    <LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:paddingBottom="5dp" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp" >
 
-		        <EditText
-		            android:id="@+id/editElementName"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="1"
-		            android:background="#FFFFFF"
-		            android:ems="10"
-		            android:nextFocusLeft="@id/editElementName"
-		            android:nextFocusUp="@id/editElementName"
-		            android:textColor="#585858"
-		            android:textColorLink="#FFFFFF"
-		            android:textSize="15sp" />
-		    </LinearLayout>
+                    <EditText
+                        android:id="@+id/editElementName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:ems="10"
+                        android:nextFocusLeft="@id/editElementName"
+                        android:nextFocusUp="@id/editElementName"
+                        android:textColor="#585858"
+                        android:textColorLink="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
-		    <LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="3dp"
-		        android:layout_marginTop="3dp" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-		        <TextView
-		            android:id="@+id/budgetText"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/budget_string"
-		            android:textAppearance="?android:attr/textAppearanceSmall"
-		            android:textColor="#585858" />
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Attributes:"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
-		        <EditText
-		            android:id="@+id/budgetEditText"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="1"
-		            android:background="#FFFFFF"
-		            android:ems="10"
-		            android:inputType="numberDecimal" >
+                <ScrollView
+                    android:id="@+id/scrollView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="#BDBDBD" >
 
-		            <requestFocus />
-		        </EditText>
-		    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" >
 
-		    <LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="3dp"
-		        android:layout_marginTop="3dp" >
+                        <LinearLayout
+                            android:id="@+id/attributesLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical" >
 
-		        <TextView
-		            android:id="@+id/durationText"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/work_text"
-		            android:textAppearance="?android:attr/textAppearanceSmall"
-		            android:textColor="#585858" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:layout_marginTop="3dp" >
 
-		        <EditText
-		            android:id="@+id/durationEditText"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="1"
-		            android:background="#FFFFFF"
-		            android:ems="10"
-		            android:inputType="numberDecimal" />
-		    </LinearLayout>
+                                <TextView
+                                    android:id="@+id/budgetText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/budget_string"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:textColor="#585858" />
 
-		    <LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="3dp"
-		        android:layout_marginTop="3dp" >
+                                <EditText
+                                    android:id="@+id/budgetEditText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#FFFFFF"
+                                    android:ems="10"
+                                    android:inputType="numberDecimal" />
+                            </LinearLayout>
 
-		        <TextView
-		            android:id="@+id/managerText"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/manager_string"
-		            android:textAppearance="?android:attr/textAppearanceSmall"
-		            android:textColor="#585858" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:layout_marginTop="3dp" >
 
-		        <EditText
-		            android:id="@+id/managerEditText"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="1"
-		            android:background="#FFFFFF"
-		            android:ems="10" />
-		    </LinearLayout>
+                                <TextView
+                                    android:id="@+id/durationText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/work_text"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:textColor="#585858" />
 
-		    <TextView
-		        android:id="@+id/childBudgetTotalText"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="3dp"
-		        android:layout_marginTop="3dp"
-		        android:paddingTop="5dp"
-		        android:text="@string/sub_element_budget_string"
-		        android:textColor="#585858"
-		        android:textSize="15sp" />
+                                <EditText
+                                    android:id="@+id/durationEditText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#FFFFFF"
+                                    android:ems="10"
+                                    android:inputType="numberDecimal" />
+                            </LinearLayout>
 
-		    <TextView
-		        android:id="@+id/remainingBudgetText"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="3dp"
-		        android:layout_marginTop="3dp"
-		        android:paddingTop="5dp"
-		        android:text="@string/remaining_budget"
-		        android:textColor="#585858"
-		        android:textSize="15sp" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:layout_marginTop="3dp" >
 
-		    <TextView
-		        android:id="@+id/activityHeadingText"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="bottom"
-		        android:paddingTop="5dp"
-		        android:text="@string/activities_text"
-		        android:textColor="#585858"
-		        android:textSize="15sp" />
+                                <TextView
+                                    android:id="@+id/managerText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/manager_string"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:textColor="#585858" />
 
-		    <ListView
-		        android:id="@+id/activitiesList"
-		        android:layout_width="match_parent"
-		        android:layout_height="fill_parent"
-		        android:layout_gravity="bottom"
-		        android:layout_weight="1.29"
-		        android:background="#FFFFFF"
-		        android:paddingTop="5dp" >
+                                <EditText
+                                    android:id="@+id/managerEditText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#FFFFFF"
+                                    android:ems="10" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
 
-		    </ListView>
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="30dp"
+                    android:minWidth="30dp"
+                    android:onClick="nameCustomAlert"
+                    android:text="+"
+                    android:textSize="10sp" />
 
-		    <LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="48dp"
-		        android:layout_gravity="top|center_vertical"
-		        android:gravity="bottom|center_horizontal"
-		        android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/childBudgetTotalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/sub_element_budget_string"
+                    android:textColor="#585858"
+                    android:textSize="15sp" />
 
-		        <Button
-		            android:id="@+id/elementSaveButton"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/save" />
+                <TextView
+                    android:id="@+id/remainingBudgetText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/remaining_budget"
+                    android:textColor="#585858"
+                    android:textSize="15sp" />
 
-		        <Button
-		            android:id="@+id/deleteElementButton"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/delete" />
+                <TextView
+                    android:id="@+id/activityHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="5dp"
+                    android:text="@string/activities_text"
+                    android:textColor="#585858"
+                    android:textSize="15sp" />
 
-		        <Button
-		            android:id="@+id/elementCancelButton"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/cancel" />
-		    </LinearLayout>
+                <ListView
+                    android:id="@+id/activitiesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="bottom"
+                    android:background="#FFFFFF"
+                    android:paddingTop="5dp" >
+                </ListView>
 
-		</LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="top|center_vertical"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal" >
 
-	</LinearLayout>
+                    <Button
+                        android:id="@+id/elementSaveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/save" />
+
+                    <Button
+                        android:id="@+id/deleteElementButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/delete" />
+
+                    <Button
+                        android:id="@+id/elementCancelButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cancel" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
 
 </RelativeLayout>

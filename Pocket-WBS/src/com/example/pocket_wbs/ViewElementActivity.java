@@ -5,24 +5,33 @@ import java.text.DecimalFormat;
 import com.example.pocket_wbs.gui.WBSActivityArrayAdapter;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
+import com.example.pocket_wbs.model.WBSAttributes;
 import com.example.pocket_wbs.model.WBSElement;
 import com.example.pocket_wbs.model.WBSFileManager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
+import android.util.Log;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +39,11 @@ public class ViewElementActivity extends ActionBarActivity {
 
 	public ProjectTree tree;
 	public WBSElement selectedElement;
+	private LinearLayout customAttLayout;
+	private WBSAttributes attributes;
+	String customAttributeName = "Custom Attribute";
+	ListView activitiesList;
+	ScrollView scrollView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +68,19 @@ public class ViewElementActivity extends ActionBarActivity {
 		
 		//Create ListView to put WBSActivities into
 		
-		ListView activitiesList = (ListView) findViewById(R.id.activitiesList);
+		activitiesList = (ListView) findViewById(R.id.activitiesList);
+
 		
 		WBSActivityArrayAdapter adapter = new WBSActivityArrayAdapter(this, selectedElement, tree);
 		activitiesList.setAdapter(adapter);
+		
+		//Find layout for adding custom attributes
+				customAttLayout = (LinearLayout) findViewById(R.id.attributesLayout);
+				
+		//Display custom attributes on this selected Element
+				
+
+		
 	}
 	
 	@Override
@@ -229,4 +252,93 @@ public class ViewElementActivity extends ActionBarActivity {
 			delete.setVisibility(View.VISIBLE);
 		}
 	}
+	
+
+	public void addCustomAttribute()
+	{
+		 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		 LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+		 LinearLayout newLayout = new LinearLayout(this);
+		 newLayout.setOrientation(LinearLayout.HORIZONTAL);
+		 newLayout.setPadding(0, 5, 0, 5);
+		 
+		 EditText blankSpace = new EditText(this);
+		 final TextView msg = new TextView(this);
+		 blankSpace.setLayoutParams(params2);
+		 blankSpace.setBackgroundColor(Color.parseColor("#FFFFFF"));
+		 blankSpace.setEms(10);
+		 blankSpace.setTextColor(Color.parseColor("#585858"));
+		 blankSpace.setIncludeFontPadding(false);
+		 blankSpace.setTextSize(15);
+		 blankSpace.setTypeface(Typeface.DEFAULT);
+		 
+		 msg.setLayoutParams(params);
+		 msg.setText(customAttributeName + ": ");
+		 
+		 
+		 newLayout.addView(msg);
+		 newLayout.addView(blankSpace);
+		 
+		 customAttLayout.addView(newLayout);
+		 newLayout.requestFocus();
+
+   		 //Add custom attribute to collection?
+		 
+   		 //attributes = selectedElement.getAttributes();
+   		 //attributes.set(customAttributeName, "test");
+	}
+	
+	public void nameCustomAlert(View view)
+	{	
+
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("New Custom Attribute");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Enter name");
+        final EditText input = new EditText(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT);
+          input.setLayoutParams(lp);
+          alertDialog.setView(input);
+
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.ic_launcher);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                        // Write your code here to execute after dialog
+                    	customAttributeName = input.getText().toString();
+                    	if(customAttributeName.equals("")){
+                    		toastMessage("Please Enter a Valid Name");
+                    	}
+                    	else
+                    		addCustomAttribute();
+                    }
+                });
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("CANCEL",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        dialog.cancel();
+                    }
+                });
+
+        // closed
+
+        // Showing Alert Message
+        alertDialog.show();
+
+	}
+	
+    public void toastMessage(String message){
+    	Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }

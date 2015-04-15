@@ -284,8 +284,8 @@ public class ViewElementActivity extends ActionBarActivity {
 
    		 //Add custom attribute to collection?
 		 
-   		 //attributes = selectedElement.getAttributes();
-   		 //attributes.set(customAttributeName, "test");
+   		 attributes = selectedElement.getAttributes();
+   		 attributes.set(customAttributeName, "test");
 	}
 	
 	public void nameCustomAlert(View view)

@@ -3,8 +3,9 @@ package com.example.pocket_wbs.model;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
-public class WBSAttributes extends Serializable {
+public class WBSAttributes implements Serializable {
 	
 	final private static Map<String, Map<String, String>> allNames = new HashMap<String, Map<String, String>>();
 	private WBSAttributeCollection collection;
@@ -90,7 +91,7 @@ public class WBSAttributes extends Serializable {
 		return names;
 	}
 	
-	private class WBSAttributeCollection {
+	private class WBSAttributeCollection implements Serializable {
 		
 		private Map<String, String> names;
 		private Map<String, WBSAttribute> attributes;
@@ -174,7 +175,7 @@ public class WBSAttributes extends Serializable {
 	/**
 	 * The storage object of an attribute
 	 */
-	public class WBSAttribute {
+	public class WBSAttribute implements Serializable {
 		
 		private WBSAttributeCollection collection;
 		private String value;

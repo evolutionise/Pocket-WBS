@@ -21,7 +21,7 @@ public class WBSAttributes implements Serializable {
 		this.identifier = identifier.getClass().toString();
 	}
 	
-	private WBSAttributeCollection getCollection() {
+	public WBSAttributeCollection getCollection() {
 		if (collection == null) {
 			collection = new WBSAttributeCollection(getAttributeNamesMap());
 		}
@@ -91,7 +91,7 @@ public class WBSAttributes implements Serializable {
 		return names;
 	}
 	
-	private class WBSAttributeCollection implements Serializable {
+	public class WBSAttributeCollection implements Serializable {
 		
 		private Map<String, String> names;
 		private Map<String, WBSAttribute> attributes;
@@ -141,7 +141,7 @@ public class WBSAttributes implements Serializable {
 		
 		/** Get all attributes
 		 */
-		private WBSAttribute[] getAttributes() {
+		public WBSAttribute[] getAttributes() {
 			Collection<WBSAttribute> attributes = getAttributeMap().values();
 			return attributes.toArray(new WBSAttribute[0]);
 		}
@@ -157,7 +157,11 @@ public class WBSAttributes implements Serializable {
 			names.put(key, name);
 			return key;
 		}
-
+		
+		public boolean isEmpty() {
+			return attributes==null;
+		}
+		
 		public boolean setName(String key, String name) {
 			if (names.containsValue(name)) {
 				return false; //Name already exists
@@ -207,6 +211,10 @@ public class WBSAttributes implements Serializable {
 		
 		public String getName(String name) {
 			return collection.getName(key);
+		}
+		
+		public String getKey() {
+			return key;
 		}
 	}
 }

@@ -6,8 +6,10 @@ import com.example.pocket_wbs.gui.WBSActivityArrayAdapter;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSAttributes;
+import com.example.pocket_wbs.model.WBSAttributes.WBSAttributeCollection;
 import com.example.pocket_wbs.model.WBSElement;
 import com.example.pocket_wbs.model.WBSFileManager;
+import com.example.pocket_wbs.model.WBSAttributes.WBSAttribute;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
@@ -44,6 +46,7 @@ public class ViewElementActivity extends ActionBarActivity {
 	String customAttributeName = "Custom Attribute";
 	ListView activitiesList;
 	ScrollView scrollView;
+	WBSAttribute[] cAttributeArray;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +80,12 @@ public class ViewElementActivity extends ActionBarActivity {
 		//Find layout for adding custom attributes
 				customAttLayout = (LinearLayout) findViewById(R.id.attributesLayout);
 				
-		//Display custom attributes on this selected Element
-				
+		//Initalize WBSAttributes collection
+				attributes = selectedElement.getAttributes();
 
-		
+				
+		//GET custom attributes for Element level
+				displayCustomAttributes();
 	}
 	
 	@Override
@@ -253,7 +258,9 @@ public class ViewElementActivity extends ActionBarActivity {
 		}
 	}
 	
-
+	/*
+	 * Method that adds a custom attribute to its collection when button is pressed
+	 */
 	public void addCustomAttribute()
 	{
 		 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
@@ -286,6 +293,44 @@ public class ViewElementActivity extends ActionBarActivity {
 		 
    		 attributes = selectedElement.getAttributes();
    		 attributes.set(customAttributeName, "test");
+	}
+	
+	/*
+	 * Method that displays all the current custom attributes in the collection 
+	 */
+	public void displayCustomAttributes()
+	{
+		WBSAttributeCollection collection = attributes.getCollection();
+		WBSAttribute[] array = collection.getAttributes();
+		
+		for (WBSAttribute w : array) {
+			
+			//toastMessage(collection.getName(w.getKey()));
+			 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+			 LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+			 LinearLayout newLayout = new LinearLayout(this);
+			 newLayout.setOrientation(LinearLayout.HORIZONTAL);
+			 newLayout.setPadding(0, 5, 0, 5);
+			 
+			 EditText blankSpace = new EditText(this);
+			 final TextView msg = new TextView(this);
+			 blankSpace.setLayoutParams(params2);
+			 blankSpace.setBackgroundColor(Color.parseColor("#FFFFFF"));
+			 blankSpace.setEms(10);
+			 blankSpace.setTextColor(Color.parseColor("#585858"));
+			 blankSpace.setIncludeFontPadding(false);
+			 blankSpace.setTextSize(15);
+			 blankSpace.setTypeface(Typeface.DEFAULT);
+			 
+			 msg.setLayoutParams(params);
+			 msg.setText(collection.getName(w.getKey()) + ": ");
+			 
+			 
+			 newLayout.addView(msg);
+			 newLayout.addView(blankSpace);
+			 
+			 customAttLayout.addView(newLayout);
+		}
 	}
 	
 	public void nameCustomAlert(View view)

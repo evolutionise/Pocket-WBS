@@ -1,15 +1,15 @@
 package com.example.pocket_wbs;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.example.pocket_wbs.gui.WBSActivityArrayAdapter;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSAttributes;
-import com.example.pocket_wbs.model.WBSAttributes.WBSAttributeCollection;
 import com.example.pocket_wbs.model.WBSElement;
 import com.example.pocket_wbs.model.WBSFileManager;
-import com.example.pocket_wbs.model.WBSAttributes.WBSAttribute;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
@@ -21,11 +21,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -35,6 +38,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class ViewElementActivity extends ActionBarActivity {
@@ -42,11 +46,8 @@ public class ViewElementActivity extends ActionBarActivity {
 	public ProjectTree tree;
 	public WBSElement selectedElement;
 	private LinearLayout customAttLayout;
-	private WBSAttributes attributes;
-	String customAttributeName = "Custom Attribute";
 	ListView activitiesList;
 	ScrollView scrollView;
-	WBSAttribute[] cAttributeArray;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +80,6 @@ public class ViewElementActivity extends ActionBarActivity {
 		
 		//Find layout for adding custom attributes
 				customAttLayout = (LinearLayout) findViewById(R.id.attributesLayout);
-				
-		//Initalize WBSAttributes collection
-				attributes = selectedElement.getAttributes();
-
 				
 		//GET custom attributes for Element level
 				displayCustomAttributes();
@@ -261,38 +258,52 @@ public class ViewElementActivity extends ActionBarActivity {
 	/*
 	 * Method that adds a custom attribute to its collection when button is pressed
 	 */
-	public void addCustomAttribute()
+	public LinearLayout addCustomAttribute(final String customAttributeName, String customAttributeValue)
 	{
-		 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-		 LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
-		 LinearLayout newLayout = new LinearLayout(this);
-		 newLayout.setOrientation(LinearLayout.HORIZONTAL);
-		 newLayout.setPadding(0, 5, 0, 5);
-		 
-		 EditText blankSpace = new EditText(this);
-		 final TextView msg = new TextView(this);
-		 blankSpace.setLayoutParams(params2);
-		 blankSpace.setBackgroundColor(Color.parseColor("#FFFFFF"));
-		 blankSpace.setEms(10);
-		 blankSpace.setTextColor(Color.parseColor("#585858"));
-		 blankSpace.setIncludeFontPadding(false);
-		 blankSpace.setTextSize(15);
-		 blankSpace.setTypeface(Typeface.DEFAULT);
-		 
-		 msg.setLayoutParams(params);
-		 msg.setText(customAttributeName + ": ");
-		 
-		 
-		 newLayout.addView(msg);
-		 newLayout.addView(blankSpace);
-		 
-		 customAttLayout.addView(newLayout);
-		 newLayout.requestFocus();
-
-   		 //Add custom attribute to collection?
-		 
-   		 attributes = selectedElement.getAttributes();
-   		 attributes.set(customAttributeName, "test");
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+		LinearLayout newLayout = new LinearLayout(this);
+		newLayout.setOrientation(LinearLayout.HORIZONTAL);
+		newLayout.setPadding(0, 5, 0, 5);
+		Log.d("LinearLayout", "addCustomAttribute : " + customAttributeName);
+		customAttLayout.addView(newLayout);
+		
+		final TextView attributeNameLabel = new TextView(this);
+		attributeNameLabel.setLayoutParams(params);
+		attributeNameLabel.setText(customAttributeName + ": ");
+		newLayout.addView(attributeNameLabel);
+		  
+		final EditText attributeValueField = new EditText(this);
+		attributeValueField.setLayoutParams(params2);
+		attributeValueField.setBackgroundColor(Color.parseColor("#FFFFFF"));
+		attributeValueField.setEms(10);
+		attributeValueField.setTextColor(Color.parseColor("#585858"));
+		attributeValueField.setIncludeFontPadding(false);
+		attributeValueField.setTextSize(15);
+		attributeValueField.setTypeface(Typeface.DEFAULT);
+		attributeValueField.setText(customAttributeValue);
+		attributeValueField.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+					String attributeValue = attributeValueField.getText().toString();
+					selectedElement.getAttributes().put(customAttributeName, attributeValue);
+				}
+				return false;
+			}
+		});
+		attributeValueField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					String attributeValue = attributeValueField.getText().toString();
+					selectedElement.getAttributes().put(customAttributeName, attributeValue);
+				}
+			}
+		});
+		newLayout.addView(attributeValueField);
+		
+		return newLayout;
 	}
 	
 	/*
@@ -300,36 +311,12 @@ public class ViewElementActivity extends ActionBarActivity {
 	 */
 	public void displayCustomAttributes()
 	{
-		WBSAttributeCollection collection = attributes.getCollection();
-		WBSAttribute[] array = collection.getAttributes();
+		Map<String, String> attributeMap = selectedElement.getAttributes().getAttributesAndNames();
 		
-		for (WBSAttribute w : array) {
-			
-			//toastMessage(collection.getName(w.getKey()));
-			 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-			 LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
-			 LinearLayout newLayout = new LinearLayout(this);
-			 newLayout.setOrientation(LinearLayout.HORIZONTAL);
-			 newLayout.setPadding(0, 5, 0, 5);
-			 
-			 EditText blankSpace = new EditText(this);
-			 final TextView msg = new TextView(this);
-			 blankSpace.setLayoutParams(params2);
-			 blankSpace.setBackgroundColor(Color.parseColor("#FFFFFF"));
-			 blankSpace.setEms(10);
-			 blankSpace.setTextColor(Color.parseColor("#585858"));
-			 blankSpace.setIncludeFontPadding(false);
-			 blankSpace.setTextSize(15);
-			 blankSpace.setTypeface(Typeface.DEFAULT);
-			 
-			 msg.setLayoutParams(params);
-			 msg.setText(collection.getName(w.getKey()) + ": ");
-			 
-			 
-			 newLayout.addView(msg);
-			 newLayout.addView(blankSpace);
-			 
-			 customAttLayout.addView(newLayout);
+		if (attributeMap != null) {
+			for (Map.Entry<String, String> attribute : attributeMap.entrySet()) {
+				addCustomAttribute(attribute.getKey(), attribute.getValue());
+			}
 		}
 	}
 	
@@ -358,20 +345,22 @@ public class ViewElementActivity extends ActionBarActivity {
         alertDialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
-                        // Write your code here to execute after dialog
-                    	customAttributeName = input.getText().toString();
+                    	String customAttributeName = input.getText().toString();
                     	if(customAttributeName.equals("")){
                     		toastMessage("Please Enter a Valid Name");
+                    	} else if (!selectedElement.getAttributes().addName(customAttributeName)) {
+                    		// If statement checks if attribute name exists and adds it if it doesn't
+                    		toastMessage("Attribute Name '" + customAttributeName + "' Already Exists");
+                    	} else {
+                    		LinearLayout newLayout = addCustomAttribute(customAttributeName, "");
+                    		newLayout.requestFocus();
                     	}
-                    	else
-                    		addCustomAttribute();
                     }
                 });
         // Setting Negative "NO" Button
         alertDialog.setNegativeButton("CANCEL",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog
                         dialog.cancel();
                     }
                 });

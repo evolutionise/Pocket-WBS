@@ -13,7 +13,9 @@
         android:icon="@drawable/pocketwbsicon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <!--<activity
+
+        <!--
+        <activity
             android:name="com.example.pocket_wbs.WBSmain"
             android:label="@string/app_name" >
             <intent-filter>
@@ -21,32 +23,30 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>  -->
+        </activity>
+        -->
         <activity
             android:name="com.example.pocket_wbs.GUImain"
             android:label="@string/app_name" >
-
         </activity>
         <activity
             android:name=".ViewElementActivity"
             android:label="@string/title_activity_view_element"
-            android:noHistory="true">
+            android:noHistory="true" >
         </activity>
         <activity
             android:name=".EditElementActivity"
             android:label="@string/title_activity_edit_element" >
         </activity>
-         <activity
-            android:name=".ViewElementOverview">
+        <activity android:name=".ViewElementOverview" >
         </activity>
-        <activity
-            android:name=".EditWBSActivityActivity">
+        <activity android:name=".EditWBSActivityActivity" >
             android:noHistory="true">
         </activity>
-        <activity
-            android:name="com.example.pocket_wbs.MenuActivity">
-            <intent-filter android:label="@string/app_name">
+        <activity android:name="com.example.pocket_wbs.MenuActivity" >
+            <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -645,7 +645,7 @@ public class WBSElement implements Serializable{
 	 * @author Alix
 	 */
 	public List<String> getActivitiesAsStringArray(){
-		List<String> activitiesArray = new LinkedList();
+		List<String> activitiesArray = new LinkedList<String>();
 		for(int i = 0; i < activities.size(); i++){
 			String activityDescription = activities.get(i).getDescription();
 			activitiesArray.add(activityDescription);

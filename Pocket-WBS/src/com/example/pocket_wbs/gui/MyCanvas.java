@@ -1,35 +1,22 @@
 package com.example.pocket_wbs.gui;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
+
 import com.example.pocket_wbs.GUImain;
-import com.example.pocket_wbs.R;
 import com.example.pocket_wbs.model.MyGestureListener;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
-
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.os.Handler;
-import android.support.v4.view.GestureDetectorCompat;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
  
 public class MyCanvas extends View {
 	
@@ -113,7 +100,8 @@ public class MyCanvas extends View {
      * @see android.view.View#onDraw(android.graphics.Canvas)
      * Acts as a constructor as it is initialized in the XML: activity_guimain.xml
      */
-    protected void onDraw(Canvas canvas) {
+    @Override
+	protected void onDraw(Canvas canvas) {
 
         // TODO Auto-generated method stub
         super.onDraw(canvas);

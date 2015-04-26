@@ -24,14 +24,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="nameWBS"
-            android:text="@string/create_wbs_string" />
+            android:text="@string/new_wbs_button_text" />
 
         <Button
             android:id="@+id/savedWBSButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="loadExistingWBS"
-            android:text="@string/view_saved_wbs_string" />
+            android:text="@string/open_wbs_text" />
     </LinearLayout>
 
 </FrameLayout>

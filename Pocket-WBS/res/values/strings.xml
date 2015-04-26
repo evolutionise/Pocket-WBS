@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Pocket-WBS</string>
@@ -16,8 +16,8 @@
     <string name="element_name_request">Please enter a new name...</string>
     <string name="element_edit_confirm">Confirm</string>
     <string name="select_element_edit">Edit</string>
-	<string name="view_element_name">View Element</string>
-	<string name="title_activity_menu">MenuActivity</string>
+    <string name="view_element_name">View Element</string>
+    <string name="title_activity_menu">MenuActivity</string>
     <string name="create_wbs_string">&quot;Create WBS&quot;</string>
     <string name="view_saved_wbs_string">&quot;View Saved WBSs&quot;</string>
     <string name="index_text">Index: </string>
@@ -37,6 +37,11 @@
     <string name="sub_element_budget_string">"Sub-Element Budget Total: "</string>
     <string name="remaining_budget">"Remaining Budget: "</string>
     <string name="work_text">Work (Hours)</string>
+    <string name="title_activity_load_wbs">Load</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="load_screen_text">Please Select a File</string>
+    <string name="empty_string"></string>
+    <string name="new_wbs_button_text">New WBS</string>
+    <string name="open_wbs_text">Open WBS</string>
 
-    
 </resources>

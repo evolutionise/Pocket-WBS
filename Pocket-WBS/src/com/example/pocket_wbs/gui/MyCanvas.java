@@ -80,7 +80,6 @@ public class MyCanvas extends View {
         
         //Adds the root element to our WBSElement type ArrayList for population in onDraw()
         WBSElements.add(root);
-        decomposeElement(root, root.getX(), root.getY());
 
 
     }

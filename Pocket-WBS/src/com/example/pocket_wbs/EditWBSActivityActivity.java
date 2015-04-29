@@ -6,6 +6,7 @@ import java.util.Map;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;
+import com.example.pocket_wbs.model.WBSFileManager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,6 +21,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnFocusChangeListener;
@@ -60,6 +63,32 @@ public class EditWBSActivityActivity extends Activity{
 		//GET custom attributes for Activity Level
 			displayCustomAttributes();
     }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu, menu);
+		// Creates the save menu option
+		final Context context = this;
+		final ProjectTree tree = this.tree;
+		MenuItem saveButton = menu.add("Save");
+		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Toast saveMessage = new Toast(context);
+				int displayTime = Toast.LENGTH_SHORT;
+				CharSequence message = "File Saved";
+				WBSFileManager wbsManager = new WBSFileManager();
+				wbsManager.saveTreeToFile(context, tree);
+				saveMessage.makeText(context, message, displayTime).show();
+				return false;
+			}
+		});
+		return true;
+	}
+	
+	
 	
 	public void saveActivity(View view){
 		

@@ -2,16 +2,21 @@ package com.example.pocket_wbs;
 
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
+import com.example.pocket_wbs.model.WBSFileManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewElementOverview extends ActionBarActivity {
 	
@@ -34,10 +39,33 @@ public class ViewElementOverview extends ActionBarActivity {
 			this.selectedElement = this.tree.getProjectElements().get(elementKey);
 		}
 		//Remove title bar
-	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_view_element_overview);
 		setUpEventListeners();
 		updateActivity();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu, menu);
+		// Creates the save menu option
+		final Context context = this;
+		final ProjectTree tree = this.tree;
+		MenuItem saveButton = menu.add("Save");
+		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Toast saveMessage = new Toast(context);
+				int displayTime = Toast.LENGTH_SHORT;
+				CharSequence message = "File Saved";
+				WBSFileManager wbsManager = new WBSFileManager();
+				wbsManager.saveTreeToFile(context, tree);
+				saveMessage.makeText(context, message, displayTime).show();
+				return false;
+			}
+		});
+		return true;
 	}
 	
 	public void setUpEventListeners(){

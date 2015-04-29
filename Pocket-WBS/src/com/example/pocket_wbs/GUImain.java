@@ -15,6 +15,7 @@ import com.example.pocket_wbs.model.WBSFileManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -53,11 +54,7 @@ public class GUImain extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	    //Remove title bar
-	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_guimain);
-	
-		
 
 	//Initializes screen to scroll to center of canvas
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -102,10 +99,24 @@ public class GUImain extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.another, menu);
-		
-		Intent intent = getIntent();
-		String WBSName = intent.getStringExtra(MenuActivity.EXTRA_MESSAGE);
+		getMenuInflater().inflate(R.menu.menu, menu);
+		// Creates the save menu option
+		final Context context = this;
+		final ProjectTree tree = this.pt;
+		MenuItem saveButton = menu.add("Save");
+		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Toast saveMessage = new Toast(context);
+				int displayTime = Toast.LENGTH_SHORT;
+				CharSequence message = "File Saved";
+				WBSFileManager wbsManager = new WBSFileManager();
+				wbsManager.saveTreeToFile(context, tree);
+				saveMessage.makeText(context, message, displayTime).show();
+				return false;
+			}
+		});
 		
 		return true;
 	}

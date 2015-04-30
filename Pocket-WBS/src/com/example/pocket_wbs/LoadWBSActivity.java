@@ -7,7 +7,9 @@ import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSFileManager;
 
 import android.support.v7.app.ActionBarActivity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,13 +17,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ListView;;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class LoadWBSActivity extends ActionBarActivity {
 
 	public ArrayAdapter adapter;
+	public boolean dialogOpen = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +60,12 @@ public class LoadWBSActivity extends ActionBarActivity {
 	public void updateTextDisplays() {
 		Context context = getApplicationContext();
 		TextView loadText = (TextView) findViewById(R.id.loadText);
-		//TextView listDisplayText = (TextView) findViewById(R.id.fileListTestText);
 		WBSFileManager fileManager = new WBSFileManager();
 		if(fileManager.listFiles(context).length == 0) {
 			loadText.setText("No files to be displayed");
-			//listDisplayText.setText("");
 		}
 		else {
-			//listDisplayText.setText(fileManager.getFileListAsString(context));
+			loadText.setText("Please Select A File");
 		}
 	}
 	
@@ -80,20 +85,70 @@ public class LoadWBSActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
+				if(!dialogOpen){
+					int itemIndex = position;
+					String fileName = (String) list.getItemAtPosition(itemIndex);
+					loadExistingWBS(fileName);
+				}
+			}
+		});
+		list.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				int itemIndex = position;
 				String fileName = (String) list.getItemAtPosition(itemIndex);
-				loadExistingWBS(view, fileName);
+				showDeleteConfirmation(fileName);
+				return false;
 			}
 			
 		});
 	}
 	
-	public void loadExistingWBS(View view, String projectName){ 
+	public void loadExistingWBS(String projectName){ 
 		Context context = getApplicationContext();
 		WBSFileManager fileManager = new WBSFileManager();
 		ProjectTree tree = fileManager.loadTreeFromFile(context, projectName);
 		Intent intent = new Intent(this, GUImain.class);
 		intent.putExtra("com.example.pocket_wbs.NEW_TREE", tree);
 		startActivity(intent);
+	}
+	
+	public void deleteExistingWBS(String projectName){
+		Toast deleteMessage = new Toast(this);
+		int displayTime = Toast.LENGTH_SHORT;
+		String message = "File Deleted";
+		Context context = getApplicationContext();
+		WBSFileManager fileManager = new WBSFileManager();
+		fileManager.deleteFile(context, projectName);
+		updateListDisplay();
+		updateTextDisplays();
+		deleteMessage.makeText(context, message, displayTime);
+	}
+	
+	public void showDeleteConfirmation(String fileName){
+		final String file = fileName;
+		AlertDialog.Builder deleteConfirmation = new AlertDialog.Builder(LoadWBSActivity.this);
+        deleteConfirmation.setTitle("");
+        deleteConfirmation.setMessage("Are you sure you want to delete " + file);
+        deleteConfirmation.setIcon(R.drawable.pocketwbsicon2);
+        deleteConfirmation.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                    	deleteExistingWBS(file);
+                    	dialog.cancel();
+                    	dialogOpen = false;
+                    }
+                });
+        deleteConfirmation.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        dialogOpen = false;
+                    }
+                });
+        dialogOpen = true;
+        deleteConfirmation.show();
 	}
 }

@@ -89,4 +89,19 @@ public class WBSFileManager {
 		return listDisplay;
 	}
 	
+	/**
+	 * This method deletes the file specified by the name
+	 * @param context - the applications context for getting the save directory
+	 * @param fileName - the name of the file to delete
+	 * @return true if the file was successfully deleted, false if not
+	 */
+	public boolean deleteFile(Context context, String fileName){
+		boolean fileDeleted = false;
+		File file = context.getFileStreamPath(fileName);
+		if(file.exists()){
+			file.delete();
+			fileDeleted = true;
+		}
+		return fileDeleted;
+	}
 }

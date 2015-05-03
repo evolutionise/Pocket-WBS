@@ -20,10 +20,12 @@ import java.util.TreeMap;
 public class ProjectTree implements Serializable{
 
 	private String name;
+	private String fileName;
 	private WBSElement rootElement;
 	
 	public ProjectTree(String name){
 		this.name = name;
+		this.fileName = "";
 		this.rootElement = new WBSElement(name);
 	}
 
@@ -55,6 +57,10 @@ public class ProjectTree implements Serializable{
 	
 	public WBSElement getRootElement(){
 		return rootElement;
+	}
+	
+	public String getFileName(){
+		return this.fileName;
 	}
 	
 	/**
@@ -165,6 +171,15 @@ public class ProjectTree implements Serializable{
 		getProjectElements(rootElement, elements);
 		return elements;
 	}
+	
+	public void setFileName(String newName){
+		if(newName.equals("") || newName.equals(null)){
+			throw new IllegalArgumentException("You need to enter a name for the project.");
+		}
+		else{
+			this.fileName = newName;
+		}
+	}
 
 	/**
 	 * Method used in TreeMap getProjectElements to place elements into the TreeMap
@@ -193,26 +208,18 @@ public class ProjectTree implements Serializable{
 		}
 		return elements;
 	}
-
-	/*public static String Test(){
-		
-		ProjectTree project = new ProjectTree("[Name of Project]");
-		project.addChildElement(project.rootElement, "1");
-		project.addChildElement(project.getProjectElements().get("1"), "1.1");
-		project.addChildElement(project.getProjectElements().get("1"), "1.3");
-		project.addNewLeftSibling(project.getProjectElements().get("1.2"), "1.2");
-		project.addChildElement(project.rootElement, "2");
-		project.addChildElement(project.rootElement, "3");
-				
-		TreeMap<String, WBSElement> map = project.getProjectElements();
-		String[] keys = map.keySet().toArray(new String[0]);
-		String output = "";
-		for(int i = 0; i < keys.length; i++){
-			output += "Key: " + keys[i];
-			output += " Value: " + map.get(keys[i]).getName() + "\n";
+	
+	/**
+	 * This method checks if the Project Tree has been saved to a file. The presence of
+	 * a proper file name confirms that a project tree has been saved before.
+	 * @return
+	 */
+	public boolean treeSavedToFile(){
+		boolean savedToFile = true;
+		if(this.fileName.equals("")){
+			savedToFile = false;
 		}
-		
-		return output;		
-	}*/
+		return savedToFile;
+	}
 	
 }

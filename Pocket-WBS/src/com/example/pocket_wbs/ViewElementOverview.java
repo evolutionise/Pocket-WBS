@@ -46,25 +46,37 @@ public class ViewElementOverview extends ActionBarActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu, menu);
-		// Creates the save menu option
 		final Context context = this;
 		final ProjectTree tree = this.tree;
 		MenuItem saveButton = menu.add("Save");
+		MenuItem saveAsButton = menu.add("Save As");
 		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				Toast saveMessage = new Toast(context);
-				int displayTime = Toast.LENGTH_SHORT;
-				CharSequence message = "File Saved";
 				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.saveTreeToFile(context, tree);
-				saveMessage.makeText(context, message, displayTime).show();
+				if(tree.treeSavedToFile()){
+					wbsManager.saveTreeToFile(context, tree);
+					wbsManager.showSaveMessage(context);
+					return false;
+				}
+				else{
+					wbsManager.showFileNameDialog(context, tree);
+				}
 				return false;
 			}
 		});
+		saveAsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				WBSFileManager wbsManager = new WBSFileManager();
+				wbsManager.showFileNameDialog(context, tree);
+				return false;
+			}
+		});
+		
 		return true;
 	}
 	

@@ -16,10 +16,16 @@ import com.example.pocket_wbs.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Environment;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+/**
+ * Class for managing the persistence of ProjectTree objects.
+ * Handles input and output of files to internal and external storage areas.
+ * @author Jamie Seymour
+ */
 public class WBSFileManager {
 	
 	/**
@@ -43,9 +49,10 @@ public class WBSFileManager {
 			objectOutput.writeObject(tree);
 			objectOutput.close();
 			fileOutput.close();
+			showSaveMessage(context);
 		}
 		catch(Exception e){
-			System.out.println("Error: " + e.getMessage());
+			showErrorMessage(context, "Error: " + e.getMessage());
 		}
 	}
 	
@@ -72,7 +79,7 @@ public class WBSFileManager {
 				fileOutput.close();
 			}
 			catch(Exception e){
-				System.out.println("Error: " + e.getMessage());
+				showErrorMessage(context, "Error: " + e.getMessage());
 			}	
 		}
 		return fileNameValid;
@@ -93,7 +100,63 @@ public class WBSFileManager {
 			tree = (ProjectTree) objectInput.readObject();
 		}
 		catch(Exception e){
-			System.out.println("Error: " + e.getMessage());
+			showErrorMessage(context, "Error: " + e.getMessage());
+		}
+		return tree;
+	}
+	
+	/**
+	 * This method saves the project tree to a file that is stored on the devices
+	 * external memory (an SD card).
+	 * @param context - the applications context for displaying messages
+	 * @param tree - the tree to be saved to the file.
+	 */
+	public void exportFile(Context context, ProjectTree tree){
+		String fileName = tree.getFileName();
+		File exportDir = new File(Environment.getExternalStorageDirectory() + "/Pocket-WBS/");
+		if(!exportDir.exists()){
+			exportDir.mkdir();
+		}
+		if(fileName.equals("") || fileName.equals(null)){
+			fileName = tree.getProjectName();
+		}
+		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+			try{
+				File exportFile = new File(exportDir, fileName);
+				FileOutputStream fileOutput = new FileOutputStream(exportFile);
+				ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+				objectOutput.writeObject(tree);
+				objectOutput.close();
+				fileOutput.flush();
+				fileOutput.close();
+				showExportMessage(context, exportFile.getAbsolutePath());
+			}
+			catch(Exception e){
+				showErrorMessage(context, "Error: " + e.getMessage());
+			}
+		}
+		else{
+			showExportErrorMessage(context);
+		}
+	}
+	
+	/**
+	 * This method imports a project tree file back into the application from
+	 * an SD card. An error message is displayed if the file is not a project
+	 * tree file.
+	 * @param context - used to display the error message when necessary in the correct activity
+	 * @param file - the file being imported back into the application
+	 * @return tree - the ProjectTree object stored in the file to be loaded by the application
+	 */
+	public ProjectTree importFile(Context context, File file){
+		ProjectTree tree = new ProjectTree("Loaded Project");
+		try{
+			FileInputStream fileInput = new FileInputStream(file);
+			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+			tree = (ProjectTree) objectInput.readObject();
+		}
+		catch(Exception e){
+			showErrorMessage(context, "Error: " + e.getMessage());
 		}
 		return tree;
 	}
@@ -144,7 +207,13 @@ public class WBSFileManager {
 		return fileDeleted;
 	}
 	
-	public void showFileNameDialog(final Context context, final ProjectTree tree){
+	/**
+	 * This method presents a dialog box where the user can name and save there
+	 * file to the application.
+	 * @param context - the context where the dialog box is displayed
+	 * @param tree - the tree being saved to file
+	 */
+	public void showSaveAsDialog(final Context context, final ProjectTree tree){
 		AlertDialog.Builder saveAsDialog = new AlertDialog.Builder(context);
 		final EditText input = new EditText(context);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -180,17 +249,47 @@ public class WBSFileManager {
         saveAsDialog.show();
 	}
 	
-	public void showSaveMessage(Context context){
+	/**
+	 * This method displays a confirmation message to the user to confirm a successful
+	 * file save to the applications internal memory.
+	 * @param context - the context where the message is displayed
+	 */
+	private void showSaveMessage(Context context){
 		Toast saveMessage = new Toast(context);
 		int displayTime = Toast.LENGTH_SHORT;
 		CharSequence message = "File Saved";
 		saveMessage.makeText(context, message, displayTime).show();
 	}
 	
-	public void showUnsuccessfulSaveMessage(Context context){
+	/**
+	 * 
+	 * @param context
+	 * @param filePath
+	 */
+	private void showExportMessage(Context context, String filePath){
+		Toast exportMessage = new Toast(context);
+		int displayTime = Toast.LENGTH_LONG;
+		CharSequence message = "The file has been exported to " + filePath + ".";
+		exportMessage.makeText(context, message, displayTime).show();
+	}
+	
+	private void showUnsuccessfulSaveMessage(Context context){
 		Toast saveMessage = new Toast(context);
 		int displayTime = Toast.LENGTH_LONG;
 		CharSequence message = "You need to enter a name for your file.";
 		saveMessage.makeText(context, message, displayTime).show();
+	}
+	
+	private void showErrorMessage(Context context, String message){
+		Toast errorMessage = new Toast(context);
+		int displayTime = Toast.LENGTH_LONG;
+		errorMessage.makeText(context, message, displayTime).show();
+	}
+	
+	private void showExportErrorMessage(Context context){
+		Toast exportMessage = new Toast(context);
+		int displayTime = Toast.LENGTH_LONG;
+		CharSequence message = "You need to insert an SD Card.";
+		exportMessage.makeText(context, message, displayTime).show();
 	}
 }

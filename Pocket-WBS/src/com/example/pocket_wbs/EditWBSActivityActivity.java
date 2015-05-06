@@ -71,6 +71,7 @@ public class EditWBSActivityActivity extends Activity{
 		final ProjectTree tree = this.tree;
 		MenuItem saveButton = menu.add("Save");
 		MenuItem saveAsButton = menu.add("Save As");
+		MenuItem exportButton = menu.add("Export");
 		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			
 			@Override
@@ -78,11 +79,10 @@ public class EditWBSActivityActivity extends Activity{
 				WBSFileManager wbsManager = new WBSFileManager();
 				if(tree.treeSavedToFile()){
 					wbsManager.saveTreeToFile(context, tree);
-					wbsManager.showSaveMessage(context);
 					return false;
 				}
 				else{
-					wbsManager.showFileNameDialog(context, tree);
+					wbsManager.showSaveAsDialog(context, tree);
 				}
 				return false;
 			}
@@ -92,7 +92,16 @@ public class EditWBSActivityActivity extends Activity{
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.showFileNameDialog(context, tree);
+				wbsManager.showSaveAsDialog(context, tree);
+				return false;
+			}
+		});
+		exportButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				WBSFileManager wbsManager = new WBSFileManager();
+				wbsManager.exportFile(context, tree);
 				return false;
 			}
 		});

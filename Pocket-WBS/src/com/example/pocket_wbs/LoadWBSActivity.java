@@ -3,6 +3,7 @@ package com.example.pocket_wbs;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.pocket_wbs.model.FileBrowser;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSFileManager;
 
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 public class LoadWBSActivity extends ActionBarActivity {
 
 	public ArrayAdapter adapter;
+	public FileBrowser browser = new FileBrowser();
 	public boolean dialogOpen = false;
 	
 	@Override
@@ -36,12 +39,13 @@ public class LoadWBSActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_load_wbs);
 		updateTextDisplays();
 		updateListDisplay();
+		setBrowseButtonEventHandler();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.load_wb, menu);
+		getMenuInflater().inflate(R.menu.menu, menu);
 		return true;
 	}
 
@@ -60,12 +64,15 @@ public class LoadWBSActivity extends ActionBarActivity {
 	public void updateTextDisplays() {
 		Context context = getApplicationContext();
 		TextView loadText = (TextView) findViewById(R.id.loadText);
+		TextView filesListText = (TextView) findViewById(R.id.fileListTestText);
 		WBSFileManager fileManager = new WBSFileManager();
 		if(fileManager.listFiles(context).length == 0) {
 			loadText.setText("No files to be displayed");
+			filesListText.setText("");
 		}
 		else {
 			loadText.setText("Please Select A File");
+			filesListText.setText("Long press on a file to delete it");
 		}
 	}
 	
@@ -76,6 +83,23 @@ public class LoadWBSActivity extends ActionBarActivity {
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemsList);
 		list.setAdapter(adapter);
 		setListEventHandlers();
+	}
+	
+	public void setBrowseButtonEventHandler(){
+		Button browseButton = (Button) findViewById(R.id.browseFilesButton);
+		browseButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				if(browser.externalMemoryMounted()){
+					Intent intent = new Intent(view.getContext(), FileBrowserActivity.class);
+					startActivity(intent);
+				}
+				else{
+					browser.displayCardMissingMessage(view.getContext());
+				}
+			}
+		});
 	}
 	
 	public void setListEventHandlers(){

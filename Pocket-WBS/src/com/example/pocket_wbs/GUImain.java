@@ -103,6 +103,7 @@ public class GUImain extends ActionBarActivity {
 		final ProjectTree tree = this.pt;
 		MenuItem saveButton = menu.add("Save");
 		MenuItem saveAsButton = menu.add("Save As");
+		MenuItem exportButton = menu.add("Export");
 		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			
 			@Override
@@ -110,11 +111,10 @@ public class GUImain extends ActionBarActivity {
 				WBSFileManager wbsManager = new WBSFileManager();
 				if(tree.treeSavedToFile()){
 					wbsManager.saveTreeToFile(context, tree);
-					wbsManager.showSaveMessage(context);
 					return false;
 				}
 				else{
-					wbsManager.showFileNameDialog(context, tree);
+					wbsManager.showSaveAsDialog(context, tree);
 				}
 				return false;
 			}
@@ -124,7 +124,16 @@ public class GUImain extends ActionBarActivity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.showFileNameDialog(context, tree);
+				wbsManager.showSaveAsDialog(context, tree);
+				return false;
+			}
+		});
+		exportButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				WBSFileManager wbsManager = new WBSFileManager();
+				wbsManager.exportFile(context, tree);
 				return false;
 			}
 		});

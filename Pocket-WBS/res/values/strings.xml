@@ -43,5 +43,12 @@
     <string name="empty_string"></string>
     <string name="new_wbs_button_text">New WBS</string>
     <string name="open_wbs_text">Open WBS</string>
+    <string name="delete_warning">Long press to delete files</string>
+    <string name="title_activity_file_browser">FileBrowserActivity</string>
+    <string name="wbs_import_text">Browse for Exported WBS Files</string>
+    <string name="export_browse_text">Browse SD Card for Exports</string>
+    <string name="file_select_button_text">Select File</string>
+    <string name="selected_file_text_default">"Selected File: "</string>
+    <string name="back_button_browser_text">Go to Previous</string>
 
 </resources>

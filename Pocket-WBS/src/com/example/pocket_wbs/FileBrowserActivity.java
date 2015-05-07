@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -61,7 +62,7 @@ public class FileBrowserActivity extends ActionBarActivity {
 	public void updateListDisplay() {
 		ListView list = (ListView) findViewById(R.id.fileBrowserList);
 		String[] itemsList = browser.listFiles();
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemsList);
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, itemsList);
 		list.setAdapter(adapter);
 		setListEventHandlers();
 	}

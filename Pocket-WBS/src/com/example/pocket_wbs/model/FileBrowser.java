@@ -50,7 +50,9 @@ public class FileBrowser {
 		ArrayList<String> filesList = new ArrayList<String>();
 		File[] files = this.currentFile.listFiles();
 		for(File file : files){
-			filesList.add(file.getName());
+			if(file.getName().endsWith(".PTWBS") || file.isDirectory()){
+				filesList.add(file.getName());
+			}
 		}
 		String[] output = stringArrayListToArray(filesList);
 		return output;
@@ -103,10 +105,18 @@ public class FileBrowser {
 		return this.currentFile;
 	}
 	
+	/**
+	 * This method gets the initial directory of the SD card
+	 * @return File - the file representing the root directory
+	 */
 	public File getRootDirectory(){
 		return this.rootDirectory;
 	}
 	
+	/**
+	 * Method to check whether the explorer is currently in the root directory
+	 * @return true when the explorer is in the root directory
+	 */
 	public boolean currentDirectoryIsRoot(){
 		boolean result = false;
 		if(currentFile.equals(rootDirectory)){
@@ -128,6 +138,11 @@ public class FileBrowser {
 		errorMessage.makeText(context, message, displayTime).show();
 	}
 	
+	/**
+	 * This method displays an error message when a file that is being imported
+	 * into the application is not that of a project tree file.
+	 * @param context - the context in which to display the message
+	 */
 	public void displayInvalidFileMessage(Context context){
 		Toast errorMessage = new Toast(context);
 		String message = "You need to select a Pocket-WBS file.";

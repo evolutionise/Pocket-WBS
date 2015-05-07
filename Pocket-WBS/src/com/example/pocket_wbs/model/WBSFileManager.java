@@ -112,7 +112,13 @@ public class WBSFileManager {
 	 * @param tree - the tree to be saved to the file.
 	 */
 	public void exportFile(Context context, ProjectTree tree){
-		String fileName = tree.getFileName();
+		String fileName = "";
+		if(tree.treeSavedToFile()){
+			fileName = tree.getFileName() + ".PTWBS";
+		}
+		else{
+			fileName = tree.getProjectName() + ".PTWBS";
+		}
 		File exportDir = new File(Environment.getExternalStorageDirectory() + "/Pocket-WBS/");
 		if(!exportDir.exists()){
 			exportDir.mkdir();

@@ -16,6 +16,8 @@ import com.example.pocket_wbs.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -135,6 +137,8 @@ public class WBSFileManager {
 				objectOutput.close();
 				fileOutput.flush();
 				fileOutput.close();
+				Uri uri = Uri.fromFile(exportFile);
+				context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
 				showExportMessage(context, exportFile.getAbsolutePath());
 			}
 			catch(Exception e){

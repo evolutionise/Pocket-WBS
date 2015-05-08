@@ -33,7 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
-public class EditWBSActivityActivity extends Activity{
+public class EditWBSActivityActivity extends ActionBarActivity{
 	
 	private WBSActivity activity;
 	private EditText description;
@@ -51,6 +51,7 @@ public class EditWBSActivityActivity extends Activity{
 		activity = element.getActivityByIndex(position);		
 		
 		setContentView(R.layout.edit_wbsactivity_activity);
+		this.getSupportActionBar().hide();
 		description = (EditText) findViewById(R.id.activity_description_edit_text);
 		//description.setText(activity.getDescription());
 		updateTextViews();

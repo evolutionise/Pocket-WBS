@@ -64,7 +64,8 @@ public class ViewElementActivity extends ActionBarActivity {
 			String elementKey = intent.getStringExtra("com.example.pocket_wbs.ELEMENT_KEY");
 			this.selectedElement = this.tree.getProjectElements().get(elementKey);
 		}
-
+		
+		this.getSupportActionBar().hide();
 		setContentView(R.layout.activity_view_element);
 		setUpEventListeners();
 		updateActivity();

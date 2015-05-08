@@ -49,6 +49,9 @@ public class MyCanvas extends View {
     private WBSElement selected;
     //Gestures attributes
     private GestureDetector gDetector;
+    private float mScaleFactor = 1.f;
+    private float dx,dy = 1.f;
+
 
     
     public MyCanvas(Context context) {
@@ -105,6 +108,9 @@ public class MyCanvas extends View {
 
         // TODO Auto-generated method stub
         super.onDraw(canvas);
+        
+        canvas.translate(dx,dy);
+        canvas.scale(mScaleFactor, mScaleFactor);
         Paint p = new Paint();
         this.canvas = canvas;
         
@@ -143,13 +149,11 @@ public class MyCanvas extends View {
     		wbe = project.addChildElement(parent, name, startxTemp, startyTemp);
     		wbe.setName("New Element");
     		addElement(wbe);
-    		//adjustElements(wbe, startxTemp, hGapLvlOne);
     		startxTemp+=elementWidth+hGapLvlOne;
     	}
     	
-    	adjustElements(wbe);
     }
-
+    
     public void toastMessage(String message){
     	Toast.makeText(this.getContext(), message, Toast.LENGTH_SHORT).show();
     }
@@ -158,213 +162,6 @@ public class MyCanvas extends View {
      * Method to automatically adjust/shift elements to maintain a fixed distance between them
      * @author adrian
      */
-    public void adjustElements(WBSElement wbs)
-    {
-    	int elementLevel = wbs.getElementLevel();
-    	WBSElement parent = wbs.getParent();
-    	int parentLevel = parent.getElementLevel();
-    	
-    	ArrayList<WBSElement> parentSiblings = new ArrayList<WBSElement>();
-    	String orientation="";
-    	
-    	//Determine the Element's orientation (LEFT, MIDDLE, or RIGHT)
-    	if(parent.getMidX()<rootMidPoint)
-    		orientation="left";
-    	else if (parent.getMidX()>rootMidPoint)
-    		orientation="right";
-    	else if (parent.getMidX()==rootMidPoint)
-    		orientation="middle";
-    		
-    	//This check only runs for elements level 2 and above
-    	if(elementLevel>=2) {
-    		if(orientation.equals("left")) {
-    			//Check to see if there are other elements on the
-    			//same level as parent, filter according to branch (LEFT)
-    			
-    			/*for (WBSElement sibling : parent.getSiblings()) {
-    				//If sibling is on the same branch side, add to LinkedList
-    				if (sibling.getMidX()<rootMidPoint && sibling.hasChildren()) {
-    					parentSiblings.add(sibling);
-    					toastMessage(sibling.getName());
-    				}
-    				
-    			}*/
-    			for (WBSElement parentSibling : project.getProjectElementsAsArray()) {
-    				if (parentSibling.getElementLevel()==parentLevel && parentSibling.getMidX()<=rootMidPoint) {
-    					if(parentSibling.hasChildren()) {
-    						parentSiblings.add(parentSibling);
-    					}
-    						
-    				}
-    			}
-    			
-    			//Now that we have siblings with children.. adjust from right to left
-    			int lastIndexParent = parentSiblings.size()-1;
-    			
-    			ArrayList<WBSElement> parentChildren = new ArrayList<WBSElement>();
-    			//Get most right parent first
-    			for (int count=lastIndexParent; count>=0; count--) {
-    				
-    				//Get last parent to first parent
-    				WBSElement p = parentSiblings.get(count);
-    				
-    				//Get all children in the parent
-    				LinkedList<WBSElement> children = p.getChildren();
-    				int lastIndexChild = children.size()-1;
-    				
-    				//Get right most child to left most child
-    				WBSElement c = children.get(lastIndexChild);
-    				
-    				//If right most child is further than root mid point, shift family left.
-    				if (c.getX()+elementWidth>rootMidPoint) {
-    					while(c.getX()+elementWidth>rootMidPoint) {
-    						//Move this element left (negative integer?)
-    						c.moveX(-10);	
-    			
-        					//TODO MOVE ANY ELEMENTS ON THE SAME LEVEL towards the left
-        					//of this element to the left (negative integer)
-    						/*for(WBSElement allChildren : children){
-    							allChildren.moveX(-10, children.size());
-    						}*/
-    					}
-    				//Check if this element's parent has a sibling towards the right
-    				//If the current count is less than the last IndexParent = there's a parent sibling to the right
-    				} 
-
-    				if (count<lastIndexParent) {
-    					//If family to the right has children... then check if left most
-    					//element in that family clashes with right most in this one
-    					if(parentSiblings.get(count+1).hasChildren()) {
-    						//If right most element in this family crosses over the start of the left most element
-    						//in the family on the right
-    						if(c.getX()+elementWidth>=parentSiblings.get(count+1).getChildByIndex(0).getX()) {
-    							while(c.getX()+elementWidth+(hGapLvlOne)>=parentSiblings.get(count+1).getChildByIndex(0).getX()) {
-    								c.moveX(-10);
-
-    								//TODO MOVE ANY ELEMENTS ON THE SAME LEVEL towards the left
-    	        					//of this element to the left (negative integer)
-    	    						/*for(WBSElement allChildren : children){
-	    							allChildren.moveX(-10, children.size());
-	    							}*/
-    							}
-    						}
-    					}
-    				}
-    				//Now check if this element's parent has a sibling towards the left
-    				//If count is bigger than 0 that means there is a parent to the left
-    				if(count>0) {
-    					//If the family on the left has children
-    					if(parentSiblings.get(count-1).hasChildren()) {
-    						//If the left most element in this family touches the right
-    						//most element in the family on the left
-    						WBSElement neighbourParent = parentSiblings.get(count-1);
-    						LinkedList<WBSElement> neighbourChildren = neighbourParent.getChildren();
-    						//This gets the right most child in the neighbouring family to the left of this family
-    						WBSElement neighbour = neighbourParent.getChildByIndex(neighbourParent.getNumChildren()-1);
-    						if(c.getX()-hGapLvlOne<neighbour.getX()+elementWidth){
-    							while(c.getX()-hGapLvlOne<neighbour.getX()+elementWidth) {
-    								neighbour.moveX(-10);
-    	    						/*for(WBSElement Children : neighbourChildren){
-    	    							Children.moveX(-10, neighbourChildren.size());
-    	    						}*/
-    							}
-    						}
-    					}
-    				}
-    				
-    			}
-
-    			
-				
-    		} else if (orientation.equals("right")) {
-    			
-    			//Get parent's siblings on the same orientation
-    			for (WBSElement parentSibling : project.getProjectElementsAsArray()) {
-    				if (parentSibling.getElementLevel()==parentLevel && parentSibling.getMidX()>=rootMidPoint) {
-    					if(parentSibling.hasChildren()) {
-    						parentSiblings.add(parentSibling);
-    					}
-    						
-    				}
-    			}
-    			
-    			
-    			//Iterate through each parent sibling from left to right
-    			for (int count=0; count<parentSiblings.size(); count++) {
-    				
-    				//Get first parent to last parent
-    				WBSElement p = parentSiblings.get(count);
-    				
-    				//Get all children in the parent
-    				LinkedList<WBSElement> children = p.getChildren();
-    				//int lastIndexChild = children.size()-1;
-    				
-    				//Get left most child to the right most child
-    				WBSElement c = children.get(0);
-    				
-    				//If left most child is less than root mid point, shift family right.
-    				if (c.getX()<=rootMidPoint) {
-    					while(c.getX()-hGapLvlOne<=rootMidPoint) {
-    						//Move this element left (negative integer?)
-    						c.moveX(10);	
-    			
-        					//TODO MOVE ANY ELEMENTS ON THE SAME LEVEL towards the left
-        					//of this element to the left (negative integer)
-    						/*for(WBSElement allChildren : children){
-    							allChildren.moveX(-10, children.size());
-    						}*/
-    					}
-    				//Check if this element's parent has a sibling towards the left
-    				//If the current count is less than the last IndexParent = there's a parent sibling to the right
-    				} 
-
-    				if (count>0) {
-    					//If family to the left has children... then check if right most
-    					//element in that family clashes with the left most in this one
-    					if(parentSiblings.get(count-1).hasChildren()) {
-    						//If left most element in this family crosses over the start of the right most element
-    						//in the family on the left
-    						WBSElement neighbourParent = parentSiblings.get(count-1);
-    						if(c.getX()<=neighbourParent.getChildByIndex(neighbourParent.getNumChildren()-1).getX()+elementWidth) {
-    							while(c.getX()-hGapLvlOne<=neighbourParent.getChildByIndex(neighbourParent.getNumChildren()-1).getX()+elementWidth) {
-    								c.moveX(10);
-
-    								//TODO MOVE ANY ELEMENTS ON THE SAME LEVEL towards the left
-    	        					//of this element to the left (negative integer)
-    	    						/*for(WBSElement allChildren : children){
-	    							allChildren.moveX(-10, children.size());
-	    							}*/
-    							}
-    						}
-    					}
-    				}
-    				//Now check if this element's parent has a sibling towards the right
-    				//If count is less than the parents sibling size minus 1 ... then there is a parent sibling to the right
-    				/*if(count<parentSiblings.size()-1) {
-    					//If the family on the right has children
-    					if(parentSiblings.get(count+1).hasChildren()) {
-    						//If the right most element in this family touches the left
-    						//most element in the family on the right
-    						WBSElement neighbourParent = parentSiblings.get(count+1);
-    						LinkedList<WBSElement> neighbourChildren = neighbourParent.getChildren();
-    						//This gets the left most child in the neighbouring family to the right of this family
-    						WBSElement neighbour = neighbourParent.getChildByIndex(0);
-    						if(c.getX()+elementWidth>=neighbour.getX()){
-    							while(c.getX()+hGapLvlOne+elementWidth>=neighbour.getX()) {
-    								neighbour.moveX(10);
-    	    						/*for(WBSElement Children : neighbourChildren){
-    	    							Children.moveX(-10, neighbourChildren.size());
-    	    						}
-    							}
-    						}
-    					}
-    				}*/
-    				
-    			}
-    			
-    		}
-    	}
-    }
 
 
     @Override
@@ -375,6 +172,7 @@ public class MyCanvas extends View {
     	 return true;
     }
     
+
     /*
      * Method to handle a longPress event - Decompose element
      */
@@ -387,27 +185,13 @@ public class MyCanvas extends View {
    	       	 //Check disallows an element to be decomposed if it already has children
    	       	 if(wbse.hasChildren()){
    	       		  WBSElement w=project.addNewLastSibling(wbse.getChildByIndex(0), "New Element");
-   	       	      //w.setName(w.getElementKey());
-   	       	      
-   	       	      //If an element is added, the children of this element should arrange their 
-   	       	      //children accordingly
-   	       	      /*int siblingLevel = w.getElementLevel();
-   	       	      for (WBSElement sibling : project.getProjectElementsAsArray()){
-   	       	    	  if(sibling.getElementLevel()==siblingLevel){
-   	       	    		  adjustElements(sibling);
-   	       	    		  if(sibling.hasChildren()){
-   	       	    			  adjustElements(sibling.getChildByIndex(0));
-   	       	    			  sibling.arrangeChildren();
-   	       	    		  }
-   	       	    			  
-   	       	    	  }
-   	       	      }*/
-   	       	      adjustElements(w);
+   	       	      treeAlgorithm();
    	       	      this.invalidate();
    	       	 }
    	       	 else{
    	       		 if(!wbse.hasActivities()){
    	       			 decomposeElement(wbse, wbse.getX(),wbse.getY());
+      	       	     treeAlgorithm();
    	       			 this.invalidate();
    	       		 }	
    	       	 }
@@ -478,6 +262,87 @@ public class MyCanvas extends View {
     	}
     	else
     		toastMessage("no element selected");
+    }
+    
+    
+    public void setScaleFactor(float scale){
+    	this.mScaleFactor = scale;
+    }
+    
+    public float getScaleFactor(){
+    	return this.mScaleFactor;
+    }
+    
+
+    /*
+     * Experimental method to recalculate/regenerate tree display algorithm each time a new element is added/removed
+     */
+    public void treeAlgorithm() {
+    		int highestLevel=0;
+    		//Get last element of the tree & find out what level the tree is up to
+	    	WBSElements = project.getProjectElementsAsArray();
+	        for (WBSElement wbs : WBSElements) 
+	        {
+	            if(wbs.getElementLevel()>highestLevel) {
+	            	highestLevel = wbs.getElementLevel();
+	            }
+	        }
+    		
+    		int treeLevel = highestLevel;
+    		
+    		//Iterate through each level
+    		for(int level=0; level<=highestLevel; level++)
+    		{
+    			
+    			
+    			ArrayList<WBSElement> tempElementArray = new ArrayList<WBSElement>();
+    			//Add all elements of the same level into temporary element array 
+    			for (WBSElement e : project.getProjectElementsAsArray()) 
+    			{
+    				if (e.getElementLevel()==level) {
+    						tempElementArray.add(e);
+    				}
+    			}
+
+    			
+		    	//Get index of the last element to know when the end of the list is reached
+		    	int lastElementIndex = tempElementArray.indexOf(tempElementArray.get(tempElementArray.size()-1));
+	    			
+				//Now iterate through all the elements of the same level and adjust accordingly
+				for (WBSElement e : tempElementArray) 
+				{	
+					int currentIndex = tempElementArray.indexOf(e);
+					
+					//Check if there is an element to the left of this element
+					if(currentIndex-1>=0)
+					{
+						WBSElement elementToLeft = tempElementArray.get(currentIndex-1);
+						
+						while(e.getLeftThreshold()<elementToLeft.getRightThreshold())
+						{
+							elementToLeft.moveNew(-5);
+							e.moveNew(5);
+						}
+					}
+					
+					//Check if there is an element to the right of this element
+					if(tempElementArray.indexOf(e)!=lastElementIndex)
+					{
+						WBSElement elementToRight = tempElementArray.get(currentIndex+1);
+						
+						while(e.getRightThreshold()>elementToRight.getLeftThreshold())
+						{
+							elementToRight.moveNew(5);
+							e.moveNew(-5);
+						}
+					}
+					
+				}
+				
+    			
+    		}
+    		
+    		this.invalidate();
     }
 }
 

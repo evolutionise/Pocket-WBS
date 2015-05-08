@@ -24,6 +24,33 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:src="@drawable/pocketwbsicon2" />
+
+	        <Button
+	            android:id="@+id/buttonEdit"
+	            style="?android:attr/buttonStyleSmall"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:minHeight="10dp"
+	            android:onClick="editCanvas"
+	            android:text="EDIT" />
+
+	        <Button
+	            android:id="@+id/buttonView"
+	            style="?android:attr/buttonStyleSmall"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:minHeight="10dp"
+	            android:onClick="viewCanvas"
+	            android:text="VIEW" />
+
+	        <Button
+	            android:id="@+id/button1"
+	            style="?android:attr/buttonStyleSmall"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:minHeight="15dp"
+	            android:onClick="treeAlgorithm"
+	            android:text="Arrange" />
 	
 	    </LinearLayout>
 	

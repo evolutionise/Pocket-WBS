@@ -50,6 +50,10 @@ public class GUImain extends ActionBarActivity {
 	private MyCanvas myCanvas2;
 	public ProjectTree pt;
 	String newName;
+	private boolean editModeOn=true;
+	private Button btnEdit, btnView;
+	private int scrollToX;
+	private HorizontalScrollView hsv;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,7 @@ public class GUImain extends ActionBarActivity {
 	//Initializes screen to scroll to center of canvas
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
-		final HorizontalScrollView hsv = (HorizontalScrollView)findViewById(R.id.horizontal_scroll_view);
+		  hsv = (HorizontalScrollView)findViewById(R.id.horizontal_scroll_view);
 
 	//Will receive ProjectTree object from previous activity, create manually for now
 		Intent intent = getIntent();
@@ -85,7 +89,7 @@ public class GUImain extends ActionBarActivity {
 		myContainer.addView(myCanvas2, pxW, px);
 
 	//Algorithm to calculate screen to scroll to middle of page at start
-		final int scrollToX= (int) ((pxW/2)-(dpWidth/2));
+		scrollToX= (int) ((pxW/2)-(dpWidth/2));
 		
 		hsv.post(new Runnable() {
 		    @Override
@@ -94,8 +98,14 @@ public class GUImain extends ActionBarActivity {
 		    }
 		});
 		
+	//Initialize Buttons from Canvas to set EditMode On or Off
+		btnEdit = (Button)findViewById(R.id.buttonEdit);
+		btnView = (Button)findViewById(R.id.buttonView);
+		
+		btnView.setEnabled(true);
+		btnEdit.setEnabled(false);
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu, menu);
@@ -140,7 +150,6 @@ public class GUImain extends ActionBarActivity {
 		
 		return true;
 	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -220,6 +229,29 @@ public class GUImain extends ActionBarActivity {
 	
 	public void checkOrientation(View view){
 		myCanvas2.displayOrientation();
+	}
+	
+	public void editCanvas(View v){
+		this.myCanvas2.setScaleFactor(myCanvas2.getScaleFactor()+0.4f);
+		editModeOn=true;
+		btnView.setEnabled(true);
+		btnEdit.setEnabled(false);
+		myCanvas2.invalidate();
+		hsv.scrollTo(scrollToX, 0);
+	}
+	
+	
+	public void viewCanvas(View v){
+		this.myCanvas2.setScaleFactor(myCanvas2.getScaleFactor()-0.4f);
+		editModeOn=false;
+		btnView.setEnabled(false);
+		btnEdit.setEnabled(true);
+		myCanvas2.invalidate();
+		hsv.scrollTo((int) (scrollToX/1.9), 0);
+	}
+	
+	public void treeAlgorithm(View view){
+		this.myCanvas2.treeAlgorithm();
 	}
 	
 }

@@ -480,14 +480,6 @@ public class WBSElement implements Serializable{
     	this.midx=x+(elementWidth/2);
 	}
     
-    public void moveX(int x) {
-    	this.startx+=x;
-    	this.midx=startx+(elementWidth/2);
-    	
-    	if(!this.getParent().isRoot())
-    		this.moveParent(x);
-    }
-    
     public void setY(int y)
     {
     	this.starty=y;
@@ -533,23 +525,12 @@ public class WBSElement implements Serializable{
 		return siblings;
 	}    
 	
-	public void moveParent(int x) {
-		this.parent.parentMove(x);
-		this.parent.arrangeChildren();
-
-	}
-	
-	public void parentMove(int x) {
-		this.startx+=x;
+    public void moveNew(int x)
+    {
+    	this.startx+=x;
     	this.midx=startx+(elementWidth/2);
     	this.arrangeChildren();
-    	LinkedList<WBSElement> parentSiblings = this.getSiblings();
-    	for(WBSElement ps : parentSiblings){
-    		if(ps.orientation==this.orientation && ps!=this){
-    			ps.siblingMove(x);
-    		}
-    	}
-	}
+    }
 	
 	public void siblingMove(int x){
 		this.startx+=x;
@@ -807,5 +788,43 @@ public class WBSElement implements Serializable{
 		else{
 			this.children.remove(childIndex);
 		}		
+	}
+	
+	
+	/*
+	 * Method to determine how much space this element needs according to the number of children it has 
+	 * @return int - number of space in pixels that this element needs for its children
+	 */
+	public int getChildSpaceNeeded() {
+		
+		int returnValue;
+		
+		if(this.hasChildren())
+		{
+			returnValue = ((this.getNumChildren()*elementWidth)+((this.getNumChildren()-1)*horizontalGap));
+		}
+		else
+			returnValue = elementWidth;
+		
+		return returnValue;
+			
+	}
+	
+	/*
+	 * Method to determine x-threshold space required to the left of this element
+	 * @return the left x-coordinate for space required
+	 */
+	public int getLeftThreshold() {
+		
+		return (this.getMidX()-(getChildSpaceNeeded()/2)-(elementWidth/4));
+	}
+	
+	/*
+	 * Method to determine x-threshold space required to the right of this element
+	 * @return the right x-coordinate for space required
+	 */
+	
+	public int getRightThreshold() {
+		return (this.getMidX()+(getChildSpaceNeeded()/2)+(elementWidth/4));
 	}
 }

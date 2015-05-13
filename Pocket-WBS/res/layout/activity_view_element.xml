@@ -12,6 +12,18 @@
     tools:context="com.example.pocket_wbs.ViewElementActivity" >
     <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
 
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -25,13 +37,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:paddingBottom="10dp" >
 
-                    <ImageView
-                        android:id="@+id/imageView1"
+                    <Button
+                        android:id="@+id/exitButtonEditWBS"
+                        style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/pocketwbsicon2" />
+                        android:layout_height="34dp"
+                        android:gravity="right"
+                        android:text="@string/exit_text" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -182,7 +198,7 @@
                 </ScrollView>
 
                 <Button
-                    android:id="@+id/browseFilesButton"
+                    android:id="@+id/addAttributeActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minHeight="30dp"
@@ -238,24 +254,6 @@
                     android:layout_gravity="top|center_vertical"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal" >
-
-                    <Button
-                        android:id="@+id/elementSaveButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/save" />
-
-                    <Button
-                        android:id="@+id/deleteElementButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/delete" />
-
-                    <Button
-                        android:id="@+id/elementCancelButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cancel" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

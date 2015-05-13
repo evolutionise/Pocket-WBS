@@ -64,8 +64,6 @@ public class ViewElementActivity extends ActionBarActivity {
 			String elementKey = intent.getStringExtra("com.example.pocket_wbs.ELEMENT_KEY");
 			this.selectedElement = this.tree.getProjectElements().get(elementKey);
 		}
-		
-		this.getSupportActionBar().hide();
 		setContentView(R.layout.activity_view_element);
 		setUpEventListeners();
 		updateActivity();
@@ -87,6 +85,48 @@ public class ViewElementActivity extends ActionBarActivity {
 	
 	@Override
 	public void onBackPressed(){
+		saveFieldChanges();
+		moveToViewElementOverview();
+	};
+	
+	private void saveFieldChanges(){
+		
+		EditText elementName = (EditText) findViewById(R.id.editElementName);
+		EditText budget = (EditText) findViewById(R.id.budgetEditText);
+		EditText duration = (EditText) findViewById(R.id.durationEditText);
+		EditText manager = (EditText) findViewById(R.id.managerEditText);
+		
+		String newName = elementName.getText().toString();
+		double newBudget = Double.parseDouble(budget.getText().toString());
+		int newWorkHours = Integer.parseInt(duration.getText().toString());
+		String newManager = manager.getText().toString();
+		
+		if(!this.selectedElement.isRoot()){
+			if(!newName.equals("")){
+				this.selectedElement.setName(newName);
+			}
+		}
+		else{
+			if(!newName.equals("")){
+				this.tree.setProjectName(newName);
+			}
+		}
+		if(newBudget >= 0){
+			this.selectedElement.setBudget(newBudget);
+		}
+		else{
+			this.selectedElement.setBudget(0);
+		}
+		if(newWorkHours >= 0){
+			this.selectedElement.setWorkHours(newWorkHours);
+		}
+		else{
+			this.selectedElement.setWorkHours(0);
+		}
+		this.selectedElement.setResponsibleStaff(newManager);
+	}
+	
+	private void moveToViewElementOverview(){
 		Intent intent = new Intent(this, ViewElementOverview.class);
 		ProjectTree tree = this.tree;
 		String key = this.selectedElement.getElementKey();
@@ -94,9 +134,9 @@ public class ViewElementActivity extends ActionBarActivity {
 		intent.putExtra("com.example.pocket_wbs.KEY", key);
 		startActivity(intent);
 		finish();
-	};
+	}
 
-	@Override
+	/**@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu, menu);
 		final Context context = this;
@@ -139,7 +179,7 @@ public class ViewElementActivity extends ActionBarActivity {
 		});
 		
 		return true;
-	}
+	}*/
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -159,7 +199,6 @@ public class ViewElementActivity extends ActionBarActivity {
 	private void updateActivity(){
 		updateTextViews();
 		updateWBSActivityView();
-		updateDeleteButton();
 	}
 	
 	private void updateWBSActivityView(){
@@ -201,94 +240,14 @@ public class ViewElementActivity extends ActionBarActivity {
 	}
 	
 	private void setUpEventListeners(){
-		Button save = (Button) this.findViewById(R.id.elementSaveButton);
-		Button delete = (Button) this.findViewById(R.id.deleteElementButton);
-		Button cancel = (Button) this.findViewById(R.id.elementCancelButton);
-		save.setOnClickListener(new View.OnClickListener() {
+		Button exitButton = (Button) findViewById(R.id.exitButtonEditWBS);
+		exitButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				ViewElementActivity activity = (ViewElementActivity) v.getContext();
-				Context context = getApplicationContext();
-				EditText elementName = (EditText) findViewById(R.id.editElementName);
-				EditText budget = (EditText) findViewById(R.id.budgetEditText);
-				EditText duration = (EditText) findViewById(R.id.durationEditText);
-				EditText manager = (EditText) findViewById(R.id.managerEditText);
-				
-				String newName = elementName.getText().toString();
-				double newBudget = Double.parseDouble(budget.getText().toString());
-				int newDuration = Integer.parseInt(duration.getText().toString());
-				String newManager = manager.getText().toString();
-				
-				if(activity.selectedElement.validateFormInputs(newName, newBudget, newDuration).equals("")){
-					if(!activity.selectedElement.isRoot()){
-						activity.selectedElement.setName(newName);
-					}
-					activity.selectedElement.setBudget(newBudget);
-					activity.selectedElement.setDuration(newDuration);
-					activity.selectedElement.setResponsibleStaff(newManager);
-					Toast saveMessage = new Toast(context);
-					int displayTime = Toast.LENGTH_SHORT;
-					CharSequence message = "Changes Saved";
-					updateActivity();
-					saveMessage.makeText(context, message, displayTime).show();
-				}
-				else{
-					Toast saveMessage = new Toast(context);
-					int displayTime = Toast.LENGTH_LONG;
-					CharSequence message = "You need to fix the following errors...\n" 
-								+ activity.selectedElement.validateFormInputs(newName, newBudget, newDuration);
-					for (int i=0; i < 2; i++)
-					{
-					    saveMessage.makeText(activity, message, Toast.LENGTH_LONG).show();
-					}
-				}
+				moveToViewElementOverview();			
 			}
 		});
-		cancel.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				ViewElementActivity activity = (ViewElementActivity) v.getContext();
-				activity.updateTextViews();				
-			}
-		});
-		
-		delete.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				final ViewElementActivity activity = (ViewElementActivity) v.getContext();
-				new AlertDialog.Builder(activity)
-		        .setIcon(android.R.drawable.ic_dialog_alert)
-		        .setTitle("Delete Element")
-		        .setMessage("Are you sure you want to delete this element?\n(This will delete the other sibling if there are only two elements)")
-		        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-		        {
-		        	@Override
-		        	public void onClick(DialogInterface dialog, int which) {
-		        		activity.selectedElement.getParent().removeChild(selectedElement.getIndex());
-		        		Intent intent = new Intent(activity, GUImain.class);
-		        		ProjectTree tree = activity.tree;
-		        		intent.putExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW", tree);
-		        		startActivity(intent);		    
-		        		finish();
-		        	}
-
-		        })
-		        .setNegativeButton("No", null)
-		        .show();
-			}
-		});
-	}
-	
-	private void updateDeleteButton(){
-		Button delete = (Button) findViewById(R.id.deleteElementButton);
-		if(this.selectedElement.isRoot()){
-			delete.setVisibility(View.INVISIBLE);
-		}
-		else{
-			delete.setVisibility(View.VISIBLE);
-		}
 	}
 	
 	/*

@@ -14,6 +14,7 @@ import com.example.pocket_wbs.model.WBSFileManager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,6 +55,7 @@ public class GUImain extends ActionBarActivity {
 	private Button btnEdit, btnView;
 	private int scrollToX;
 	private HorizontalScrollView hsv;
+	private boolean changesSaved = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -253,5 +255,4 @@ public class GUImain extends ActionBarActivity {
 	public void treeAlgorithm(View view){
 		this.myCanvas2.treeAlgorithm();
 	}
-	
 }

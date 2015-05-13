@@ -80,20 +80,32 @@ public class LoadWBSActivity extends ActionBarActivity {
 		ListView list = (ListView) findViewById(R.id.fileSelectList);
 		WBSFileManager fileManager = new WBSFileManager();
 		String[] itemsList = fileManager.listFiles(this.getApplicationContext());
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemsList);
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, itemsList);
 		list.setAdapter(adapter);
 		setListEventHandlers();
 	}
 	
 	public void setBrowseButtonEventHandler(){
-		Button browseButton = (Button) findViewById(R.id.browseFilesButton);
+		Button browseButton = (Button) findViewById(R.id.addAttributeActivity);
 		browseButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View view) {
 				if(browser.externalMemoryMounted()){
-					Intent intent = new Intent(view.getContext(), FileBrowserActivity.class);
-					startActivity(intent);
+					if(!browser.extMemoryEmulated()){
+						Intent intent = new Intent(view.getContext(), FileBrowserActivity.class);
+						startActivity(intent);
+					}
+					else{
+						boolean cardInserted = browser.switchToRemovableMemory();
+						if(cardInserted){
+							Intent intent = new Intent(view.getContext(), FileBrowserActivity.class);
+							startActivity(intent);
+						}
+						else{
+							browser.displayCardMissingMessage(view.getContext());
+						}
+					}
 				}
 				else{
 					browser.displayCardMissingMessage(view.getContext());

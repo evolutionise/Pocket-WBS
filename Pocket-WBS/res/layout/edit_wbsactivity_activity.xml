@@ -12,14 +12,45 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:gravity="left|right"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/activity_description_tag"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/activity_description"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right" >
+
+                    <Button
+                        android:id="@+id/exitEditActivityButton"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:gravity="right"
+                        android:minHeight="30dp"
+                        android:minWidth="30dp"
+                        android:text="@string/exit_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left" >
+
+                    <TextView
+                        android:id="@+id/activity_description_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/activity_description"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/activity_description_edit_text"
@@ -225,7 +256,7 @@
                 
                 
                    <Button
-                    android:id="@+id/browseFilesButton"
+                    android:id="@+id/addAttributeActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minHeight="30dp"
@@ -240,30 +271,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="bottom|center_horizontal" >
-
-                <Button
-                    android:id="@+id/save_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="saveActivity"
-                    android:text="@string/save" />
-
-                <Button
-                    android:id="@+id/delete_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="deleteActivity"
-                    android:text="@string/delete" />
-
-                <Button
-                    android:id="@+id/cancel_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="cancelActivity"
-                    android:text="@string/cancel" />
             </LinearLayout>
 
         </LinearLayout>

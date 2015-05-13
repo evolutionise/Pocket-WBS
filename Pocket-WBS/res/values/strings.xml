@@ -50,5 +50,7 @@
     <string name="file_select_button_text">Select File</string>
     <string name="selected_file_text_default">"Selected File: "</string>
     <string name="back_button_browser_text">Go to Previous</string>
+    <string name="exit_symbol">x</string>
+    <string name="exit_text">Close [x]</string>
 
 </resources>

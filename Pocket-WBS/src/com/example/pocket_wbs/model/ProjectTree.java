@@ -42,7 +42,7 @@ public class ProjectTree implements Serializable{
 		}
 		else{
 			this.name = name;
-			rootElement.setName(name);
+			rootElement.updateNameOfRootElement(name);
 		}
 	}
 	

@@ -65,59 +65,21 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 			displayCustomAttributes();
     }
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu, menu);
-		final Context context = this;
-		final ProjectTree tree = this.tree;
-		MenuItem saveButton = menu.add("Save");
-		MenuItem saveAsButton = menu.add("Save As");
-		MenuItem exportButton = menu.add("Export");
-		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				if(tree.treeSavedToFile()){
-					wbsManager.saveTreeToFile(context, tree);
-					return false;
-				}
-				else{
-					wbsManager.showSaveAsDialog(context, tree);
-				}
-				return false;
-			}
-		});
-		saveAsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.showSaveAsDialog(context, tree);
-				return false;
-			}
-		});
-		exportButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.exportFile(context, tree);
-				return false;
-			}
-		});
-		
-		return true;
+	public void cancelActivity(){
+		moveToViewElementActivity();
 	}
 	
+	@Override
+	public void onBackPressed(){
+		saveActivityFields();
+		moveToViewElementActivity();
+	}
 	
-	
-	public void saveActivity(View view){
+	private void saveActivityFields(){
 		
 		setEmptyNumericFieldsToDefault();
 		String newDescription = description.getText().toString();
 		
-		Context context = getApplicationContext();
 		EditText budget = (EditText) findViewById(R.id.activityBudgetEdit);
 		EditText actualCost = (EditText) findViewById(R.id.activityCostEdit);
 		EditText sDay = (EditText) findViewById(R.id.editStartDay);
@@ -146,47 +108,28 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 		String startDate =  sDay + "/" + sMonth + "/" + sYear;
 		String FinishDate = fDay + "/" + fMonth + "/" + fYear;
 		
-		String validatingString = activity.validateFormInputs(newDescription, newBudget, newCost);
-		validatingString += activity.validateStartDate(sDayNum, sMonthNum, sYearNum);
+		String validatingString = activity.validateStartDate(sDayNum, sMonthNum, sYearNum);
 		validatingString += activity.validateFinishDate(fDayNum, fMonthNum, fYearNum);
 		validatingString += activity.validateTimeFrame(sDayNum, sMonthNum, sYearNum, fDayNum, fMonthNum, fYearNum);
 		
-		if(validatingString == ""){
+		activity.setBudget(newBudget);
+		activity.setActualCost(newCost);
+		if(!newDescription.equals("")){
 			activity.setDescription(newDescription);
-			activity.setBudget(newBudget);
-			activity.setActualCost(newCost);
+		}
+		if(validatingString.equals("")){
 			activity.setStartDate(Integer.parseInt(newStartDay), Integer.parseInt(newStartMonth), Integer.parseInt(newStartYear));
 			activity.setFinishDate(Integer.parseInt(newFinishDay), Integer.parseInt(newFinishMonth), Integer.parseInt(newFinishYear));
-			Toast saveMessage = new Toast(context);
-			int displayTime = Toast.LENGTH_SHORT;
-			CharSequence message = "Changes Saved";
-			saveMessage.makeText(context, message, displayTime).show();
-			//updateTextViews();
-			//onBackPressed();
 		}
 		else{
-			Toast saveMessage = new Toast(context);
-			int displayTime = Toast.LENGTH_SHORT;
-			CharSequence message = "You need to fix the following errors...\n" + validatingString;
-			for (int i=0; i < 2; i++)
-			{
-			    saveMessage.makeText(view.getContext(), message, Toast.LENGTH_LONG).show();
-			}
+			Toast saveMessage = new Toast(this);
+			int displayTime = Toast.LENGTH_LONG*2;
+			CharSequence message = "Date's not saved due to the following errors...\n" + validatingString;
+			saveMessage.makeText(this, message, displayTime).show();
 		}
 	}
 	
-	public void cancelActivity(View view){
-		onBackPressed();
-	}
-	
-	public void deleteActivity(View view){
-		WBSElement element = activity.getContainingElement();
-		element.deleteActivity(activity);
-		onBackPressed();
-	}
-	
-	@Override
-	public void onBackPressed(){
+	private void moveToViewElementActivity(){
 		Intent intent = new Intent(this, ViewElementActivity.class);
 		WBSElement element = activity.getContainingElement();		
 		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", element.getElementKey());

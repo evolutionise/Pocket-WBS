@@ -164,6 +164,17 @@ public class WBSElement implements Serializable{
 		}
 	}
 	
+	public void updateNameOfRootElement(String name){
+		if(name.equals(null)){
+			throw new IllegalArgumentException("The name cannot be null");
+		}
+		else{
+			if(this.isRoot()){
+				this.name = name;
+			}
+		}
+	}
+	
 	/**
 	 * Checks if the WBS element has child elements decomposed from it
 	 * @return true if the element has children
@@ -648,7 +659,7 @@ public class WBSElement implements Serializable{
 	 * @throws IllegalArgumentException when the new duration is lower than zero
 	 * @param duration
 	 */
-	public void setDuration(int duration) {
+	public void setWorkHours(int hours) {
 		if(duration < 0){
 			throw new IllegalArgumentException("Duration can not be less than zero");
 		}
@@ -694,30 +705,6 @@ public class WBSElement implements Serializable{
 	 */
 	public void setResponsibleStaff(String responsibleStaff) {
 		this.responsibleStaff = responsibleStaff;
-	}
-	
-	/**
-	 * Method used to print out an error message with any invalid inputs for
-	 * an elements attribute when set in the GUI.
-	 * @param name
-	 * @param budget
-	 * @param duration
-	 * @return
-	 */
-	public String validateFormInputs(String name, double budget, int duration){
-		String output = "";
-		
-		if(!this.isRoot() && name.equals("")){
-			output += "You need to enter a name for the element.\n";
-		}
-		if(budget < 0){
-			output += "The budget you set was less than zero.\n";
-		}
-		if(duration < 0){
-			output += "The duration you set was less than zero.\n";
-		}
-		
-		return output;
 	}
 	
 	/**

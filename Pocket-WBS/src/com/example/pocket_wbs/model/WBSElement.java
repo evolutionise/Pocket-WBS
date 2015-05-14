@@ -88,7 +88,7 @@ public class WBSElement implements Serializable{
 	
     /**
      * Method used to draw an element onto the project tree
-     * display in th GUI.
+     * display in the GUI.
      * @param canvas - the canvas to which the element is being drawn
      */
 	public void onDraw(Canvas canvas) 
@@ -115,7 +115,15 @@ public class WBSElement implements Serializable{
     	//Set rectangle start position to be in the middle of the screen
     	RectF r = new RectF(startx, starty, startx+elementWidth, starty+elementHeight);
     	canvas.drawRoundRect(r, 30, 30, rectangleP);
-    	canvas.drawText(name, startx+(elementWidth/6), starty+(elementHeight/2), textp);
+    	
+    	String textToDraw = getDrawableNameText();
+    	int i = 0;
+    	for(String textLine : textToDraw.split("\n")){
+    		float newLineSpace = textp.getTextSize();
+    		canvas.drawText(textLine, startx+(elementWidth/6), starty + (elementHeight/2) + (newLineSpace*i), textp);
+    		i++;
+    	}
+    	//canvas.drawText(getDrawableNameText(), startx+(elementWidth/6), starty+(elementHeight/2), textp);
     	
     	//If Element is selected, change colour
 
@@ -813,5 +821,41 @@ public class WBSElement implements Serializable{
 	
 	public int getRightThreshold() {
 		return (this.getMidX()+(getChildSpaceNeeded()/2)+(elementWidth/4));
+	}
+	
+	public String getDrawableNameText(){
+		String drawableText = "";
+		String elementName = this.getName();
+		if(elementName.length() > 14){
+			boolean spaceFound = false;
+			for(int x = 13; x > 0; x--){
+				char c = elementName.charAt(x);
+				if(c == ' '){
+					drawableText += elementName.substring(0, x+1) + "\n";
+					if(elementName.substring(x+1, elementName.length()).length() > 14){
+						drawableText += elementName.substring(x+1, x+11) + "...";
+					}
+					else{
+						drawableText += elementName.substring(x+1, elementName.length());
+					}
+					spaceFound = true;
+					break;
+				}
+			}
+			if(!spaceFound){
+				drawableText += elementName.substring(0, 14) + "\n";
+				if(elementName.substring(14, elementName.length()).length() > 14){
+					drawableText += "-" + elementName.substring(14, 25) + "...";
+				}
+				else{
+					drawableText += "-" + elementName.substring(14, elementName.length());
+				}
+						
+			}
+		}
+		else{
+			drawableText = elementName;
+		}
+		return drawableText;
 	}
 }

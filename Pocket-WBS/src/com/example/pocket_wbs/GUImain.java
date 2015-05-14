@@ -67,7 +67,6 @@ public class GUImain extends ActionBarActivity {
         float dpWidth = displayMetrics.widthPixels;
 		  hsv = (HorizontalScrollView)findViewById(R.id.horizontal_scroll_view);
 
-	//Will receive ProjectTree object from previous activity, create manually for now
 		Intent intent = getIntent();
 		// If I made a new activity from the screen
 		if(intent.hasExtra("com.example.pocket_wbs.NEW_TREE")){
@@ -77,10 +76,6 @@ public class GUImain extends ActionBarActivity {
 		else if(intent.hasExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW")){
 			this.pt = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW");
 		}
-	
-	//Set textView to display project name
-		//TextView tv = (TextView)findViewById(R.id.projectTitle);
-		//tv.setText(pt.getProjectName());
 		
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 800, getResources().getDisplayMetrics());
 		int pxW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 2000, getResources().getDisplayMetrics());
@@ -152,6 +147,7 @@ public class GUImain extends ActionBarActivity {
 		
 		return true;
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -254,5 +250,32 @@ public class GUImain extends ActionBarActivity {
 	
 	public void treeAlgorithm(View view){
 		this.myCanvas2.treeAlgorithm();
+	}
+	
+	public void showExitConfirmation(final Context context){
+		final Activity activity = this;
+		AlertDialog.Builder exitDialog = new AlertDialog.Builder(context);
+        exitDialog.setTitle("Exit Project");
+        exitDialog.setMessage("Exit the current project? (Any unsaved changes will be lost)");
+        exitDialog.setIcon(R.drawable.pocketwbsicon2);
+        exitDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {      
+                    	activity.finish();
+                    	dialog.cancel();
+                    }
+                });
+        exitDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        exitDialog.show();
+	}
+	
+	@Override
+	public void onBackPressed(){
+		showExitConfirmation(this);
 	}
 }

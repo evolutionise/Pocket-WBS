@@ -146,9 +146,11 @@ public class LoadWBSActivity extends ActionBarActivity {
 		Context context = getApplicationContext();
 		WBSFileManager fileManager = new WBSFileManager();
 		ProjectTree tree = fileManager.loadTreeFromFile(context, projectName);
-		Intent intent = new Intent(this, GUImain.class);
-		intent.putExtra("com.example.pocket_wbs.NEW_TREE", tree);
-		startActivity(intent);
+		if(!tree.getProjectName().equals("")){
+			Intent intent = new Intent(this, GUImain.class);
+			intent.putExtra("com.example.pocket_wbs.NEW_TREE", tree);
+			startActivity(intent);
+		}
 	}
 	
 	public void deleteExistingWBS(String projectName){

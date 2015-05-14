@@ -97,14 +97,14 @@ public class WBSFileManager {
 	 * @return ProjectTree - the wbs saved to the chosen file.
 	 */
 	public ProjectTree loadTreeFromFile(Context context, String projectName){
-		ProjectTree tree = new ProjectTree("Loaded Project");
+		ProjectTree tree = new ProjectTree("");
 		try{
 			FileInputStream fileInput = context.openFileInput(projectName);
 			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 			tree = (ProjectTree) objectInput.readObject();
 		}
 		catch(Exception e){
-			showErrorMessage(context, "Error: " + e.getMessage());
+			showErrorMessage(context, "File is from an older version and can not load.");
 		}
 		return tree;
 	}

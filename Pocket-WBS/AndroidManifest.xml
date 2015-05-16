@@ -34,7 +34,8 @@ E
         <activity
             android:name=".ViewElementActivity"
             android:label="@string/title_activity_view_element"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".EditElementActivity"
@@ -42,8 +43,8 @@ E
         </activity>
         <activity android:name=".ViewElementOverview" >
         </activity>
-        <activity android:name=".EditWBSActivityActivity" >
-            android:noHistory="true">
+        <activity android:name=".EditWBSActivityActivity" 
+         			 android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".MenuActivity" >
             <intent-filter android:label="@string/app_name" >

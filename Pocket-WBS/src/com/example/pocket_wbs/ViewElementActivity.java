@@ -29,12 +29,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,13 +49,14 @@ public class ViewElementActivity extends ActionBarActivity {
 	public WBSElement selectedElement;
 	private LinearLayout customAttLayout;
 	ListView activitiesList;
-	ScrollView scrollView;
+	ScrollView scrollView, parentScroll, childScroll;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = this.getIntent();
 		//this.setUpTest();
+		this.getSupportActionBar().hide();
 		if(intent.hasExtra("com.example.pocket_wbs.TREE")){
 			this.tree = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.TREE");
 			String elementKey = intent.getStringExtra("com.example.pocket_wbs.KEY");
@@ -81,6 +84,8 @@ public class ViewElementActivity extends ActionBarActivity {
 				
 		//GET custom attributes for Element level
 				displayCustomAttributes();
+				
+
 	}
 	
 	@Override
@@ -370,4 +375,6 @@ public class ViewElementActivity extends ActionBarActivity {
     public void toastMessage(String message){
     	Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+    
+    
 }

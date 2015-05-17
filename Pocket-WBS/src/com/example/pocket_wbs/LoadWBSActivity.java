@@ -92,23 +92,17 @@ public class LoadWBSActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View view) {
 				if(browser.externalMemoryMounted()){
-					if(!browser.extMemoryEmulated()){
+					Intent intent = new Intent(view.getContext(), FileBrowserActivity.class);
+					startActivity(intent);
+				}
+				else{
+					if(browser.extMemoryEmulated()){
 						Intent intent = new Intent(view.getContext(), FileBrowserActivity.class);
 						startActivity(intent);
 					}
 					else{
-						boolean cardInserted = browser.switchToRemovableMemory();
-						if(cardInserted){
-							Intent intent = new Intent(view.getContext(), FileBrowserActivity.class);
-							startActivity(intent);
-						}
-						else{
-							browser.displayCardMissingMessage(view.getContext());
-						}
+						browser.displayCardMissingMessage(view.getContext());
 					}
-				}
-				else{
-					browser.displayCardMissingMessage(view.getContext());
 				}
 			}
 		});
@@ -188,5 +182,11 @@ public class LoadWBSActivity extends ActionBarActivity {
                 });
         dialogOpen = true;
         deleteConfirmation.show();
+	}
+	
+	public void toastDebugMessage(String message){
+		Toast toast = new Toast(this);
+		int length = Toast.LENGTH_LONG;
+		toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
 }

@@ -126,43 +126,34 @@ public class WBSFileManager {
 		}
 		
 		File exportDir = new File(Environment.getExternalStorageDirectory() + "/Pocket-WBS/");
-		if(Environment.isExternalStorageEmulated()){
-			if(browser.removableMemoryInserted()){
-				exportDir = new File(browser.getRemovableStorage() + "/Pocket-WBS/");
+		if(!exportDir.exists()){
+			exportDir.mkdir();
+		}
+		
+		if(fileName.equals("")){
+			fileName = tree.getProjectName();
+		}
+		
+		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Environment.isExternalStorageEmulated()){
+			try{
+				File exportFile = new File(exportDir, fileName);
+				FileOutputStream fileOutput = new FileOutputStream(exportFile);
+				ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+				objectOutput.writeObject(tree);
+				objectOutput.close();
+				fileOutput.flush();
+				fileOutput.close();
+				Uri uri = Uri.fromFile(exportFile);
+				context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+				showExportMessage(context, exportFile.getAbsolutePath());
 			}
-			else{
-				showExportErrorMessage(context);
+			catch(Exception e){
+				showErrorMessage(context, "Error: " + e.getMessage());
 			}
 		}
 		else{
-			if(!exportDir.exists()){
-				exportDir.mkdir();
-			}
-			if(fileName.equals("") || fileName.equals(null)){
-				fileName = tree.getProjectName();
-			}
-			if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-				try{
-					File exportFile = new File(exportDir, fileName);
-					FileOutputStream fileOutput = new FileOutputStream(exportFile);
-					ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
-					objectOutput.writeObject(tree);
-					objectOutput.close();
-					fileOutput.flush();
-					fileOutput.close();
-					Uri uri = Uri.fromFile(exportFile);
-					context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
-					showExportMessage(context, exportFile.getAbsolutePath());
-				}
-				catch(Exception e){
-					showErrorMessage(context, "Error: " + e.getMessage());
-				}
-			}
-			else{
-				showExportErrorMessage(context);
-			}
+			showExportErrorMessage(context);
 		}
-
 	}
 	
 	/**
@@ -333,7 +324,7 @@ public class WBSFileManager {
 	private void showExportErrorMessage(Context context){
 		Toast exportMessage = new Toast(context);
 		int displayTime = Toast.LENGTH_LONG;
-		CharSequence message = "You need to insert an SD Card.";
+		CharSequence message = "You need to insert and mount an SD Card.";
 		exportMessage.makeText(context, message, displayTime).show();
 	}
 }

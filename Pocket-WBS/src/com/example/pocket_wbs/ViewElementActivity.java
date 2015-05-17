@@ -92,9 +92,10 @@ public class ViewElementActivity extends ActionBarActivity {
 	public void onBackPressed(){
 		saveFieldChanges();
 		moveToViewElementOverview();
-	};
+	}
 	
-	private void saveFieldChanges(){
+	
+	public void saveFieldChanges(){
 		
 		EditText elementName = (EditText) findViewById(R.id.editElementName);
 		EditText budget = (EditText) findViewById(R.id.budgetEditText);

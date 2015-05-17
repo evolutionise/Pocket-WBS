@@ -152,19 +152,10 @@ public class FileBrowser {
 		errorMessage.makeText(context, message, displayTime).show();
 	}
 	
-	/**
-	 * This method changes the directory that the file browser is exploring
-	 * to that of the removable memory (if the device has it).
-	 * @return true if the switch was successful
-	 */
-	public boolean switchToRemovableMemory(){
-		boolean switchSuccessful = false;
-		if(removableMemoryInserted()){
-			this.currentFile = getRemovableStorage();
-			this.rootDirectory = getRemovableStorage();
-			switchSuccessful = true;
-		}
-		return switchSuccessful;
+	public void displayMessage(String message, Context context){
+		Toast errorMessage = new Toast(context);
+		int displayTime = Toast.LENGTH_LONG;
+		errorMessage.makeText(context, message, displayTime).show();
 	}
 	
 	/**
@@ -181,24 +172,6 @@ public class FileBrowser {
 			}
 		}
 		return result;
-	}
-	
-	/**
-	 * This method provides the directory to a devices external storage, in cases
-	 * where the primary external storage can not be saved to (because it is 
-	 * emulated).
-	 * @return
-	 */
-	public File getRemovableStorage(){
-		File removableStoragePath = new File(Environment.getRootDirectory().getAbsolutePath());
-		File[] directories = Environment.getRootDirectory().listFiles();
-		for(File directory : directories){
-			if(new File(directory + "/LOST.DIR").exists()){
-				removableStoragePath = directory;
-				break;
-			}
-		}
-		return removableStoragePath;
 	}
 	
 	/**

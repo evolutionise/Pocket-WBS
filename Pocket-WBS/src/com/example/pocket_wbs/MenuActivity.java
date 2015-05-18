@@ -94,11 +94,7 @@ public class MenuActivity extends ActionBarActivity {
 	//On click method to load an existing WBS
 	
 	public void loadExistingWBS(View view){ 
-		//Context context = getApplicationContext();
-		//WBSFileManager fileManager = new WBSFileManager();
-		//ProjectTree tree = fileManager.loadTreeFromFile(context);
 		Intent intent = new Intent(this, LoadWBSActivity.class);
-		//intent.putExtra("com.example.pocket_wbs.NEW_TREE", tree);
 		startActivity(intent);
 	}
 	

@@ -30,6 +30,8 @@ import android.widget.Toast;
  */
 public class WBSFileManager {
 	
+	FileBrowser browser = new FileBrowser();
+	
 	/**
 	 * Default constructor for a WBSFileManager.
 	 */
@@ -95,14 +97,14 @@ public class WBSFileManager {
 	 * @return ProjectTree - the wbs saved to the chosen file.
 	 */
 	public ProjectTree loadTreeFromFile(Context context, String projectName){
-		ProjectTree tree = new ProjectTree("Loaded Project");
+		ProjectTree tree = new ProjectTree("");
 		try{
 			FileInputStream fileInput = context.openFileInput(projectName);
 			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 			tree = (ProjectTree) objectInput.readObject();
 		}
 		catch(Exception e){
-			showErrorMessage(context, "Error: " + e.getMessage());
+			showErrorMessage(context, "File is from an older version and can not load.");
 		}
 		return tree;
 	}
@@ -114,6 +116,7 @@ public class WBSFileManager {
 	 * @param tree - the tree to be saved to the file.
 	 */
 	public void exportFile(Context context, ProjectTree tree){
+		
 		String fileName = "";
 		if(tree.treeSavedToFile()){
 			fileName = tree.getFileName() + ".PTWBS";
@@ -121,14 +124,17 @@ public class WBSFileManager {
 		else{
 			fileName = tree.getProjectName() + ".PTWBS";
 		}
+		
 		File exportDir = new File(Environment.getExternalStorageDirectory() + "/Pocket-WBS/");
 		if(!exportDir.exists()){
 			exportDir.mkdir();
 		}
-		if(fileName.equals("") || fileName.equals(null)){
+		
+		if(fileName.equals("")){
 			fileName = tree.getProjectName();
 		}
-		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+		
+		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Environment.isExternalStorageEmulated()){
 			try{
 				File exportFile = new File(exportDir, fileName);
 				FileOutputStream fileOutput = new FileOutputStream(exportFile);
@@ -272,9 +278,11 @@ public class WBSFileManager {
 	}
 	
 	/**
-	 * 
-	 * @param context
-	 * @param filePath
+	 * This method displays a confirmation of a successful file export,
+	 * including the location where it was saved on the external 
+	 * memory.
+	 * @param context - the context where the message is displayed
+	 * @param filePath - the path where the file was saved
 	 */
 	private void showExportMessage(Context context, String filePath){
 		Toast exportMessage = new Toast(context);
@@ -283,6 +291,11 @@ public class WBSFileManager {
 		exportMessage.makeText(context, message, displayTime).show();
 	}
 	
+	/**
+	 * This method displays a message telling the user to enter a name
+	 * for a tree file in cases where they do not provide one.
+	 * @param context - the context where the message is displayed
+	 */
 	private void showUnsuccessfulSaveMessage(Context context){
 		Toast saveMessage = new Toast(context);
 		int displayTime = Toast.LENGTH_LONG;
@@ -290,16 +303,28 @@ public class WBSFileManager {
 		saveMessage.makeText(context, message, displayTime).show();
 	}
 	
+	/**
+	 * This method that displays a debug Toast message when exceptions
+	 * are caught.
+	 * @param context - the context where the message displays
+	 * @param message - the error that occurred
+	 */
 	private void showErrorMessage(Context context, String message){
 		Toast errorMessage = new Toast(context);
 		int displayTime = Toast.LENGTH_LONG;
 		errorMessage.makeText(context, message, displayTime).show();
 	}
 	
+	/**
+	 * This method displays a message prompting the user to insert an
+	 * SD card when the primary external storage is not available or
+	 * is emulated.
+	 * @param context
+	 */
 	private void showExportErrorMessage(Context context){
 		Toast exportMessage = new Toast(context);
 		int displayTime = Toast.LENGTH_LONG;
-		CharSequence message = "You need to insert an SD Card.";
+		CharSequence message = "You need to insert and mount an SD Card.";
 		exportMessage.makeText(context, message, displayTime).show();
 	}
 }

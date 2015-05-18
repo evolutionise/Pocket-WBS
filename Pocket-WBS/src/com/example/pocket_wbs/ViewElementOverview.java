@@ -260,6 +260,7 @@ public class ViewElementOverview extends ActionBarActivity {
 			if(!selectedElement.hasActivities()){
 				downButton.setText("Add Down");
 				downButton.setBackgroundResource(R.drawable.arrow_down);
+				downButton.setVisibility(View.VISIBLE);
 			}
 			else{
 				downButton.setVisibility(View.INVISIBLE);
@@ -268,6 +269,7 @@ public class ViewElementOverview extends ActionBarActivity {
 		else{
 			downButton.setText("Down");
 			downButton.setBackgroundResource(R.drawable.arrow_up);
+			downButton.setVisibility(View.VISIBLE);
 		}
 	}
 	

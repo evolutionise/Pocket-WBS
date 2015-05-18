@@ -23,8 +23,8 @@ public class FileBrowser {
 	 * Default constructor for a FileBrowser object
 	 */
 	public FileBrowser(){
-		this.currentFile = Environment.getExternalStorageDirectory();
-		this.rootDirectory = Environment.getExternalStorageDirectory();
+			this.currentFile = Environment.getExternalStorageDirectory();
+			this.rootDirectory = Environment.getExternalStorageDirectory();
 	}
 	
 	/**
@@ -35,7 +35,9 @@ public class FileBrowser {
 	public boolean externalMemoryMounted(){
 		boolean result = false;
 		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-			result = true;
+			if(!Environment.isExternalStorageEmulated()){
+				result = true;
+			}
 		}
 		return result;
 	}
@@ -148,5 +150,36 @@ public class FileBrowser {
 		String message = "You need to select a Pocket-WBS file.";
 		int displayTime = Toast.LENGTH_LONG;
 		errorMessage.makeText(context, message, displayTime).show();
+	}
+	
+	public void displayMessage(String message, Context context){
+		Toast errorMessage = new Toast(context);
+		int displayTime = Toast.LENGTH_LONG;
+		errorMessage.makeText(context, message, displayTime).show();
+	}
+	
+	/**
+	 * This method checks whether the device has a removable SD card inserted.
+	 * @return true if a removable SD card is inserted.
+	 */
+	public boolean removableMemoryInserted(){
+		boolean result = false;
+		File[] extStorageDirs = Environment.getRootDirectory().listFiles();
+		for(File directory : extStorageDirs){
+			if(new File(directory + "/LOST.DIR").exists()){
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * This method checks to see if the devices primary storage is
+	 * emulated.
+	 * @return true if the primary storage is emulated.
+	 */
+	public boolean extMemoryEmulated(){
+		return Environment.isExternalStorageEmulated();
 	}
 }

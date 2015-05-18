@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,61 +64,35 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 			
 		//GET custom attributes for Activity Level
 			displayCustomAttributes();
+			setCancelEventHandler();
+			//setSaveEventHandlers();
     }
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu, menu);
-		final Context context = this;
-		final ProjectTree tree = this.tree;
-		MenuItem saveButton = menu.add("Save");
-		MenuItem saveAsButton = menu.add("Save As");
-		MenuItem exportButton = menu.add("Export");
-		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				if(tree.treeSavedToFile()){
-					wbsManager.saveTreeToFile(context, tree);
-					return false;
-				}
-				else{
-					wbsManager.showSaveAsDialog(context, tree);
-				}
-				return false;
-			}
-		});
-		saveAsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.showSaveAsDialog(context, tree);
-				return false;
-			}
-		});
-		exportButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.exportFile(context, tree);
-				return false;
-			}
-		});
-		
-		return true;
+	public void cancelActivity(){
+		moveToViewElementActivity();
 	}
 	
+	@Override
+	public void onBackPressed(){
+		saveActivityFields();
+		moveToViewElementActivity();
+	}
 	
+	public void setCancelEventHandler(){
+		Button cancel = (Button) findViewById(R.id.exitEditActivityButton);
+		cancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				cancelActivity();
+			}
+		});
+	}
 	
-	public void saveActivity(View view){
+	private void saveActivityFields(){
 		
 		setEmptyNumericFieldsToDefault();
 		String newDescription = description.getText().toString();
 		
-		Context context = getApplicationContext();
 		EditText budget = (EditText) findViewById(R.id.activityBudgetEdit);
 		EditText actualCost = (EditText) findViewById(R.id.activityCostEdit);
 		EditText sDay = (EditText) findViewById(R.id.editStartDay);
@@ -146,47 +121,59 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 		String startDate =  sDay + "/" + sMonth + "/" + sYear;
 		String FinishDate = fDay + "/" + fMonth + "/" + fYear;
 		
-		String validatingString = activity.validateFormInputs(newDescription, newBudget, newCost);
-		validatingString += activity.validateStartDate(sDayNum, sMonthNum, sYearNum);
+		String validatingString = activity.validateStartDate(sDayNum, sMonthNum, sYearNum);
 		validatingString += activity.validateFinishDate(fDayNum, fMonthNum, fYearNum);
 		validatingString += activity.validateTimeFrame(sDayNum, sMonthNum, sYearNum, fDayNum, fMonthNum, fYearNum);
 		
-		if(validatingString == ""){
+		activity.setBudget(newBudget);
+		activity.setActualCost(newCost);
+		if(!newDescription.equals("")){
 			activity.setDescription(newDescription);
-			activity.setBudget(newBudget);
-			activity.setActualCost(newCost);
+		}
+		if(validatingString.equals("")){
 			activity.setStartDate(Integer.parseInt(newStartDay), Integer.parseInt(newStartMonth), Integer.parseInt(newStartYear));
 			activity.setFinishDate(Integer.parseInt(newFinishDay), Integer.parseInt(newFinishMonth), Integer.parseInt(newFinishYear));
-			Toast saveMessage = new Toast(context);
-			int displayTime = Toast.LENGTH_SHORT;
-			CharSequence message = "Changes Saved";
-			saveMessage.makeText(context, message, displayTime).show();
-			//updateTextViews();
-			//onBackPressed();
 		}
 		else{
-			Toast saveMessage = new Toast(context);
-			int displayTime = Toast.LENGTH_SHORT;
-			CharSequence message = "You need to fix the following errors...\n" + validatingString;
-			for (int i=0; i < 2; i++)
-			{
-			    saveMessage.makeText(view.getContext(), message, Toast.LENGTH_LONG).show();
-			}
+			Toast saveMessage = new Toast(this);
+			int displayTime = Toast.LENGTH_LONG*2;
+			CharSequence message = "Date's not saved due to the following errors...\n" + validatingString;
+			saveMessage.makeText(this, message, displayTime).show();
 		}
 	}
 	
-	public void cancelActivity(View view){
-		onBackPressed();
+	public void setSaveEventHandlers(){
+		final EditText budget = (EditText) findViewById(R.id.activityBudgetEdit);
+		final EditText actualCost = (EditText) findViewById(R.id.activityCostEdit);
+		
+		budget.setOnKeyListener(new View.OnKeyListener() {	
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(!budget.getText().toString().equals("")){
+					double newValue = Double.parseDouble(budget.getText().toString()); 
+					if(newValue >= 0){
+						activity.setBudget(newValue);
+					}
+				}
+				return false;	
+			}
+		});
+		
+		actualCost.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(!actualCost.getText().toString().equals("")){
+					double newValue = Double.parseDouble(actualCost.getText().toString());
+					if(newValue >= 0){
+						activity.setActualCost(newValue);
+					}
+				}
+				return false;
+			}
+		});
 	}
 	
-	public void deleteActivity(View view){
-		WBSElement element = activity.getContainingElement();
-		element.deleteActivity(activity);
-		onBackPressed();
-	}
-	
-	@Override
-	public void onBackPressed(){
+	private void moveToViewElementActivity(){
 		Intent intent = new Intent(this, ViewElementActivity.class);
 		WBSElement element = activity.getContainingElement();		
 		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", element.getElementKey());
@@ -318,7 +305,7 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 		attributeValueField.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				if (event.getAction() == KeyEvent.ACTION_UP) {
 					String attributeValue = attributeValueField.getText().toString();
 					activity.getAttributes().put(customAttributeName, attributeValue);
 				}

@@ -80,13 +80,13 @@ public class LoadWBSActivity extends ActionBarActivity {
 		ListView list = (ListView) findViewById(R.id.fileSelectList);
 		WBSFileManager fileManager = new WBSFileManager();
 		String[] itemsList = fileManager.listFiles(this.getApplicationContext());
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemsList);
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, itemsList);
 		list.setAdapter(adapter);
 		setListEventHandlers();
 	}
 	
 	public void setBrowseButtonEventHandler(){
-		Button browseButton = (Button) findViewById(R.id.browseFilesButton);
+		Button browseButton = (Button) findViewById(R.id.addAttributeActivity);
 		browseButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -96,7 +96,13 @@ public class LoadWBSActivity extends ActionBarActivity {
 					startActivity(intent);
 				}
 				else{
-					browser.displayCardMissingMessage(view.getContext());
+					if(browser.extMemoryEmulated()){
+						Intent intent = new Intent(view.getContext(), FileBrowserActivity.class);
+						startActivity(intent);
+					}
+					else{
+						browser.displayCardMissingMessage(view.getContext());
+					}
 				}
 			}
 		});
@@ -134,9 +140,11 @@ public class LoadWBSActivity extends ActionBarActivity {
 		Context context = getApplicationContext();
 		WBSFileManager fileManager = new WBSFileManager();
 		ProjectTree tree = fileManager.loadTreeFromFile(context, projectName);
-		Intent intent = new Intent(this, GUImain.class);
-		intent.putExtra("com.example.pocket_wbs.NEW_TREE", tree);
-		startActivity(intent);
+		if(!tree.getProjectName().equals("")){
+			Intent intent = new Intent(this, GUImain.class);
+			intent.putExtra("com.example.pocket_wbs.NEW_TREE", tree);
+			startActivity(intent);
+		}
 	}
 	
 	public void deleteExistingWBS(String projectName){
@@ -174,5 +182,11 @@ public class LoadWBSActivity extends ActionBarActivity {
                 });
         dialogOpen = true;
         deleteConfirmation.show();
+	}
+	
+	public void toastDebugMessage(String message){
+		Toast toast = new Toast(this);
+		int length = Toast.LENGTH_LONG;
+		toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
 }

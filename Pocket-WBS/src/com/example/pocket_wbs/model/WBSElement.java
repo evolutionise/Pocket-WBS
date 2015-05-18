@@ -88,7 +88,7 @@ public class WBSElement implements Serializable{
 	
     /**
      * Method used to draw an element onto the project tree
-     * display in th GUI.
+     * display in the GUI.
      * @param canvas - the canvas to which the element is being drawn
      */
 	public void onDraw(Canvas canvas) 
@@ -115,7 +115,15 @@ public class WBSElement implements Serializable{
     	//Set rectangle start position to be in the middle of the screen
     	RectF r = new RectF(startx, starty, startx+elementWidth, starty+elementHeight);
     	canvas.drawRoundRect(r, 30, 30, rectangleP);
-    	canvas.drawText(name, startx+(elementWidth/6), starty+(elementHeight/2), textp);
+    	
+    	String textToDraw = getDrawableNameText();
+    	int i = 0;
+    	for(String textLine : textToDraw.split("\n")){
+    		float newLineSpace = textp.getTextSize();
+    		canvas.drawText(textLine, startx+(elementWidth/6), starty + (elementHeight/2) + (newLineSpace*i), textp);
+    		i++;
+    	}
+    	//canvas.drawText(getDrawableNameText(), startx+(elementWidth/6), starty+(elementHeight/2), textp);
     	
     	//If Element is selected, change colour
 
@@ -161,6 +169,17 @@ public class WBSElement implements Serializable{
 		}
 		else{
 			this.name = name;			
+		}
+	}
+	
+	public void updateNameOfRootElement(String name){
+		if(name.equals(null)){
+			throw new IllegalArgumentException("The name cannot be null");
+		}
+		else{
+			if(this.isRoot()){
+				this.name = name;
+			}
 		}
 	}
 	
@@ -648,7 +667,7 @@ public class WBSElement implements Serializable{
 	 * @throws IllegalArgumentException when the new duration is lower than zero
 	 * @param duration
 	 */
-	public void setDuration(int duration) {
+	public void setWorkHours(int hours) {
 		if(duration < 0){
 			throw new IllegalArgumentException("Duration can not be less than zero");
 		}
@@ -694,30 +713,6 @@ public class WBSElement implements Serializable{
 	 */
 	public void setResponsibleStaff(String responsibleStaff) {
 		this.responsibleStaff = responsibleStaff;
-	}
-	
-	/**
-	 * Method used to print out an error message with any invalid inputs for
-	 * an elements attribute when set in the GUI.
-	 * @param name
-	 * @param budget
-	 * @param duration
-	 * @return
-	 */
-	public String validateFormInputs(String name, double budget, int duration){
-		String output = "";
-		
-		if(!this.isRoot() && name.equals("")){
-			output += "You need to enter a name for the element.\n";
-		}
-		if(budget < 0){
-			output += "The budget you set was less than zero.\n";
-		}
-		if(duration < 0){
-			output += "The duration you set was less than zero.\n";
-		}
-		
-		return output;
 	}
 	
 	/**
@@ -826,5 +821,41 @@ public class WBSElement implements Serializable{
 	
 	public int getRightThreshold() {
 		return (this.getMidX()+(getChildSpaceNeeded()/2)+(elementWidth/4));
+	}
+	
+	public String getDrawableNameText(){
+		String drawableText = "";
+		String elementName = this.getName();
+		if(elementName.length() > 14){
+			boolean spaceFound = false;
+			for(int x = 13; x > 0; x--){
+				char c = elementName.charAt(x);
+				if(c == ' '){
+					drawableText += elementName.substring(0, x+1) + "\n";
+					if(elementName.substring(x+1, elementName.length()).length() > 14){
+						drawableText += elementName.substring(x+1, x+11) + "...";
+					}
+					else{
+						drawableText += elementName.substring(x+1, elementName.length());
+					}
+					spaceFound = true;
+					break;
+				}
+			}
+			if(!spaceFound){
+				drawableText += elementName.substring(0, 14) + "\n";
+				if(elementName.substring(14, elementName.length()).length() > 14){
+					drawableText += "-" + elementName.substring(14, 25) + "...";
+				}
+				else{
+					drawableText += "-" + elementName.substring(14, elementName.length());
+				}
+						
+			}
+		}
+		else{
+			drawableText = elementName;
+		}
+		return drawableText;
 	}
 }

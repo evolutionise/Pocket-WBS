@@ -32,6 +32,7 @@ public class FileBrowserActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_file_browser);
+		updateActivity();
 	}
 
 	@Override
@@ -42,6 +43,9 @@ public class FileBrowserActivity extends ActionBarActivity {
 		return true;
 	}
 	
+	/**
+	 * The main GUI update method of the activity
+	 */
 	public void updateActivity(){
 		updateTextDisplay();
 		updateListDisplay();
@@ -49,7 +53,11 @@ public class FileBrowserActivity extends ActionBarActivity {
 		updateOpenButton();
 	}
 	
-	public void updateTextDisplay(){
+	/**
+	 * This method handles the updates of the text elements in the
+	 * activity.
+	 */
+	private void updateTextDisplay(){
 		TextView selectedFileText = (TextView) findViewById(R.id.selectedFileText);
 		if(selectedFile.equals(browser.getCurrentFile())){
 			selectedFileText.setText("No file selected");
@@ -59,7 +67,11 @@ public class FileBrowserActivity extends ActionBarActivity {
 		}
 	}
 	
-	public void updateListDisplay() {
+	/**
+	 * This method handles the update of the file browser list in the
+	 * activity
+	 */
+	private void updateListDisplay() {
 		ListView list = (ListView) findViewById(R.id.fileBrowserList);
 		String[] itemsList = browser.listFiles();
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, itemsList);
@@ -67,6 +79,10 @@ public class FileBrowserActivity extends ActionBarActivity {
 		setListEventHandlers();
 	}
 	
+	/**
+	 * This method sets the event handler for the file browser
+	 * list.
+	 */
 	private void setListEventHandlers(){
 		final ListView list = (ListView) findViewById(R.id.fileBrowserList);
 		list.setOnItemClickListener(new OnItemClickListener() {
@@ -81,6 +97,9 @@ public class FileBrowserActivity extends ActionBarActivity {
 		});
 	}
 	
+	/**
+	 * This method updates the open buttons display and event handler
+	 */
 	public void updateOpenButton(){
 		Button openButton = (Button) findViewById(R.id.selectButtonBrowser);
 		if(selectedFile.equals(browser.getCurrentFile())){
@@ -98,6 +117,10 @@ public class FileBrowserActivity extends ActionBarActivity {
 		setOpenButtonOnClickListener();
 	}
 	
+	/**
+	 * This method sets the event handler for a click on
+	 * the open button
+	 */
 	private void setOpenButtonOnClickListener(){
 		Button openButton = (Button) findViewById(R.id.selectButtonBrowser);
 		openButton.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +146,9 @@ public class FileBrowserActivity extends ActionBarActivity {
 		});
 	}
 	
+	/**
+	 * This method updates the back buttons display and event handler
+	 */
 	private void updateBackButton(){
 		Button backButton = (Button) findViewById(R.id.backFileBrowser);
 		if(browser.currentDirectoryIsRoot()){
@@ -134,6 +160,9 @@ public class FileBrowserActivity extends ActionBarActivity {
 		setBackButtonOnClickListener();
 	}
 	
+	/**
+	 * This method sets the event handler for the back button
+	 */
 	private void setBackButtonOnClickListener(){
 		Button backButton = (Button) findViewById(R.id.backFileBrowser);
 		backButton.setOnClickListener(new View.OnClickListener() {

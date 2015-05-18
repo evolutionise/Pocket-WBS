@@ -4,6 +4,7 @@ package com.example.pocket_wbs.gui;
 
 
 import com.example.pocket_wbs.EditWBSActivityActivity;
+import com.example.pocket_wbs.ViewElementActivity;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;

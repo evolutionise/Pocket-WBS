@@ -55,7 +55,6 @@ public class ViewElementActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = this.getIntent();
-		//this.setUpTest();
 		this.getSupportActionBar().hide();
 		if(intent.hasExtra("com.example.pocket_wbs.TREE")){
 			this.tree = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.TREE");
@@ -132,6 +131,76 @@ public class ViewElementActivity extends ActionBarActivity {
 		this.selectedElement.setResponsibleStaff(newManager);
 	}
 	
+	// Code for having fields save in a real-time sense
+	// Add to the end of the onCreate() method to run
+	public void setSaveEventHandlers(){
+		
+		final EditText elementName = (EditText) findViewById(R.id.editElementName);
+		final EditText budget = (EditText) findViewById(R.id.budgetEditText);
+		final EditText duration = (EditText) findViewById(R.id.durationEditText);
+		final EditText manager = (EditText) findViewById(R.id.managerEditText);
+		
+		elementName.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(event.getAction() == KeyEvent.ACTION_UP){
+					String newValue = elementName.getText().toString();
+					if(!newValue.equals("")){
+						selectedElement.setName(elementName.getText().toString());
+					}
+				}
+				return false;
+			}
+		});
+		
+		budget.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(event.getAction() == KeyEvent.ACTION_UP){
+					if(!budget.getText().toString().equals("")){
+						double newValue = Double.parseDouble(budget.getText().toString());
+						if(newValue >= 0){
+							selectedElement.setBudget(newValue);
+						}
+					}
+				}
+				return false;
+			}
+		});
+		
+		duration.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(event.getAction() == KeyEvent.ACTION_UP){
+					if(!duration.getText().toString().equals("")){
+						int newValue = Integer.parseInt(duration.getText().toString());
+						if(newValue >= 0){
+							selectedElement.setBudget(newValue);
+						}
+					}
+				}
+				return false;
+			}
+		});
+		
+		manager.setOnKeyListener(new OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(event.getAction() == KeyEvent.ACTION_UP){
+					String newValue = manager.getText().toString();
+					if(!newValue.equals("")){
+						selectedElement.setResponsibleStaff(newValue);
+					}
+				}
+				return false;
+			}
+		});
+	}
+	
 	private void moveToViewElementOverview(){
 		Intent intent = new Intent(this, ViewElementOverview.class);
 		ProjectTree tree = this.tree;
@@ -141,51 +210,6 @@ public class ViewElementActivity extends ActionBarActivity {
 		startActivity(intent);
 		finish();
 	}
-
-	/**@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu, menu);
-		final Context context = this;
-		final ProjectTree tree = this.tree;
-		MenuItem saveButton = menu.add("Save");
-		MenuItem saveAsButton = menu.add("Save As");
-		MenuItem exportButton = menu.add("Export");
-		saveButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				if(tree.treeSavedToFile()){
-					wbsManager.saveTreeToFile(context, tree);
-					return false;
-				}
-				else{
-					wbsManager.showSaveAsDialog(context, tree);
-				}
-				return false;
-			}
-		});
-		saveAsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.showSaveAsDialog(context, tree);
-				return false;
-			}
-		});
-		exportButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.exportFile(context, tree);
-				return false;
-			}
-		});
-		
-		return true;
-	}*/
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -254,6 +278,7 @@ public class ViewElementActivity extends ActionBarActivity {
 				moveToViewElementOverview();			
 			}
 		});
+		setSaveEventHandlers();
 	}
 	
 	/*
@@ -286,7 +311,7 @@ public class ViewElementActivity extends ActionBarActivity {
 		attributeValueField.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				if (event.getAction() == KeyEvent.ACTION_UP) {
 					String attributeValue = attributeValueField.getText().toString();
 					selectedElement.getAttributes().put(customAttributeName, attributeValue);
 				}

@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,6 +64,8 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 			
 		//GET custom attributes for Activity Level
 			displayCustomAttributes();
+			setCancelEventHandler();
+			//setSaveEventHandlers();
     }
 	
 	public void cancelActivity(){
@@ -73,6 +76,16 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 	public void onBackPressed(){
 		saveActivityFields();
 		moveToViewElementActivity();
+	}
+	
+	public void setCancelEventHandler(){
+		Button cancel = (Button) findViewById(R.id.exitEditActivityButton);
+		cancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				cancelActivity();
+			}
+		});
 	}
 	
 	private void saveActivityFields(){
@@ -127,6 +140,37 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 			CharSequence message = "Date's not saved due to the following errors...\n" + validatingString;
 			saveMessage.makeText(this, message, displayTime).show();
 		}
+	}
+	
+	public void setSaveEventHandlers(){
+		final EditText budget = (EditText) findViewById(R.id.activityBudgetEdit);
+		final EditText actualCost = (EditText) findViewById(R.id.activityCostEdit);
+		
+		budget.setOnKeyListener(new View.OnKeyListener() {	
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(!budget.getText().toString().equals("")){
+					double newValue = Double.parseDouble(budget.getText().toString()); 
+					if(newValue >= 0){
+						activity.setBudget(newValue);
+					}
+				}
+				return false;	
+			}
+		});
+		
+		actualCost.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(!actualCost.getText().toString().equals("")){
+					double newValue = Double.parseDouble(actualCost.getText().toString());
+					if(newValue >= 0){
+						activity.setActualCost(newValue);
+					}
+				}
+				return false;
+			}
+		});
 	}
 	
 	private void moveToViewElementActivity(){
@@ -261,7 +305,7 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 		attributeValueField.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				if (event.getAction() == KeyEvent.ACTION_UP) {
 					String attributeValue = attributeValueField.getText().toString();
 					activity.getAttributes().put(customAttributeName, attributeValue);
 				}

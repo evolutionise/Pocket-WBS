@@ -89,7 +89,7 @@ public class ViewElementActivity extends ActionBarActivity {
 	
 	@Override
 	public void onBackPressed(){
-		saveFieldChanges();
+		//saveFieldChanges();
 		moveToViewElementOverview();
 	}
 	
@@ -133,11 +133,11 @@ public class ViewElementActivity extends ActionBarActivity {
 	
 	// Code for having fields save in a real-time sense
 	// Add to the end of the onCreate() method to run
-	public void setSaveEventHandlers(){
+	private void setSaveEventHandlers(){
 		
 		final EditText elementName = (EditText) findViewById(R.id.editElementName);
 		final EditText budget = (EditText) findViewById(R.id.budgetEditText);
-		final EditText duration = (EditText) findViewById(R.id.durationEditText);
+		final EditText workHours = (EditText) findViewById(R.id.durationEditText);
 		final EditText manager = (EditText) findViewById(R.id.managerEditText);
 		
 		elementName.setOnKeyListener(new View.OnKeyListener() {
@@ -170,15 +170,15 @@ public class ViewElementActivity extends ActionBarActivity {
 			}
 		});
 		
-		duration.setOnKeyListener(new View.OnKeyListener() {
+		workHours.setOnKeyListener(new View.OnKeyListener() {
 			
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if(event.getAction() == KeyEvent.ACTION_UP){
-					if(!duration.getText().toString().equals("")){
-						int newValue = Integer.parseInt(duration.getText().toString());
+					if(!workHours.getText().toString().equals("")){
+						int newValue = Integer.parseInt(workHours.getText().toString());
 						if(newValue >= 0){
-							selectedElement.setBudget(newValue);
+							selectedElement.setWorkHours(newValue);
 						}
 					}
 				}
@@ -256,7 +256,7 @@ public class ViewElementActivity extends ActionBarActivity {
 		
 		EditText editElementName = (EditText) findViewById(R.id.editElementName);
 		EditText budget = (EditText) findViewById(R.id.budgetEditText);
-		EditText duration = (EditText) findViewById(R.id.durationEditText);
+		EditText workHours = (EditText) findViewById(R.id.durationEditText);
 		EditText manager = (EditText) findViewById(R.id.managerEditText);
 		
 		elementKey.setText("Element " + selectedElement.getElementKey());
@@ -264,20 +264,12 @@ public class ViewElementActivity extends ActionBarActivity {
 		remainingBudget.setText("Remaining Budget: " + df.format(selectedElement.getRemainingBudget()));
 		
 		budget.setText(df.format(selectedElement.getBudget()));
-		duration.setText(Integer.toString(selectedElement.getDuration()));
+		workHours.setText(Integer.toString(selectedElement.getWorkHours()));
 		manager.setText(selectedElement.getResponsibleStaff());
 		editElementName.setText(selectedElement.getName());
 	}
 	
 	private void setUpEventListeners(){
-		Button exitButton = (Button) findViewById(R.id.exitButtonEditWBS);
-		exitButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				moveToViewElementOverview();			
-			}
-		});
 		setSaveEventHandlers();
 	}
 	

@@ -26,16 +26,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="left|right"
                     android:paddingBottom="10dp" >
 
-                    <Button
-                        android:id="@+id/exitButtonEditWBS"
-                        style="?android:attr/buttonStyleSmall"
+                    <ImageView
+                        android:id="@+id/imageView1"
                         android:layout_width="wrap_content"
-                        android:layout_height="34dp"
-                        android:gravity="right"
-                        android:text="@string/exit_text" />
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/pocketwbsicon2" />
+
                 </LinearLayout>
 
                 <LinearLayout

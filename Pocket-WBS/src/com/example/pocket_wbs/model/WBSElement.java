@@ -17,7 +17,7 @@ import android.graphics.RectF;
 public class WBSElement implements Serializable{
 
 	private String name;
-	private int duration = 0;
+	private int workHours = 0;
 	private double budget = 0.00;
 	private String responsibleStaff = "";
 	private WBSElement parent;
@@ -658,8 +658,8 @@ public class WBSElement implements Serializable{
 	 * Method used to find the duration of an element
 	 * @return int - the element's duration
 	 */
-	public int getDuration() {
-		return duration;
+	public int getWorkHours() {
+		return workHours;
 	}
 
 	/**
@@ -668,11 +668,11 @@ public class WBSElement implements Serializable{
 	 * @param duration
 	 */
 	public void setWorkHours(int hours) {
-		if(duration < 0){
+		if(hours < 0){
 			throw new IllegalArgumentException("Duration can not be less than zero");
 		}
 		else {
-			this.duration = duration;
+			this.workHours = hours;
 		}
 	}
 

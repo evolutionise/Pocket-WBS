@@ -64,8 +64,7 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 			
 		//GET custom attributes for Activity Level
 			displayCustomAttributes();
-			setCancelEventHandler();
-			//setSaveEventHandlers();
+			setSaveEventHandlers();
     }
 	
 	public void cancelActivity(){
@@ -76,16 +75,6 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 	public void onBackPressed(){
 		saveActivityFields();
 		moveToViewElementActivity();
-	}
-	
-	public void setCancelEventHandler(){
-		Button cancel = (Button) findViewById(R.id.exitEditActivityButton);
-		cancel.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				cancelActivity();
-			}
-		});
 	}
 	
 	private void saveActivityFields(){

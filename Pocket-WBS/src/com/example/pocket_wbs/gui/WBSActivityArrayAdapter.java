@@ -4,12 +4,15 @@ package com.example.pocket_wbs.gui;
 
 
 import com.example.pocket_wbs.EditWBSActivityActivity;
+import com.example.pocket_wbs.R;
 import com.example.pocket_wbs.ViewElementActivity;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSActivity;
 import com.example.pocket_wbs.model.WBSElement;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
@@ -47,6 +50,31 @@ public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
 		  intent.putExtra("com.example.pocket_wbs.model.ACTIVITY_INDEX", position);
 		  context.startActivity(intent);
 	  }
+	  
+	  private void removeWBSActivity(int position){
+		  parent.deleteActivityByIndex(position);
+	  }
+	  
+	  public void confirmDeleteActivity(final int position){
+		  AlertDialog.Builder exitDialog = new AlertDialog.Builder(context);
+		  exitDialog.setTitle("Delete Activity");
+		  exitDialog.setMessage("Are you sure you want to delete this activity?");
+		  exitDialog.setIcon(R.drawable.pocketwbsicon2);
+	      exitDialog.setPositiveButton("Yes",
+	              new DialogInterface.OnClickListener() {
+	                  public void onClick(DialogInterface dialog,int which) {   
+	                	removeWBSActivity(position);
+	                   	dialog.cancel();
+	                  }
+	              });
+	        exitDialog.setNegativeButton("No",
+	                new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int which) {
+	                        dialog.cancel();
+	                    }
+	                });
+	        exitDialog.show();
+    }
 	  
 	  @Override
 	  public View getView (int position, View convertView, ViewGroup parent){

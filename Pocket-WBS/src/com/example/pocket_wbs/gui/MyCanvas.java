@@ -323,6 +323,13 @@ public class MyCanvas extends View {
 							elementToLeft.moveNew(-5);
 							e.moveNew(5);
 						}
+						
+						//For when elements are removed
+						while((e.getLeftThreshold()-elementToLeft.getRightThreshold())>10)
+						{
+							elementToLeft.moveNew(5);
+							e.moveNew(-5);
+						}
 					}
 					
 					//Check if there is an element to the right of this element
@@ -335,6 +342,13 @@ public class MyCanvas extends View {
 							elementToRight.moveNew(5);
 							e.moveNew(-5);
 						}
+						
+						//For when elements are removed
+						while((elementToRight.getLeftThreshold()-e.getRightThreshold())>10)
+						{
+							elementToRight.moveNew(-5);
+							e.moveNew(5);
+						}
 					}
 					
 				}
@@ -343,6 +357,9 @@ public class MyCanvas extends View {
     		}
     		
     		this.invalidate();
+    		
     }
+    
+    
 }
 

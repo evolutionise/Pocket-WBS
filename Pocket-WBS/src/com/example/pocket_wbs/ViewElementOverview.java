@@ -105,6 +105,7 @@ public class ViewElementOverview extends ActionBarActivity {
 				ViewElementOverview activity = (ViewElementOverview) v.getContext();
 				if(selectedElement.getIndex() == 0){
 					activity.tree.addNewLeftSibling(activity.selectedElement, "New Element");
+					toastMessage("Element added to the Left");
 				}
 				if(!selectedElement.isRoot()){
 					// There will be a new implementation for this in the new edit screen
@@ -123,6 +124,7 @@ public class ViewElementOverview extends ActionBarActivity {
 				ViewElementOverview activity = (ViewElementOverview) v.getContext();
 				if(activity.selectedElement.getIndex()+1 >= activity.selectedElement.getSiblings().size()){
 					activity.tree.addNewRightSibling(activity.selectedElement, "New Element");
+					toastMessage("Element added to the Right");
 				}
 				if(!activity.selectedElement.isRoot()){
 					// There will be a new implementation for this in the new edit screen
@@ -160,6 +162,7 @@ public class ViewElementOverview extends ActionBarActivity {
 					activity.tree.addChildElement(selectedElement, "New Element", startxTemp, startyTemp);
 					startxTemp += selectedElement.elementWidth + hGapLvlOne;
 					activity.tree.addChildElement(selectedElement, "New Element", startxTemp, startyTemp);
+					toastMessage("Element Decomposed");
 				}
 				if(!selectedElement.isRoot()){
 					// There will be a new implementation for this in the new edit screen

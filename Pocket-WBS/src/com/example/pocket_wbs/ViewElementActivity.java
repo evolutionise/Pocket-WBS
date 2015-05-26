@@ -46,6 +46,7 @@ import android.widget.Toast;
 public class ViewElementActivity extends ActionBarActivity {
 
 	public ProjectTree tree;
+	public String elementKey;
 	public WBSElement selectedElement;
 	private LinearLayout customAttLayout;
 	ListView activitiesList;
@@ -55,15 +56,15 @@ public class ViewElementActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = this.getIntent();
-		this.getSupportActionBar().hide();
+		//this.getSupportActionBar().hide();
 		if(intent.hasExtra("com.example.pocket_wbs.TREE")){
 			this.tree = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.TREE");
-			String elementKey = intent.getStringExtra("com.example.pocket_wbs.KEY");
+			elementKey = intent.getStringExtra("com.example.pocket_wbs.KEY");
 			this.selectedElement = this.tree.getProjectElements().get(elementKey);
 		}
 		else if(intent.hasExtra("com.example.pocket_wbs.PROJECT_TREE")){
 			this.tree = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.PROJECT_TREE");
-			String elementKey = intent.getStringExtra("com.example.pocket_wbs.ELEMENT_KEY");
+			elementKey = intent.getStringExtra("com.example.pocket_wbs.ELEMENT_KEY");
 			this.selectedElement = this.tree.getProjectElements().get(elementKey);
 		}
 		setContentView(R.layout.activity_view_element);
@@ -84,51 +85,11 @@ public class ViewElementActivity extends ActionBarActivity {
 		//GET custom attributes for Element level
 				displayCustomAttributes();
 				
-
 	}
 	
 	@Override
 	public void onBackPressed(){
-		//saveFieldChanges();
 		moveToViewElementOverview();
-	}
-	
-	
-	public void saveFieldChanges(){
-		
-		EditText elementName = (EditText) findViewById(R.id.editElementName);
-		EditText budget = (EditText) findViewById(R.id.budgetEditText);
-		EditText duration = (EditText) findViewById(R.id.durationEditText);
-		EditText manager = (EditText) findViewById(R.id.managerEditText);
-		
-		String newName = elementName.getText().toString();
-		double newBudget = Double.parseDouble(budget.getText().toString());
-		int newWorkHours = Integer.parseInt(duration.getText().toString());
-		String newManager = manager.getText().toString();
-		
-		if(!this.selectedElement.isRoot()){
-			if(!newName.equals("")){
-				this.selectedElement.setName(newName);
-			}
-		}
-		else{
-			if(!newName.equals("")){
-				this.tree.setProjectName(newName);
-			}
-		}
-		if(newBudget >= 0){
-			this.selectedElement.setBudget(newBudget);
-		}
-		else{
-			this.selectedElement.setBudget(0);
-		}
-		if(newWorkHours >= 0){
-			this.selectedElement.setWorkHours(newWorkHours);
-		}
-		else{
-			this.selectedElement.setWorkHours(0);
-		}
-		this.selectedElement.setResponsibleStaff(newManager);
 	}
 	
 	// Code for having fields save in a real-time sense
@@ -147,7 +108,12 @@ public class ViewElementActivity extends ActionBarActivity {
 				if(event.getAction() == KeyEvent.ACTION_UP){
 					String newValue = elementName.getText().toString();
 					if(!newValue.equals("")){
-						selectedElement.setName(elementName.getText().toString());
+						if(selectedElement.isRoot()){
+							tree.setProjectName(elementName.getText().toString());
+						}
+						else{
+							selectedElement.setName(elementName.getText().toString());
+						}
 					}
 				}
 				return false;
@@ -203,10 +169,8 @@ public class ViewElementActivity extends ActionBarActivity {
 	
 	private void moveToViewElementOverview(){
 		Intent intent = new Intent(this, ViewElementOverview.class);
-		ProjectTree tree = this.tree;
-		String key = this.selectedElement.getElementKey();
 		intent.putExtra("com.example.pocket_wbs.TREE", tree);
-		intent.putExtra("com.example.pocket_wbs.KEY", key);
+		intent.putExtra("com.example.pocket_wbs.KEY", elementKey);
 		startActivity(intent);
 		finish();
 	}
@@ -393,6 +357,4 @@ public class ViewElementActivity extends ActionBarActivity {
     public void toastMessage(String message){
     	Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
-    
-    
 }

@@ -4,7 +4,9 @@ import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
 import com.example.pocket_wbs.model.WBSFileManager;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -95,7 +97,7 @@ public class ViewElementOverview extends ActionBarActivity {
 		Button rightButton = (Button) findViewById(R.id.arrowRight);
 		Button upButton = (Button) findViewById(R.id.arrowUp);
 		Button downButton = (Button) findViewById(R.id.arrowDown);
-		//Button editButton = (Button) findViewById(R.id.editElementButton);
+		Button elementButton = (Button) findViewById(R.id.buttonElement);
 		
 		leftButton.setOnClickListener(new View.OnClickListener(){
 			@Override
@@ -168,6 +170,31 @@ public class ViewElementOverview extends ActionBarActivity {
 				activity.updateActivity();				
 			}
 		});
+		
+		elementButton.setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				if(selectedElement.isRoot()){
+					toastMessage("You cannot delete the root element");
+				}
+				else if(selectedElement.getParent().getNumChildren() < 2){
+					
+				}
+				else{
+					confirmDeleteElement(v.getContext());
+				}
+				return false;
+			}
+		});
+	}
+	
+	private void moveToTreeView(){
+		Intent intent = new Intent(this, GUImain.class);
+		ProjectTree tree = this.tree;
+		intent.putExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW", tree);
+		startActivity(intent);
+		finish();
 	}
 	
 	/**
@@ -273,14 +300,37 @@ public class ViewElementOverview extends ActionBarActivity {
 		}
 	}
 	
+    public void confirmDeleteElement(final Context context){
+    	AlertDialog.Builder exitDialog = new AlertDialog.Builder(context);
+        exitDialog.setTitle("Delete Element");
+        exitDialog.setMessage("Are you sure you want to delete this element? " +
+        		"(this will remove all of its children and any lone sibling elements)");
+        exitDialog.setIcon(R.drawable.pocketwbsicon2);
+        exitDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {      
+                    	selectedElement.deleteElementFromParent();
+        				moveToTreeView();
+                    	dialog.cancel();
+                    }
+                });
+        exitDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        exitDialog.show();
+    }
+	
 	@Override
 	public void onBackPressed(){
-		Intent intent = new Intent(this, GUImain.class);
-		ProjectTree tree = this.tree;
-		intent.putExtra("com.example.pocket_wbs.TREE_TO_OVERVIEW", tree);
-		startActivity(intent);
-		finish();
+		moveToTreeView();
 	}
+	
+    public void toastMessage(String message){
+    	Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 	
 	public void viewElementDetails(View view){
 		Intent intent = new Intent(this, ViewElementActivity.class);

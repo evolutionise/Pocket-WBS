@@ -194,6 +194,11 @@ public class ProjectTree implements Serializable{
 		}	
 	}
 	
+	public void removeElement(String key){
+		TreeMap<String, WBSElement> elements = this.getProjectElements();
+		elements.remove(key);
+	}
+	
 	/**
 	 * Method used to get all elements as an ArrayList. It is simpler to iterate through
 	 * all elements in an ArrayList than it is a TreeMap.

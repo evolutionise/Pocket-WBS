@@ -37,6 +37,9 @@ import android.widget.LinearLayout.LayoutParams;
 public class EditWBSActivityActivity extends ActionBarActivity{
 	
 	private WBSActivity activity;
+	private String elementKey;
+	private WBSElement selectedElement;
+	private int position;
 	private EditText description;
 	private ProjectTree tree;
 	private LinearLayout customAttLayout;
@@ -45,14 +48,14 @@ public class EditWBSActivityActivity extends ActionBarActivity{
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		tree = (ProjectTree) getIntent().getSerializableExtra("com.example.pocket_wbs.model.PROJECT_TREE");
-		String elementKey = getIntent().getStringExtra("com.example.pocket_wbs.ELEMENT_KEY");
-		int position = getIntent().getIntExtra("com.example.pocket_wbs.model.ACTIVITY_INDEX", 0);
+		elementKey = getIntent().getStringExtra("com.example.pocket_wbs.ELEMENT_KEY");
+		position = getIntent().getIntExtra("com.example.pocket_wbs.model.ACTIVITY_INDEX", 0);
 		
-		WBSElement element = tree.getProjectElements().get(elementKey);
-		activity = element.getActivityByIndex(position);		
+		selectedElement = tree.getProjectElements().get(elementKey);
+		activity = tree.getProjectElements().get(elementKey).getActivityByIndex(position);		
 		
 		setContentView(R.layout.edit_wbsactivity_activity);
-		this.getSupportActionBar().hide();
+		//this.getSupportActionBar().hide();
 		description = (EditText) findViewById(R.id.activity_description_edit_text);
 		//description.setText(activity.getDescription());
 		updateTextViews();
@@ -66,6 +69,25 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 			displayCustomAttributes();
 			setSaveEventHandlers();
     }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu, menu);
+		final Context context = this;
+		final ProjectTree tree = this.tree;
+		final WBSActivity activity = this.activity;
+		MenuItem deleteOption = menu.add("Delete");
+		deleteOption.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				confirmDeleteActivity(context);
+				return false;
+			}
+		});
+		
+		return true;
+	}
 	
 	public void cancelActivity(){
 		moveToViewElementActivity();
@@ -163,9 +185,8 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 	}
 	
 	private void moveToViewElementActivity(){
-		Intent intent = new Intent(this, ViewElementActivity.class);
-		WBSElement element = activity.getContainingElement();		
-		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", element.getElementKey());
+		Intent intent = new Intent(this, ViewElementActivity.class);		
+		intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", elementKey);
 		intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);
 		startActivity(intent);
 		finish();
@@ -331,5 +352,28 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 	
     public void toastMessage(String message){
     	Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    
+    public void confirmDeleteActivity(final Context context){
+		AlertDialog.Builder exitDialog = new AlertDialog.Builder(context);
+        exitDialog.setTitle("Delete Activity");
+        exitDialog.setMessage("Are you sure you want to delete this activity?");
+        exitDialog.setIcon(R.drawable.pocketwbsicon2);
+        exitDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {      
+                    	selectedElement.deleteActivityByIndex(position);
+                    	toastMessage("Activity Deleted");
+        				moveToViewElementActivity();
+                    	dialog.cancel();
+                    }
+                });
+        exitDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        exitDialog.show();
     }
 }

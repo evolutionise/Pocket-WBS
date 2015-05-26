@@ -669,7 +669,7 @@ public class WBSElement implements Serializable{
 	 */
 	public void setWorkHours(int hours) {
 		if(hours < 0){
-			throw new IllegalArgumentException("Duration can not be less than zero");
+			throw new IllegalArgumentException("Work hours can not be less than zero");
 		}
 		else {
 			this.workHours = hours;
@@ -786,6 +786,13 @@ public class WBSElement implements Serializable{
 	}
 	
 	
+	public void deleteActivityByIndex(int index){
+		if(this.hasActivities()){
+				this.activities.remove(index);
+		}
+	}
+	
+	
 	/*
 	 * Method to determine how much space this element needs according to the number of children it has 
 	 * @return int - number of space in pixels that this element needs for its children
@@ -857,5 +864,41 @@ public class WBSElement implements Serializable{
 			drawableText = elementName;
 		}
 		return drawableText;
+	}
+	
+	public void removeChildren(){
+		this.children.clear();
+	}
+	
+	public void deleteElementFromParent(){
+		if(!this.isRoot()){
+			this.clearHierarchy();
+			this.getParent().removeChild(this.getIndex());
+		}
+	}
+	
+	public void clearHierarchy(){
+		if(this.hasChildren()){
+			if(this.elementHasNoSubChildren()){
+				this.removeChildren();
+			}
+			else{
+				for(WBSElement child : this.children){
+					child.clearHierarchy();
+				}
+				this.removeChildren();
+			}
+		}
+	}
+	
+	public boolean elementHasNoSubChildren(){
+		boolean result = true;
+		for(WBSElement child : this.children){
+			if(child.hasChildren()){
+				result = false;
+				break;
+			}
+		}
+		return result;
 	}
 }

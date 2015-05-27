@@ -1,6 +1,7 @@
 package com.example.pocket_wbs;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,9 +75,8 @@ public class ViewElementActivity extends ActionBarActivity {
 		//Create ListView to put WBSActivities into
 		
 		activitiesList = (ListView) findViewById(R.id.activitiesList);
-
 		
-		WBSActivityArrayAdapter adapter = new WBSActivityArrayAdapter(this, selectedElement, tree);
+		WBSActivityArrayAdapter adapter = new WBSActivityArrayAdapter(this, R.layout.row_item_layout, R.id.activityName, selectedElement, tree);
 		activitiesList.setAdapter(adapter);
 		
 		//Find layout for adding custom attributes

@@ -232,7 +232,7 @@
                 <ListView
                     android:id="@+id/activitiesList"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="bottom"
                     android:background="#FFFFFF"
                     android:paddingTop="5dp" >

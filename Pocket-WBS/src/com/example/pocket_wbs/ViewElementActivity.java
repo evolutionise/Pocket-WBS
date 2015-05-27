@@ -32,6 +32,7 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -68,8 +69,7 @@ public class ViewElementActivity extends ActionBarActivity {
 			this.selectedElement = this.tree.getProjectElements().get(elementKey);
 		}
 		setContentView(R.layout.activity_view_element);
-		setUpEventListeners();
-		updateActivity();
+		
 		
 		//Create ListView to put WBSActivities into
 		
@@ -84,87 +84,92 @@ public class ViewElementActivity extends ActionBarActivity {
 				
 		//GET custom attributes for Element level
 				displayCustomAttributes();
+				updateActivity();
 				
 	}
 	
 	@Override
 	public void onBackPressed(){
+		saveFieldChanges();
 		moveToViewElementOverview();
 	}
 	
-	// Code for having fields save in a real-time sense
-	// Add to the end of the onCreate() method to run
-	private void setSaveEventHandlers(){
+	public void saveFieldChanges(){
 		
-		final EditText elementName = (EditText) findViewById(R.id.editElementName);
-		final EditText budget = (EditText) findViewById(R.id.budgetEditText);
-		final EditText workHours = (EditText) findViewById(R.id.durationEditText);
-		final EditText manager = (EditText) findViewById(R.id.managerEditText);
+		EditText elementName = (EditText) findViewById(R.id.editElementName);
+		EditText budget = (EditText) findViewById(R.id.budgetEditText);
+		EditText duration = (EditText) findViewById(R.id.durationEditText);
+		EditText manager = (EditText) findViewById(R.id.managerEditText);
 		
-		elementName.setOnKeyListener(new View.OnKeyListener() {
-			
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if(event.getAction() == KeyEvent.ACTION_UP){
-					String newValue = elementName.getText().toString();
-					if(!newValue.equals("")){
-						if(selectedElement.isRoot()){
-							tree.setProjectName(elementName.getText().toString());
-						}
-						else{
-							selectedElement.setName(elementName.getText().toString());
-						}
-					}
-				}
-				return false;
+		String newName = elementName.getText().toString();
+		double newBudget = Double.parseDouble(budget.getText().toString());
+		int newWorkHours = Integer.parseInt(duration.getText().toString());
+		String newManager = manager.getText().toString();
+		
+		if(!this.selectedElement.isRoot()){
+			if(!newName.equals("")){
+				this.selectedElement.setName(newName);
 			}
-		});
-		
-		budget.setOnKeyListener(new View.OnKeyListener() {
-			
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if(event.getAction() == KeyEvent.ACTION_UP){
-					if(!budget.getText().toString().equals("")){
-						double newValue = Double.parseDouble(budget.getText().toString());
-						if(newValue >= 0){
-							selectedElement.setBudget(newValue);
-						}
-					}
-				}
-				return false;
+		}
+		else{
+			if(!newName.equals("")){
+				this.tree.setProjectName(newName);
 			}
-		});
-		
-		workHours.setOnKeyListener(new View.OnKeyListener() {
-			
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if(event.getAction() == KeyEvent.ACTION_UP){
-					if(!workHours.getText().toString().equals("")){
-						int newValue = Integer.parseInt(workHours.getText().toString());
-						if(newValue >= 0){
-							selectedElement.setWorkHours(newValue);
-						}
-					}
-				}
-				return false;
+		}
+		if(newBudget >= 0){
+			this.selectedElement.setBudget(newBudget);
+		}
+		else{
+			this.selectedElement.setBudget(0);
+		}
+		if(newWorkHours >= 0){
+			this.selectedElement.setWorkHours(newWorkHours);
+		}
+		else{
+			this.selectedElement.setWorkHours(0);
+		}
+		this.selectedElement.setResponsibleStaff(newManager);
+	}
+	
+	private void saveElementNameField(){
+		EditText elementName = (EditText) findViewById(R.id.editElementName);
+		String newValue = elementName.getText().toString();
+		if(!newValue.equals("")){
+			if(selectedElement.isRoot()){
+				tree.setProjectName(elementName.getText().toString());
 			}
-		});
-		
-		manager.setOnKeyListener(new OnKeyListener() {
-			
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if(event.getAction() == KeyEvent.ACTION_UP){
-					String newValue = manager.getText().toString();
-					if(!newValue.equals("")){
-						selectedElement.setResponsibleStaff(newValue);
-					}
-				}
-				return false;
+			else{
+				selectedElement.setName(elementName.getText().toString());
 			}
-		});
+		}
+	}
+	
+	private void saveBudgetField(){
+		EditText budget = (EditText) findViewById(R.id.budgetEditText);
+		if(!budget.getText().toString().equals("")){
+			double newValue = Double.parseDouble(budget.getText().toString());
+			if(newValue >= 0){
+				selectedElement.setBudget(newValue);
+			}
+		}
+	}
+	
+	private void saveWorkHoursField(){
+		EditText workHours = (EditText) findViewById(R.id.durationEditText);
+		if(!workHours.getText().toString().equals("")){
+			int newValue = Integer.parseInt(workHours.getText().toString());
+			if(newValue >= 0){
+				selectedElement.setWorkHours(newValue);
+			}
+		}
+	}
+	
+	private void saveManagerField(){
+		EditText manager = (EditText) findViewById(R.id.managerEditText);
+		String newValue = manager.getText().toString();
+		if(!newValue.equals("")){
+			selectedElement.setResponsibleStaff(newValue);
+		}
 	}
 	
 	private void moveToViewElementOverview(){
@@ -231,10 +236,6 @@ public class ViewElementActivity extends ActionBarActivity {
 		workHours.setText(Integer.toString(selectedElement.getWorkHours()));
 		manager.setText(selectedElement.getResponsibleStaff());
 		editElementName.setText(selectedElement.getName());
-	}
-	
-	private void setUpEventListeners(){
-		setSaveEventHandlers();
 	}
 	
 	/*

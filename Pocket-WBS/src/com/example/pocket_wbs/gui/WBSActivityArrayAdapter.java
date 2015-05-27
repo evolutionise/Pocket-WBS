@@ -44,6 +44,8 @@ public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
 	  
 	  private void editWBSActivity(int position){
 		  WBSActivity activity = parent.getActivityByIndex(position);
+		  ViewElementActivity currentContext = (ViewElementActivity) context;
+		  currentContext.saveFieldChanges();
 		  Intent intent = new Intent(context, EditWBSActivityActivity.class);
 		  intent.putExtra("com.example.pocket_wbs.model.PROJECT_TREE", tree);		  
 		  intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", parent.getElementKey());

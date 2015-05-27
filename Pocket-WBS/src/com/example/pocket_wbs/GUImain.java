@@ -7,6 +7,7 @@ import com.example.pocket_wbs.R.id;
 import com.example.pocket_wbs.R.layout;
 import com.example.pocket_wbs.R.menu;
 import com.example.pocket_wbs.gui.MyCanvas;
+import com.example.pocket_wbs.gui.WBSListAdapter;
 import com.example.pocket_wbs.gui.WBSSurfaceView;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
@@ -26,6 +27,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
@@ -34,10 +36,12 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -62,7 +66,7 @@ public class GUImain extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_guimain);
 
-	//Initializes screen to scroll to center of canvas
+		//Initializes screen to scroll to center of canvas
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
 		  hsv = (HorizontalScrollView)findViewById(R.id.horizontal_scroll_view);
@@ -79,13 +83,13 @@ public class GUImain extends ActionBarActivity {
 		
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 800, getResources().getDisplayMetrics());
 		int pxW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 2000, getResources().getDisplayMetrics());
-	//Creates instance of MyCanvas onto the XML Layout
+		//Creates instance of MyCanvas onto the XML Layout
 		this.myCanvas2 = new MyCanvas(this.getApplicationContext(), pt, pxW, this);
 		LinearLayout myContainer = (LinearLayout)findViewById(R.id.container1);
 		myCanvas2.setBackgroundColor(Color.parseColor("#FFFFFF"));
 		myContainer.addView(myCanvas2, pxW, px);
 
-	//Algorithm to calculate screen to scroll to middle of page at start
+		//Algorithm to calculate screen to scroll to middle of page at start
 		scrollToX= (int) ((pxW/2)-(dpWidth/2));
 		
 		hsv.post(new Runnable() {
@@ -95,7 +99,7 @@ public class GUImain extends ActionBarActivity {
 		    }
 		});
 		
-	//Initialize Buttons from Canvas to set EditMode On or Off
+		//Initialize Buttons from Canvas to set EditMode On or Off
 		btnEdit = (Button)findViewById(R.id.buttonEdit);
 		btnView = (Button)findViewById(R.id.buttonView);
 		
@@ -230,22 +234,38 @@ public class GUImain extends ActionBarActivity {
 	}
 	
 	public void editCanvas(View v){
-		this.myCanvas2.setScaleFactor(myCanvas2.getScaleFactor()+0.4f);
+		//this.myCanvas2.setScaleFactor(myCanvas2.getScaleFactor()+0.4f);
 		editModeOn=true;
 		btnView.setEnabled(true);
 		btnEdit.setEnabled(false);
 		myCanvas2.invalidate();
 		hsv.scrollTo(scrollToX, 0);
+		hideElementList();
 	}
 	
 	
 	public void viewCanvas(View v){
-		this.myCanvas2.setScaleFactor(myCanvas2.getScaleFactor()-0.4f);
+		//this.myCanvas2.setScaleFactor(myCanvas2.getScaleFactor()-0.4f);
 		editModeOn=false;
 		btnView.setEnabled(false);
 		btnEdit.setEnabled(true);
-		myCanvas2.invalidate();
-		hsv.scrollTo((int) (scrollToX/1.9), 0);
+		//myCanvas2.invalidate();
+		//hsv.scrollTo((int) (scrollToX/1.9), 0);
+		showElementList();
+	}
+	
+	private void showElementList() {
+		ExpandableListView list = (ExpandableListView)findViewById(R.id.element_list_view);
+		list.setAdapter(new WBSListAdapter(this.pt));
+		list.setVisibility(View.VISIBLE);
+		list.setFocusable(true);
+		myCanvas2.setVisibility(View.INVISIBLE);
+	}
+	
+	private void hideElementList() {
+		ExpandableListView list = (ExpandableListView)findViewById(R.id.element_list_view);
+		list.setVisibility(View.INVISIBLE);
+		myCanvas2.setVisibility(View.VISIBLE);
 	}
 	
 	public void treeAlgorithm(View view){

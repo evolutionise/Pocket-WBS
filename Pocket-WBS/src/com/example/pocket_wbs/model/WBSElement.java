@@ -96,12 +96,13 @@ public class WBSElement implements Serializable{
 
     	Paint rectangleP = new Paint();
     	Paint rectangleS = new Paint();
+    	Paint rectangleA = new Paint();
     	Paint textp = new Paint();
     	Paint textl = new Paint();
     	
     	rectangleS.setColor(Color.parseColor("#848484"));
     	rectangleP.setColor(Color.parseColor("#819FF7")); 
-    	
+
     	textp.setColor(Color.WHITE);
     	textl.setColor(Color.BLACK);
     	
@@ -109,6 +110,14 @@ public class WBSElement implements Serializable{
 	    textp.setTextSize(14);
 	    textl.setStrokeWidth(2);
 	    
+    	//If Element has activities, give indication
+    	if(!this.getActivitiesAsStringArray().isEmpty())
+    	{
+    		rectangleA.setColor(Color.parseColor("#F78181"));
+    	    RectF a = new RectF(startx+10, starty+10, startx+elementWidth+10, starty+elementHeight+10);
+    	    canvas.drawRoundRect(a, 30, 30, rectangleA);
+    	}
+    	
     	//Rectangle shadow
 	    RectF s = new RectF(startx+5, starty+5, startx+elementWidth+5, starty+elementHeight+5);
 	    canvas.drawRoundRect(s, 30, 30, rectangleS);

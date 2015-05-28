@@ -55,7 +55,7 @@ public class EditWBSActivityActivity extends ActionBarActivity{
 		activity = tree.getProjectElements().get(elementKey).getActivityByIndex(position);		
 		
 		setContentView(R.layout.edit_wbsactivity_activity);
-		//this.getSupportActionBar().hide();
+		this.getSupportActionBar().hide();
 		description = (EditText) findViewById(R.id.activity_description_edit_text);
 		//description.setText(activity.getDescription());
 		updateTextViews();

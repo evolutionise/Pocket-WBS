@@ -8,7 +8,9 @@ import com.example.pocket_wbs.ViewElementActivity;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,14 +23,16 @@ import android.widget.TextView;
 
 public class WBSListAdapter extends BaseExpandableListAdapter {
 	
-	final private LinkedList<WBSElement> groups;
-	final private LinkedList<WBSElement>[] children;
-	final private ProjectTree tree;
+	private LinkedList<WBSElement> groups;
+	private LinkedList<WBSElement>[] children;
+	private ProjectTree tree;
+	private boolean dialogShowing;
 	
 	public WBSListAdapter(ProjectTree tree) {
 		this.tree = tree;
 		this.groups = tree.getRootElement().getChildren();
 		this.children = new LinkedList[this.groups.size()];
+		this.dialogShowing = false;
 		fillChildrenArray();
 	}
 	
@@ -114,12 +118,22 @@ public class WBSListAdapter extends BaseExpandableListAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				Context context = v.getContext();
-				Intent intent = new Intent(context, ViewElementActivity.class);
-				String key = element.getElementKey();
-				intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);
-				intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", key);
-				context.startActivity(intent);
+				if(!dialogShowing){
+					Context context = v.getContext();
+					Intent intent = new Intent(context, ViewElementActivity.class);
+					String key = element.getElementKey();
+					intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", tree);
+					intent.putExtra("com.example.pocket_wbs.ELEMENT_KEY", key);
+					context.startActivity(intent);
+				}
+			}
+		});
+		open.setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				confirmDeleteElement(v.getContext(), element);
+				return false;
 			}
 		});
 		return convertView;
@@ -130,4 +144,29 @@ public class WBSListAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 
+    public void confirmDeleteElement(final Context context, final WBSElement selectedElement){
+    	AlertDialog.Builder exitDialog = new AlertDialog.Builder(context);
+        exitDialog.setTitle("Delete Element");
+        exitDialog.setMessage("Are you sure you want to delete this element? " +
+        		"(this will remove all of its children and any lone sibling elements)");
+        exitDialog.setIcon(R.drawable.pocketwbsicon2);
+        exitDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {      
+                    	selectedElement.deleteElementFromParent();
+                    	groups = tree.getRootElement().getChildren();
+                		children = new LinkedList[groups.size()];
+                		fillChildrenArray();
+                    	notifyDataSetChanged();
+                    	dialog.cancel();
+                    }
+                });
+        exitDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        exitDialog.show();
+    }
 }

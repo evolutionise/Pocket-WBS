@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.view.View.OnClickListener;
 
 public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
@@ -70,8 +71,9 @@ public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
 	  }
 	  
 	  private void removeWBSActivity(int position){
-		  parent.deleteActivityByIndex(position);
 		  super.remove(super.getItem(position));
+		  parent.deleteActivityByIndex(position);
+		  this.activityList = parent.getActivitiesAsStringArray();
 		  notifyDataSetChanged();
 	  }
 	  
@@ -182,6 +184,10 @@ public class WBSActivityArrayAdapter extends ArrayAdapter<String>{
 	                    }
 	                });
 	        exitDialog.show();
+	    }
+	    
+	    public void toastMessage(String message){
+	    	Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
 	    }
 }
 

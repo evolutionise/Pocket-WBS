@@ -239,6 +239,7 @@ public class GUImain extends ActionBarActivity {
 		btnView.setEnabled(true);
 		btnEdit.setEnabled(false);
 		myCanvas2.invalidate();
+		myCanvas2.treeAlgorithm();
 		hsv.scrollTo(scrollToX, 0);
 		hideElementList();
 	}

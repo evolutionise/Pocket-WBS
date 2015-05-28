@@ -58,7 +58,7 @@ public class ViewElementActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = this.getIntent();
-		//this.getSupportActionBar().hide();
+		this.getSupportActionBar().hide();
 		if(intent.hasExtra("com.example.pocket_wbs.TREE")){
 			this.tree = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.TREE");
 			elementKey = intent.getStringExtra("com.example.pocket_wbs.KEY");

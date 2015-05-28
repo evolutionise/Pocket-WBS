@@ -29,7 +29,8 @@ E
         -->
         <activity
             android:name=".GUImain"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:noHistory="true"  >
         </activity>
         <activity
             android:name=".ViewElementActivity"

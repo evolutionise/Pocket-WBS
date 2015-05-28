@@ -101,6 +101,8 @@ public class ViewElementActivity extends ActionBarActivity {
 		EditText duration = (EditText) findViewById(R.id.durationEditText);
 		EditText manager = (EditText) findViewById(R.id.managerEditText);
 		
+		setEmptyNumericFieldsToDefault();
+		
 		String newName = elementName.getText().toString();
 		double newBudget = Double.parseDouble(budget.getText().toString());
 		int newWorkHours = Integer.parseInt(duration.getText().toString());
@@ -357,5 +359,17 @@ public class ViewElementActivity extends ActionBarActivity {
 	
     public void toastMessage(String message){
     	Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    
+    private void setEmptyNumericFieldsToDefault(){
+    	EditText budget = (EditText) findViewById(R.id.budgetEditText);
+		EditText workHours = (EditText) findViewById(R.id.durationEditText);
+		
+		if(budget.getText().toString().equals("")){
+			budget.setText("0.00");
+		}
+		if(workHours.getText().toString().equals("")){
+			workHours.setText("0");
+		}
     }
 }

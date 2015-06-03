@@ -108,8 +108,8 @@ public class ExportDirectoryActivity extends ActionBarActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				File clickedFile = new File(browser.getCurrentFile(), (String) list.getItemAtPosition(position));
-				selectedFile = clickedFile;
-				if(selectedFile.isDirectory()){
+				if(clickedFile.isDirectory()){
+					selectedFile = clickedFile;
 					browser.changeCurrentFile(selectedFile);
 				}
 				updateActivity();

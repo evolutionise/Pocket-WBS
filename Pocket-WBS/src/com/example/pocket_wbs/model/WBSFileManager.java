@@ -230,6 +230,12 @@ public class WBSFileManager {
 	public void showSaveAsDialog(final Context context, final ProjectTree tree){
 		AlertDialog.Builder saveAsDialog = new AlertDialog.Builder(context);
 		final EditText input = new EditText(context);
+		if(tree.treeSavedToFile()){
+			input.setText(tree.getFileName());
+		}
+		else{
+			input.setText(tree.getProjectName());
+		}
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);

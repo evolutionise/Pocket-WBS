@@ -281,7 +281,7 @@ public class GUImain extends ActionBarActivity {
 		final Activity activity = this;
 		AlertDialog.Builder exitDialog = new AlertDialog.Builder(context);
         exitDialog.setTitle("Exit Project");
-        exitDialog.setMessage("Exit the current project? (Any unsaved changes will be lost)");
+        exitDialog.setMessage("Exit the current project?");
         exitDialog.setIcon(R.drawable.pocketwbsicon2);
         exitDialog.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {

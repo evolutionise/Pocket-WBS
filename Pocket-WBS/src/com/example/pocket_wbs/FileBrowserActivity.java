@@ -8,6 +8,7 @@ import com.example.pocket_wbs.model.WBSFileManager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,17 +102,20 @@ public class FileBrowserActivity extends ActionBarActivity {
 	 * This method updates the open buttons display and event handler
 	 */
 	public void updateOpenButton(){
-		Button openButton = (Button) findViewById(R.id.selectButtonBrowser);
+		Button openButton = (Button) findViewById(R.id.selectFileButton);
 		if(selectedFile.equals(browser.getCurrentFile())){
-			openButton.setVisibility(View.INVISIBLE);
+			openButton.setTextColor(Color.parseColor("#777777"));
+			openButton.setClickable(false);
 		}
 		else if(selectedFile.isDirectory()){
-			openButton.setVisibility(View.INVISIBLE);
+			openButton.setTextColor(Color.parseColor("#777777"));
+			openButton.setClickable(false);
 			browser.changeCurrentFile(selectedFile);
 			updateActivity();
 		}
 		else if(selectedFile.isFile()){
-			openButton.setVisibility(View.VISIBLE);
+			openButton.setTextColor(Color.parseColor("#000000"));
+			openButton.setClickable(true);
 			openButton.setText("Select File");
 		}
 		setOpenButtonOnClickListener();
@@ -122,16 +126,12 @@ public class FileBrowserActivity extends ActionBarActivity {
 	 * the open button
 	 */
 	private void setOpenButtonOnClickListener(){
-		Button openButton = (Button) findViewById(R.id.selectButtonBrowser);
+		Button openButton = (Button) findViewById(R.id.selectFileButton);
 		openButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				if(selectedFile.isDirectory() && !selectedFile.equals(browser.getCurrentFile())){
-					browser.changeCurrentFile(selectedFile);
-					updateActivity();
-				}
-				else if(selectedFile.isFile()){
+				if(selectedFile.isFile()){
 					ProjectTree tree = fileManager.importFile(v.getContext(), selectedFile);
 					if(!tree.equals(null)){
 						Intent intent = new Intent(v.getContext(), GUImain.class);
@@ -150,12 +150,14 @@ public class FileBrowserActivity extends ActionBarActivity {
 	 * This method updates the back buttons display and event handler
 	 */
 	private void updateBackButton(){
-		Button backButton = (Button) findViewById(R.id.backFileBrowser);
+		Button backButton = (Button) findViewById(R.id.previousButton);
 		if(browser.currentDirectoryIsRoot()){
-			backButton.setVisibility(View.INVISIBLE);
+			backButton.setTextColor(Color.parseColor("#777777"));
+			backButton.setClickable(false);
 		}
 		else{
-			backButton.setVisibility(View.VISIBLE);
+			backButton.setTextColor(Color.parseColor("#000000"));
+			backButton.setClickable(true);
 		}
 		setBackButtonOnClickListener();
 	}
@@ -164,14 +166,16 @@ public class FileBrowserActivity extends ActionBarActivity {
 	 * This method sets the event handler for the back button
 	 */
 	private void setBackButtonOnClickListener(){
-		Button backButton = (Button) findViewById(R.id.backFileBrowser);
+		Button backButton = (Button) findViewById(R.id.previousButton);
 		backButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				browser.moveUpFileHierarchy();
-				selectedFile = browser.getCurrentFile();
-				updateActivity();
+				if(!browser.currentDirectoryIsRoot()){
+					browser.moveUpFileHierarchy();
+					selectedFile = browser.getCurrentFile();
+					updateActivity();
+				}
 			}
 		});
 	}

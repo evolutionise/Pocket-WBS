@@ -109,6 +109,7 @@ public class GUImain extends ActionBarActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		final GUImain activity = this;
 		getMenuInflater().inflate(R.menu.menu, menu);
 		final Context context = this;
 		final ProjectTree tree = this.pt;
@@ -143,8 +144,11 @@ public class GUImain extends ActionBarActivity {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.exportFile(context, tree);
+				Intent intent = new Intent(activity, ExportDirectoryActivity.class);
+				ProjectTree treeToExport = tree;
+				intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", treeToExport);
+				startActivity(intent);
+				finish();
 				return false;
 			}
 		});

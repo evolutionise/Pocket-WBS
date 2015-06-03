@@ -115,7 +115,7 @@ public class WBSFileManager {
 	 * @param context - the applications context for displaying messages
 	 * @param tree - the tree to be saved to the file.
 	 */
-	public void exportFile(Context context, ProjectTree tree){
+	public void exportFile(Context context, File location, ProjectTree tree){
 		
 		String fileName = "";
 		if(tree.treeSavedToFile()){
@@ -124,10 +124,8 @@ public class WBSFileManager {
 		else{
 			fileName = tree.getProjectName() + ".PTWBS";
 		}
-		
-		File exportDir = new File(Environment.getExternalStorageDirectory() + "/Pocket-WBS/");
-		if(!exportDir.exists()){
-			exportDir.mkdir();
+		if(!location.exists()){
+			location.mkdir();
 		}
 		
 		if(fileName.equals("")){
@@ -136,7 +134,7 @@ public class WBSFileManager {
 		
 		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Environment.isExternalStorageEmulated()){
 			try{
-				File exportFile = new File(exportDir, fileName);
+				File exportFile = new File(location, fileName);
 				FileOutputStream fileOutput = new FileOutputStream(exportFile);
 				ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
 				objectOutput.writeObject(tree);
@@ -326,5 +324,24 @@ public class WBSFileManager {
 		int displayTime = Toast.LENGTH_LONG;
 		CharSequence message = "You need to insert and mount an SD Card.";
 		exportMessage.makeText(context, message, displayTime).show();
+	}
+	
+	/**
+	 * This method creates a new folder in the storage specified by
+	 * the location file.
+	 * @param name - the directories name
+	 * @param location - the parent directory of the new directory
+	 * @return true if the directory was created successfully
+	 */
+	public boolean createNewFolder(String name, File location){
+		boolean directoryCreated = false;
+		if(location.exists() && location.isDirectory()){
+			File newFolder = new File(location, name);
+			if(!newFolder.exists()){
+				newFolder.mkdir();
+				directoryCreated = true;
+			}
+		}
+		return directoryCreated;
 	}
 }

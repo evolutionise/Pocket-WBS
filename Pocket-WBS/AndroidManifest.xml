@@ -9,7 +9,7 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-E
+E
     <application
         android:allowBackup="true"
         android:icon="@drawable/pocketwbsicon"
@@ -25,12 +25,12 @@ E
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>
         -->
         <activity
             android:name=".GUImain"
             android:label="@string/app_name"
-            android:noHistory="true"  >
+            android:noHistory="true" >
         </activity>
         <activity
             android:name=".ViewElementActivity"
@@ -44,8 +44,9 @@ E
         </activity>
         <activity android:name=".ViewElementOverview" >
         </activity>
-        <activity android:name=".EditWBSActivityActivity" 
-         			 android:windowSoftInputMode="stateHidden">
+        <activity
+            android:name=".EditWBSActivityActivity"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity android:name=".MenuActivity" >
             <intent-filter android:label="@string/app_name" >
@@ -61,7 +62,12 @@ E
         </activity>
         <activity
             android:name=".FileBrowserActivity"
-            android:label="@string/title_activity_file_browser" 
+            android:label="@string/title_activity_file_browser"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name=".ExportDirectoryActivity"
+            android:label="@string/title_activity_export_directory"
             android:noHistory="true" >
         </activity>
     </application>

@@ -29,7 +29,6 @@ public class ViewElementOverview extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = this.getIntent();
-		//this.setUpTest();
 		if(intent.hasExtra("com.example.pocket_wbs.TREE")){
 			this.tree = (ProjectTree) intent.getSerializableExtra("com.example.pocket_wbs.TREE");
 			String elementKey = intent.getStringExtra("com.example.pocket_wbs.KEY");
@@ -48,6 +47,7 @@ public class ViewElementOverview extends ActionBarActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		final ViewElementOverview activity = this;
 		getMenuInflater().inflate(R.menu.menu, menu);
 		final Context context = this;
 		final ProjectTree tree = this.tree;
@@ -82,8 +82,11 @@ public class ViewElementOverview extends ActionBarActivity {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				WBSFileManager wbsManager = new WBSFileManager();
-				wbsManager.exportFile(context, tree);
+				Intent intent = new Intent(activity, ExportDirectoryActivity.class);
+				ProjectTree treeToExport = tree;
+				intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", treeToExport);
+				startActivity(intent);
+				finish();
 				return false;
 			}
 		});

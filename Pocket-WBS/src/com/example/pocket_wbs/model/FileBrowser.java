@@ -61,6 +61,24 @@ public class FileBrowser {
 	}
 	
 	/**
+	 * This methods presents a string list of all the sub directories of the
+	 * currently selected directory. Provides the adapter the array needed in the
+	 * ExportDirectoryActivity.
+	 * @return
+	 */
+	public String[] listDirectories(){
+		ArrayList<String> filesList = new ArrayList<String>();
+		File[] files = this.currentFile.listFiles();
+		for(File file : files){
+			if(file.isDirectory()){
+				filesList.add(file.getName());
+			}
+		}
+		String[] output = stringArrayListToArray(filesList);
+		return output;
+	}
+	
+	/**
 	 * A method used purely in the listFiles() method to convert the ArrayList
 	 * to a regular Array.
 	 * @param arrayList - the ArrayList being converted to a string array

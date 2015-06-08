@@ -9,6 +9,7 @@ import com.example.pocket_wbs.R.menu;
 import com.example.pocket_wbs.gui.MyCanvas;
 import com.example.pocket_wbs.gui.WBSListAdapter;
 import com.example.pocket_wbs.gui.WBSSurfaceView;
+import com.example.pocket_wbs.model.FileBrowser;
 import com.example.pocket_wbs.model.ProjectTree;
 import com.example.pocket_wbs.model.WBSElement;
 import com.example.pocket_wbs.model.WBSFileManager;
@@ -144,11 +145,17 @@ public class GUImain extends ActionBarActivity {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				Intent intent = new Intent(activity, ExportDirectoryActivity.class);
-				ProjectTree treeToExport = tree;
-				intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", treeToExport);
-				startActivity(intent);
-				finish();
+				FileBrowser browser = new FileBrowser();
+				if(browser.externalMemoryMounted()){
+					Intent intent = new Intent(activity, ExportDirectoryActivity.class);
+					ProjectTree treeToExport = tree;
+					intent.putExtra("com.example.pocket_wbs.PROJECT_TREE", treeToExport);
+					startActivity(intent);
+					finish();
+				}
+				else{
+					browser.displayMessage("You need to insert an SD card to export files", context);
+				}
 				return false;
 			}
 		});

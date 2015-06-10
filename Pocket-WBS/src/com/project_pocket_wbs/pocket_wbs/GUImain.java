@@ -1,18 +1,18 @@
-package com.example.pocket_wbs;
+package com.project_pocket_wbs.pocket_wbs;
 
 import java.util.List;
 
-import com.example.pocket_wbs.R;
-import com.example.pocket_wbs.R.id;
-import com.example.pocket_wbs.R.layout;
-import com.example.pocket_wbs.R.menu;
-import com.example.pocket_wbs.gui.MyCanvas;
-import com.example.pocket_wbs.gui.WBSListAdapter;
-import com.example.pocket_wbs.gui.WBSSurfaceView;
-import com.example.pocket_wbs.model.FileBrowser;
-import com.example.pocket_wbs.model.ProjectTree;
-import com.example.pocket_wbs.model.WBSElement;
-import com.example.pocket_wbs.model.WBSFileManager;
+import com.pocket_wbs_project.pocket_wbs.R;
+import com.pocket_wbs_project.pocket_wbs.R.id;
+import com.pocket_wbs_project.pocket_wbs.R.layout;
+import com.pocket_wbs_project.pocket_wbs.R.menu;
+import com.project_pocket_wbs.pocket_wbs.gui.MyCanvas;
+import com.project_pocket_wbs.pocket_wbs.gui.WBSListAdapter;
+import com.project_pocket_wbs.pocket_wbs.gui.WBSSurfaceView;
+import com.project_pocket_wbs.pocket_wbs.model.FileBrowser;
+import com.project_pocket_wbs.pocket_wbs.model.ProjectTree;
+import com.project_pocket_wbs.pocket_wbs.model.WBSElement;
+import com.project_pocket_wbs.pocket_wbs.model.WBSFileManager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;

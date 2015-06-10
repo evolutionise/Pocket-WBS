@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#BDBDBD"
-    tools:context="com.example.pocket_wbs.MenuActivity"
+    tools:context="com.project_pocket_wbs.pocket_wbs.MenuActivity"
     tools:ignore="MergeRootFrame" />
 

@@ -1,4 +1,4 @@
-package com.example.pocket_wbs.gui;
+package com.project_pocket_wbs.pocket_wbs.gui;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,10 +13,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.pocket_wbs.GUImain;
-import com.example.pocket_wbs.model.MyGestureListener;
-import com.example.pocket_wbs.model.ProjectTree;
-import com.example.pocket_wbs.model.WBSElement;
+import com.project_pocket_wbs.pocket_wbs.GUImain;
+import com.project_pocket_wbs.pocket_wbs.model.MyGestureListener;
+import com.project_pocket_wbs.pocket_wbs.model.ProjectTree;
+import com.project_pocket_wbs.pocket_wbs.model.WBSElement;
  
 public class MyCanvas extends View {
 	

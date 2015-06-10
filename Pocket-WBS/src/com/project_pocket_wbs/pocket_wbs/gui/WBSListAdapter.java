@@ -1,12 +1,12 @@
-package com.example.pocket_wbs.gui;
+package com.project_pocket_wbs.pocket_wbs.gui;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import com.example.pocket_wbs.R;
-import com.example.pocket_wbs.ViewElementActivity;
-import com.example.pocket_wbs.model.ProjectTree;
-import com.example.pocket_wbs.model.WBSElement;
+import com.pocket_wbs_project.pocket_wbs.R;
+import com.project_pocket_wbs.pocket_wbs.ViewElementActivity;
+import com.project_pocket_wbs.pocket_wbs.model.ProjectTree;
+import com.project_pocket_wbs.pocket_wbs.model.WBSElement;
 
 import android.app.AlertDialog;
 import android.content.Context;

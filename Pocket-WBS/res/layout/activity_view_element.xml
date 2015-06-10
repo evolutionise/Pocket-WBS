@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:screenOrientation="portrait"
-    tools:context="com.example.pocket_wbs.ViewElementActivity" >
+    tools:context="com.project_pocket_wbs.pocket_wbs.ViewElementActivity" >
 
     <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
 

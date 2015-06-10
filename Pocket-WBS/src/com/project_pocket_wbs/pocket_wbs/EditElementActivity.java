@@ -1,8 +1,9 @@
-package com.example.pocket_wbs;
+package com.project_pocket_wbs.pocket_wbs;
 
-import com.example.pocket_wbs.model.ProjectTree;
-import com.example.pocket_wbs.model.WBSElement;
-import com.example.pocket_wbs.model.WBSFileManager;
+import com.pocket_wbs_project.pocket_wbs.R;
+import com.project_pocket_wbs.pocket_wbs.model.ProjectTree;
+import com.project_pocket_wbs.pocket_wbs.model.WBSElement;
+import com.project_pocket_wbs.pocket_wbs.model.WBSFileManager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;

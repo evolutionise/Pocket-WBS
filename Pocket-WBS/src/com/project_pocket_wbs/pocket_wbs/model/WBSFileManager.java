@@ -1,4 +1,4 @@
-package com.example.pocket_wbs.model;
+package com.project_pocket_wbs.pocket_wbs.model;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,9 +9,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.pocket_wbs.LoadWBSActivity;
-import com.example.pocket_wbs.MenuActivity;
-import com.example.pocket_wbs.R;
+import com.pocket_wbs_project.pocket_wbs.R;
+import com.project_pocket_wbs.pocket_wbs.LoadWBSActivity;
+import com.project_pocket_wbs.pocket_wbs.MenuActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;

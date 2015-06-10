@@ -1,4 +1,4 @@
-package com.example.pocket_wbs.model;
+package com.project_pocket_wbs.pocket_wbs.model;
 
 import java.io.Serializable;
 import java.util.Date;

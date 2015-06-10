@@ -1,9 +1,9 @@
-package com.example.pocket_wbs.model;
+package com.project_pocket_wbs.pocket_wbs.model;
 
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.example.pocket_wbs.gui.MyCanvas;
+import com.project_pocket_wbs.pocket_wbs.gui.MyCanvas;
 
 public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
     private static final String DEBUG_TAG = "Gestures"; 

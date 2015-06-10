@@ -1,6 +1,6 @@
-package com.example.pocket_wbs.gui;
+package com.project_pocket_wbs.pocket_wbs.gui;
 
-import com.example.pocket_wbs.R;
+import com.pocket_wbs_project.pocket_wbs.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;

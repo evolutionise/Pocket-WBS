@@ -107,7 +107,7 @@ public class ViewElementOverview extends ActionBarActivity {
 		Button rightButton = (Button) findViewById(R.id.arrowRight);
 		Button upButton = (Button) findViewById(R.id.arrowUp);
 		Button downButton = (Button) findViewById(R.id.arrowDown);
-		Button elementButton = (Button) findViewById(R.id.buttonElement);
+		Button deleteButton = (Button) findViewById(R.id.deleteElementButton);
 		
 		leftButton.setOnClickListener(new View.OnClickListener(){
 			@Override
@@ -184,10 +184,10 @@ public class ViewElementOverview extends ActionBarActivity {
 			}
 		});
 		
-		elementButton.setOnLongClickListener(new View.OnLongClickListener() {
+		deleteButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public boolean onLongClick(View v) {
+			public void onClick(View v) {
 				if(selectedElement.isRoot()){
 					toastMessage("You cannot delete the root element");
 				}
@@ -196,10 +196,11 @@ public class ViewElementOverview extends ActionBarActivity {
 				}
 				else{
 					confirmDeleteElement(v.getContext());
-				}
-				return false;
+				}				
 			}
-		});
+		});{
+			
+		}
 	}
 	
 	private void moveToTreeView(){
@@ -219,6 +220,7 @@ public class ViewElementOverview extends ActionBarActivity {
 		updateRightButton();
 		updateUpButton();
 		updateDownButton();
+		updateDeleteButton();
 	}
 
 	private void updateTextViews(){
@@ -310,6 +312,17 @@ public class ViewElementOverview extends ActionBarActivity {
 			downButton.setText("Down");
 			downButton.setBackgroundResource(R.drawable.arrow_up);
 			downButton.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	private void updateDeleteButton(){
+		Button deleteButton = (Button) findViewById(R.id.deleteElementButton);
+		if(selectedElement.isRoot()){
+			deleteButton.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			deleteButton.setVisibility(View.VISIBLE);
 		}
 	}
 	

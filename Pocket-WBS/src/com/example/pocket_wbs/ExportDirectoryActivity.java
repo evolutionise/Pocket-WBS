@@ -43,26 +43,6 @@ public class ExportDirectoryActivity extends ActionBarActivity {
 		}
 		updateActivity();
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.export_directory, menu);
-		updateActivity();
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 	
 	/**
 	 * The main GUI update method of the activity
@@ -217,7 +197,12 @@ public class ExportDirectoryActivity extends ActionBarActivity {
                     	String folderName = input.getText().toString();
                     	boolean folderCreated = fileManager.createNewFolder(folderName, location);
                     	if(!folderCreated){
-                    		toastMessage("The folder already exists");
+                    		if(fileManager.nameContainsIllegalCharacters(folderName)){
+                    			toastMessage("The folder name contains illegal characters.");
+                    		}
+                    		else{
+                    			toastMessage("That folder already exists");
+                    		}
                     	}
                     	else{
                     		toastMessage("Folder " + "'" + folderName + "'" + " created.");

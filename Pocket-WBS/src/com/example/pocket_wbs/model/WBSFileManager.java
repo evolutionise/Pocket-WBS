@@ -341,13 +341,27 @@ public class WBSFileManager {
 	 */
 	public boolean createNewFolder(String name, File location){
 		boolean directoryCreated = false;
-		if(location.exists() && location.isDirectory()){
-			File newFolder = new File(location, name);
-			if(!newFolder.exists()){
-				newFolder.mkdir();
-				directoryCreated = true;
+		if(!nameContainsIllegalCharacters(name)){
+			if(location.exists() && location.isDirectory()){
+				File newFolder = new File(location, name);
+				if(!newFolder.exists()){
+					newFolder.mkdir();
+					directoryCreated = true;
+				}
 			}
 		}
 		return directoryCreated;
+	}
+	
+	public boolean nameContainsIllegalCharacters(String name){
+		boolean result = false;
+		String[] illegalChars = {"?", "*", "\"", ">", "<", ":", "\\", "|"}; 
+		for(String c : illegalChars){
+			if(name.contains(c)){
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 }
